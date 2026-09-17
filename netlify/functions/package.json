@@ -1,0 +1,8 @@
+﻿{
+  "name": "alladin-functions",
+  "version": "1.0.0",
+  "description": "ALLADIN Netlify Serverless Functions",
+  "dependencies": {
+    "@google/genai": "^2.19.0"
+  }
+}
