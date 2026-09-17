@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Global Payments | Illuminati</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+            --gold-color: #FFD700;
+            --gold-hover: #FFA500;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
+            --shadow-color: rgba(0, 0, 0, 0.8);
+            --success-color: #00ff88;
+            --western-red: #FF6600;
+            --pix-blue: #00BFFF;
+            --africa-orange: #FF8C00;
+            --global-green: #00C851;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: var(--gold-color);
+            border: 2px solid var(--gold-color);
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .back-btn:hover {
+            background: var(--gold-color);
+            color: var(--bg-color);
+            transform: scale(1.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .payment-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .payment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--shadow-color);
+            border-color: var(--gold-color);
+        }
+
+        .payment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--western-red), var(--pix-blue));
+            opacity: 0.7;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .payment-list {
+            list-style: none;
+        }
+
+        .payment-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--gold-color);
+        }
+
+        .payment-icon {
+            font-size: 1.3rem;
+            margin-right: 12px;
+            color: var(--gold-color);
+            flex-shrink: 0;
+        }
+
+        .payment-text {
+            flex: 1;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .payment-text strong {
+            color: var(--gold-color);
+            font-weight: 600;
+        }
+
+        .region-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .region-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .region-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .region-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .region-item:hover {
+            transform: scale(1.05);
+            border-color: var(--gold-color);
+        }
+
+        .region-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .region-name {
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .region-countries {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .global-stats {
+            background: linear-gradient(135deg, rgba(0, 200, 81, 0.1), rgba(0, 200, 81, 0.05));
+            border: 2px solid var(--global-green);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .stats-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--global-green);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .payment-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+                letter-spacing: 3px;
+            }
+
+            .region-grid, .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .region-grid, .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="Terms & Conditions.html" class="back-btn">
+            ← Back to Hub
+        </a>
+
+        <div class="header">
+            <h1 data-translate>Global Payments</h1>
+            <p data-translate>Worldwide payment methods including Western Union, PIX, and regional coverage for Latin America and Africa</p>
+        </div>
+
+        <div class="payment-grid">
+            <div class="payment-card">
+                <h2 class="card-title" data-translate>Western Union</h2>
+                <ul class="payment-list">
+                    <li class="payment-item">
+                        <div class="payment-icon">🌍</div>
+                        <div class="payment-text">
+                            <strong data-translate>Global Network</strong>: <span data-translate>200+ countries worldwide with instant cash pickup</span>
+                        </div>
+                    </li>
+                    <li class="payment-item">
+                        <div class="payment-icon">💰</div>
+                        <div class="payment-text">
+                            <strong data-translate>High Limits</strong>: <span data-translate>Up to $100,000 per transaction for Elite members</span>
+                        </div>
+                    </li>
+                    <li class="payment-item">
+                        <div class="payment-icon">🔐</div>
+                        <div class="payment-text">
+                            <strong data-translate>Secure Processing</strong>: <span data-translate>Encrypted transactions with tracking protection</span>
+                        </div>
+                    </li>
+                    <li class="payment-item">
+                        <div class="payment-icon">⚡</div>
+                        <div class="payment-text">
+                            <strong data-translate>Fast Delivery</strong>: <span data-translate>Minutes to hours processing time globally</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="payment-card">
+                <h2 class="card-title" data-translate>PIX (Brazil)</h2>
+                <ul class="payment-list">
+                    <li class="payment-item">
+                        <div class="payment-icon">📱</div>
+                        <div class="payment-text">
+                            <strong data-translate>Instant Transfer</strong>: <span data-translate>Real-time PIX payments 24/7</span>
+                        </div>
+                    </li>
+                    <li class="payment-item">
+                        <div class="payment-icon">💳</div>
+                        <div class="payment-text">
+                            <strong data-translate>No Fees</strong>: <span data-translate>Zero transaction fees for Elite members</span>
+                        </div>
+                    </li>
+                    <li class="payment-item">
+                        <div class="payment-icon">🔒</div>
+                        <div class="payment-text">
+                            <strong data-translate>Secure</strong>: <span data-translate>Brazilian Central Bank backed security</span>
+                        </div>
+                    </li>
+                    <li class="payment-item">
+                        <div class="payment-icon">🌐</div>
+                        <div class="payment-text">
+                            <strong data-translate>Mobile Integration</strong>: <span data-translate>Direct integration with banking apps</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="region-section">
+            <h2 class="region-title" data-translate>Regional Coverage</h2>
+            <div class="region-grid">
+                <div class="region-item">
+                    <div class="region-icon">🌎</div>
+                    <div class="region-name" data-translate>Latin America</div>
+                    <div class="region-countries" data-translate>
+                        Brazil, Mexico, Argentina, Colombia, Chile, Peru, Ecuador, Panama, Venezuela, Costa Rica, Guatemala, and more
+                    </div>
+                </div>
+                <div class="region-item">
+                    <div class="region-icon">🌍</div>
+                    <div class="region-name" data-translate>Africa</div>
+                    <div class="region-countries" data-translate>
+                        South Africa, Nigeria, Kenya, Ghana, Egypt, Morocco, Tunisia, Algeria, and 50+ more countries
+                    </div>
+                </div>
+                <div class="region-item">
+                    <div class="region-icon">🌐</div>
+                    <div class="region-name" data-translate>Global Network</div>
+                    <div class="region-countries" data-translate>
+                        200+ countries and territories with secure payment infrastructure
+                    </div>
+                </div>
+                <div class="region-item">
+                    <div class="region-icon">🏦️</div>
+                    <div class="region-name" data-translate>Asia Pacific</div>
+                    <div class="region-countries" data-translate>
+                        Singapore, Hong Kong, Australia, Japan, South Korea, and emerging markets
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="global-stats">
+            <h2 class="stats-title" data-translate>Global Payment Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">200+</div>
+                    <div class="stat-label" data-translate>Countries</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">$2.5B</div>
+                    <div class="stat-label" data-translate>Annual Volume</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label" data-translate>Availability</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">99.9%</div>
+                    <div class="stat-label" data-translate>Success Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">< 1hr</div>
+                    <div class="stat-label" data-translate>Avg. Processing</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add entrance animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.payment-card, .region-section, .global-stats');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(50px)';
+                setTimeout(() => {
+                    element.style.transition = 'all 0.8s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+

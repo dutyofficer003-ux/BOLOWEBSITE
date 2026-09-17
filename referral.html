@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Referral Hub | Illuminati</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0F172A;
+            --bg-secondary: #1E293B;
+            --bg-tertiary: #334155;
+            --text-primary: #F8FAFC;
+            --text-secondary: #CBD5E1;
+            --gold-color: #F3BA2F;
+            --gold-hover: #FCD34D;
+            --success-color: #10B981;
+            --error-color: #EF4444;
+            --border-color: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .referral-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Header */
+        .referral-header {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .referral-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Referral ID Card */
+        .referral-id-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .referral-id-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .referral-id-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .referral-id-badge {
+            background: rgba(243, 186, 47, 0.1);
+            color: var(--gold-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .referral-id-display {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .referral-id-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .referral-id-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .referral-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .referral-btn {
+            background: var(--gold-color);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .referral-btn:hover {
+            background: var(--gold-hover);
+        }
+
+        .referral-btn.secondary {
+            background: transparent;
+            color: var(--gold-color);
+            border: 1px solid var(--gold-color);
+        }
+
+        .referral-btn.secondary:hover {
+            background: rgba(243, 186, 47, 0.1);
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold-color);
+            color: var(--bg-primary);
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            z-index: 10000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            animation: toastPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        @keyframes toastPop {
+            0% { transform: translateX(-50%) translateY(100px) scale(0.8); opacity: 0; }
+            100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+        }
+
+        @keyframes toastFade {
+            0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(-20px) scale(0.8); opacity: 0; }
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            color: var(--gold-color);
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Initiates List */
+        .initiates-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .initiates-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .initiate-item {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .initiate-info {
+            flex: 1;
+        }
+
+        .initiate-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .initiate-date {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .initiate-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .initiate-status.verified {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .initiate-status.pending {
+            background: rgba(243, 186, 47, 0.1);
+            color: var(--gold-color);
+            border: 1px solid var(--gold-color);
+        }
+
+        /* Incentive Banner */
+        .incentive-banner {
+            background: linear-gradient(135deg, rgba(243, 186, 47, 0.1), rgba(243, 186, 47, 0.2));
+            border: 1px solid var(--gold-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .incentive-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .incentive-description {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .nav-item:hover {
+            color: var(--gold-color);
+            background: rgba(243, 186, 47, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--gold-color);
+        }
+
+        .nav-icon {
+            font-size: 1.25rem;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            color: var(--border-color);
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .empty-description {
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .referral-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div class="referral-container">
+        <!-- Header -->
+        <div class="referral-header">
+            <h1 class="referral-title" data-translate>Referral Hub</h1>
+        </div>
+
+        <!-- Incentive Banner -->
+        <div class="incentive-banner">
+            <div class="incentive-title" data-translate>🎯 Elite Referral Program</div>
+            <div class="incentive-description">
+                <span data-translate>Earn 10% acceleration on your $500,000 growth for every verified member you initiate.</span>
+                <span data-translate>Build your network and accelerate your wealth!</span>
+            </div>
+        </div>
+
+        <!-- Referral ID Card -->
+        <div class="referral-id-card">
+            <div class="referral-id-header">
+                <div class="referral-id-title" data-translate>Your Elite Referral ID</div>
+                <div class="referral-id-badge" data-translate>Unique</div>
+            </div>
+            <div class="referral-id-display">
+                <div class="referral-id-value" id="referralId">Loading...</div>
+                <div class="referral-id-label" data-translate>Share this ID with potential initiates</div>
+            </div>
+            <div class="referral-actions">
+                <button class="referral-btn" onclick="copyReferralId()" data-translate>
+                    <i class="fas fa-copy"></i> <span data-translate>Copy ID</span>
+                </button>
+                <button class="referral-btn secondary" onclick="copyReferralLink()" data-translate>
+                    <i class="fas fa-link"></i> <span data-translate>Copy Link</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-value" id="totalInitiates">0</div>
+                <div class="stat-label" data-translate>Total Initiates</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-value" id="verifiedInitiates">0</div>
+                <div class="stat-label" data-translate>Verified</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-percentage"></i>
+                </div>
+                <div class="stat-value" id="growthBonus">0%</div>
+                <div class="stat-label" data-translate>Growth Bonus</div>
+            </div>
+        </div>
+
+        <!-- Initiates List -->
+        <div class="initiates-section">
+            <div class="section-header">
+                <div class="section-title" data-translate>Your Initiates</div>
+            </div>
+            <div class="initiates-list" id="initiatesList">
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="empty-title" data-translate>No Initiates Yet</div>
+                    <div class="empty-description">
+                        <span data-translate>Start sharing your referral ID to build your network and earn growth bonuses!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label" data-translate>Home</span>
+        </a>
+        <a href="elite-dashboard.html" class="nav-item">
+            <i class="fas fa-wallet nav-icon"></i>
+            <span class="nav-label" data-translate>Wallet</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+            <i class="fas fa-cog nav-icon"></i>
+            <span class="nav-label" data-translate>Settings</span>
+        </a>
+    
+    <a href="/alladin.html" class="alladin-nav-item" style="color: #ffd700; font-weight: bold; text-shadow: 0 0 8px rgba(212,175,55,0.6);">ALLADIN AI</a></nav>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO174C8QbyOodW1e5aQ5PW2pWJ01tO7jE",
+            authDomain: "illuminati---oversight.firebaseapp.com",
+            projectId: "illuminati---oversight",
+            storageBucket: "illuminati---oversight.firebasestorage.app",
+            messagingSenderId: "307854810652",
+            appId: "1:307854810652:web:196f634b4f0ebf4be949d9"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Global variables
+        let userEmail = localStorage.getItem('gate_email') || localStorage.getItem('userEmail');
+        let referralId = '';
+        let referralData = [];
+
+        // Generate unique referral ID based on email
+        function generateReferralId(email) {
+            if (!email) return 'ELITE000';
+            
+            // Create a unique ID from email
+            const cleanEmail = email.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+            const hash = cleanEmail.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            const uniqueId = (hash % 100000).toString().padStart(5, '0');
+            return `ELITE${uniqueId}`;
+        }
+
+        // Generate referral link
+        function generateReferralLink() {
+            const baseUrl = window.location.origin;
+            return `${baseUrl}/membership.html?ref=${referralId}`;
+        }
+
+        // Copy referral ID
+        function copyReferralId() {
+            const val = document.getElementById('referralId').textContent;
+            copyToClipboard(val);
+        }
+
+        // Copy referral link
+        function copyReferralLink() {
+            const link = generateReferralLink();
+            copyToClipboard(link);
+        }
+
+        // Robust Copy Function with Fallback
+        function copyToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification('Copied!');
+                }).catch(err => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            textArea.style.top = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showNotification('Copied!');
+            } catch (err) {
+                console.error('Fallback copy failed', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+
+            const notification = document.createElement('div');
+            notification.className = 'toast';
+            notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'toastFade 0.4s ease-in forwards';
+                setTimeout(() => {
+                    if (notification.parentNode) document.body.removeChild(notification);
+                }, 400);
+            }, 2000);
+        }
+
+        // Load referral data
+        function loadReferralData() {
+            if (!userEmail) {
+                window.location.replace('account-gate.html');
+                return;
+            }
+
+            // Generate and display referral ID
+            referralId = generateReferralId(userEmail);
+            document.getElementById('referralId').textContent = referralId;
+
+            // Load initiates from Firestore
+            db.collection('referrals')
+                .where('referrerId', '==', referralId)
+                .orderBy('referredAt', 'desc')
+                .get()
+                .then((querySnapshot) => {
+                    referralData = [];
+                    querySnapshot.forEach((doc) => {
+                        referralData.push(doc.data());
+                    });
+                    updateUI();
+                })
+                .catch((error) => {
+                    console.error('Error loading referral data:', error);
+                });
+        }
+
+        // Update UI with referral data
+        function updateUI() {
+            const totalInitiates = referralData.length;
+            const verifiedInitiates = referralData.filter(r => r.status === 'verified').length;
+            const growthBonus = verifiedInitiates * 10; // 10% per verified initiate
+
+            // Update stats
+            document.getElementById('totalInitiates').textContent = totalInitiates;
+            document.getElementById('verifiedInitiates').textContent = verifiedInitiates;
+            document.getElementById('growthBonus').textContent = `${growthBonus}%`;
+
+            // Update dashboard referral count
+            const dashboardReferralCount = document.getElementById('referralCount');
+            if (dashboardReferralCount) {
+                dashboardReferralCount.textContent = totalInitiates;
+            }
+
+            // Update initiates list
+            const initiatesList = document.getElementById('initiatesList');
+            
+            if (referralData.length === 0) {
+                initiatesList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="empty-title">No Initiates Yet</div>
+                        <div class="empty-description">
+                            Start sharing your referral ID to build your network and earn growth bonuses!
+                        </div>
+                    </div>
+                `;
+            } else {
+                initiatesList.innerHTML = referralData.map(initiate => `
+                    <div class="initiate-item">
+                        <div class="initiate-info">
+                            <div class="initiate-name">${initiate.initiateName || 'Anonymous'}</div>
+                            <div class="initiate-date">Referred: ${new Date(initiate.referredAt).toLocaleDateString()}</div>
+                        </div>
+                        <div class="initiate-status ${initiate.status}">
+                            <i class="fas fa-${initiate.status === 'verified' ? 'check' : 'clock'}"></i>
+                            ${initiate.status}
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Check user authentication
+        function checkAuth() {
+            if (!userEmail) {
+                window.location.replace('account-gate.html');
+                return;
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadReferralData();
+        });
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(100px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            
+            @keyframes slideOut {
+                from {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(100px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+

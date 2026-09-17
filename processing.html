@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Processing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .processing-container {
+            text-align: center;
+            padding: 60px 40px;
+            max-width: 600px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #d4af37;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.1);
+        }
+        
+        .icon {
+            font-size: 4rem;
+            color: #d4af37;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        h1 {
+            color: #d4af37;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: #e0e0e0;
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+        
+        .message {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid #d4af37;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #a0a0a0;
+        }
+        
+        .return-link {
+            display: inline-block;
+            background: #d4af37;
+            color: #000;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .return-link:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- Firebase Configuration -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO174C8QbyOodW1e5aQ5PW2pWJ01tO7jE",
+            authDomain: "illuminati---oversight.firebaseapp.com",
+            projectId: "illuminati---oversight",
+            storageBucket: "illuminati---oversight.firebasestorage.app",
+            messagingSenderId: "307854810652",
+            appId: "1:307854810652:web:196f634b4f0ebf4be949d9"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Get user's email from localStorage (saved during submission)
+        const userEmail = localStorage.getItem('userEmail');
+
+        if (userEmail) {
+            // Listen to the specific user's document in real-time with enhanced approval detection
+            const unsub = db.collection('members').doc(userEmail).onSnapshot((doc) => {
+                const data = doc.data();
+                console.log("📊 Processing.html - Real-time update received:", data);
+                console.log("🔍 All fields in document:", Object.keys(data));
+                
+                // Check for approval - comprehensive field checking
+                const approvalChecks = {
+                    isApproved: data.isApproved,
+                    status: data.status,
+                    membershipStatus: data.membershipStatus,
+                    approved: data.approved,
+                    applicationStatus: data.applicationStatus,
+                    memberStatus: data.memberStatus
+                };
+                
+                console.log("🔍 Approval field checks:", approvalChecks);
+                
+                // Multiple approval detection methods - STRICT CHECK: must be explicitly approved
+                const isApproved = data.isApproved === true || 
+                                data.isApproved === 'true' || 
+                                data.status === 'approved' ||
+                                data.membershipStatus === 'approved' ||
+                                data.approved === true ||
+                                data.approved === 'true' ||
+                                data.applicationStatus === 'approved' ||
+                                data.memberStatus === 'approved';
+                
+                // Ensure user is NOT pending before showing approval
+                const isPending = data.status === 'pending' || data.membershipStatus === 'pending' || data.applicationStatus === 'pending';
+                
+                console.log("🎯 Final approval decision:", isApproved);
+                console.log("⏳ Pending status check:", isPending);
+                
+                if (isApproved && !isPending) {
+                    console.log("🎉 APPROVAL DETECTED in processing.html! Replacing content...");
+                    // Success! The Admin (you) clicked approve.
+                    showWelcomeScreen(data.full_name); 
+                    localStorage.setItem('membershipStatus', 'approved');
+                } else if (isPending) {
+                    console.log("⏳ User is still pending in processing.html");
+                    // Clear any stale approved status
+                    localStorage.setItem('membershipStatus', 'pending');
+                }
+            });
+        }
+
+        function showWelcomeScreen(name) {
+            // This replaces the "Application Received" text with the Final Welcome
+            const container = document.querySelector('.processing-container');
+            container.innerHTML = `
+                <div class="welcome-final" style="animation: fadeIn 1s ease-in;">
+                    <div style="font-size: 5rem; color: #d4af37; margin-bottom: 30px; animation: pulse 2s infinite;">🎉</div>
+                    <h1 style="color: #d4af37; font-size: 3rem; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 4px; text-shadow: 0 0 30px rgba(212, 175, 55, 0.8);" data-translate="congratulations_title">
+                        CONGRATULATIONS
+                    </h1>
+                    <h2 style="color: #fff; font-size: 2rem; margin-bottom: 30px; animation: fadeInGlow 2s ease-in;">
+                        <span data-translate="welcome_prefix">Welcome</span>, <span id="user-display-name">${name}</span>
+                    </h2>
+                    <p style="color: #cbd5e1; font-size: 1.4rem; margin-bottom: 40px; line-height: 1.8; animation: fadeIn 1.5s ease-in;">
+                        <span data-translate="membership_approved_part1">Your membership has been</span> 
+                        <span style="color: #d4af37; font-weight: bold;" data-translate="approved_text">APPROVED</span> 
+                        <span data-translate="membership_approved_part2">by the Security Council.</span>
+                        <br><br>
+                        <span data-translate="you_are_now_label">You Are Now</span> 
+                        <span style="color: #d4af37; font-weight: bold; font-size: 1.6rem;" data-translate="illuminati_rank_label">AN ILLUMINATI</span>
+                    </p>
+                    <div class="elite-badge" style="background: linear-gradient(45deg, #d4af37 0%, #facc15 100%); color: #000; padding: 15px 30px; border-radius: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);" data-translate="elite_status_active">
+                        🏛️ ELITE STATUS: ACTIVE
+                    </div>
+                    <button onclick="window.location.href='elite-dashboard.html'" style="background: #1d4ed8; color: #fff; padding: 15px 30px; border: none; border-radius: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; font-size: 0.9rem; box-shadow: 0 0 30px rgba(29, 78, 216, 0.7); transition: all 0.3s ease; min-width: 180px; max-width: 250px; margin-top: 25px;" data-translate="enter_dashboard_btn">
+                        🏛️ ENTER ELITE PORTAL
+                    </button>
+                </div>
+            `;
+            
+            // Force translation execution on newly inserted DOM elements
+            if (typeof window.applyDataTranslations === 'function') {
+                window.applyDataTranslations(container);
+            } else if (typeof window.smartTranslateContainer === 'function') {
+                window.smartTranslateContainer(container);
+            }
+            
+            // Add animations CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    0% { opacity: 0; transform: scale(0.8); }
+                    100% { opacity: 1; transform: scale(1); }
+                }
+                @keyframes fadeInGlow {
+                    0% { opacity: 0; text-shadow: none; }
+                    100% { opacity: 1; text-shadow: 0 0 30px rgba(212, 175, 55, 0.8); }
+                }
+                .welcome-final {
+                    animation: fadeIn 0.5s ease-in;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Manual approval check function for debugging
+        async function manualApprovalCheck() {
+            const userEmail = localStorage.getItem('userEmail');
+            if (!userEmail) {
+                console.error("❌ No email found for manual check");
+                alert("No email found. Please submit application first.");
+                return;
+            }
+
+            console.log("🔍 Manual approval check in processing.html for:", userEmail);
+            
+            try {
+                const userDoc = await db.collection('members').doc(userEmail).get();
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    console.log("📊 Current user data in processing.html:", userData);
+                    console.log("🔍 All fields:", Object.keys(userData));
+                    
+                    // Check all possible approval fields
+                    const approvalChecks = {
+                        isApproved: userData.isApproved,
+                        status: userData.status,
+                        membershipStatus: userData.membershipStatus,
+                        approved: userData.approved,
+                        applicationStatus: userData.applicationStatus,
+                        memberStatus: userData.memberStatus
+                    };
+                    
+                    console.log("🔍 Approval field checks in processing.html:", approvalChecks);
+                    
+                    // Force approval if any field indicates approval - STRICT CHECK
+                    const isApproved = userData.isApproved === true || 
+                                    userData.isApproved === 'true' || 
+                                    userData.status === 'approved' ||
+                                    userData.membershipStatus === 'approved' ||
+                                    userData.approved === true ||
+                                    userData.approved === 'true' ||
+                                    userData.applicationStatus === 'approved' ||
+                                    userData.memberStatus === 'approved';
+                    
+                    // Ensure user is NOT pending before showing approval
+                    const isPending = userData.status === 'pending' || userData.membershipStatus === 'pending' || userData.applicationStatus === 'pending';
+                    
+                    if (isApproved && !isPending) {
+                        console.log("🎉 Manual check in processing.html: APPROVAL DETECTED!");
+                        alert("Approval detected! Updating page...");
+                        localStorage.setItem('membershipStatus', 'approved');
+                        showWelcomeScreen(userData.full_name);
+                    } else {
+                        console.log("⏳ Manual check in processing.html: Still pending");
+                        alert("Status is still pending. Current status: " + JSON.stringify(approvalChecks));
+                    }
+                } else {
+                    console.error("❌ No document found for email:", userEmail);
+                    alert("No document found for this email in Firestore.");
+                }
+            } catch (error) {
+                console.error("❌ Manual check error in processing.html:", error);
+                alert("Error checking approval status: " + error.message);
+            }
+        }
+
+        
+            </script>
+    <div class="processing-container">
+        <div class="icon">⏳</div>
+        <h1 data-translate="app_under_review_title">Application Received</h1>
+        <div class="subtitle" data-translate="app_review_subtitle">The Security Council is  currently reviewing your credentials.</div>
+        
+        <div class="message">
+            <span data-translate="app_review_msg_1">Your membership application has been successfully submitted to Illuminati New World Order.</span> 
+            <span data-translate="app_review_msg_2">The Security Council is currently reviewing your credentials and background information.</span> 
+            <span data-translate="app_review_msg_3">This process typically takes 24-72 hours. You will receive notification once your Elite Account access has been approved.</span>
+        </div>
+        
+        <a href="index.html" class="return-link"><span data-translate="return_to_portal">Return to Portal</span></a>
+    </div>
+    <script src="local-router.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Force retrieval of current active language
+        const activeLang = localStorage.getItem('detected_language') || 'en';
+        localStorage.setItem('detected_language', activeLang);
+
+        // Immediately trigger data-translate scan
+        if (typeof window.applyDataTranslations === 'function') {
+            window.applyDataTranslations(document);
+        } else if (typeof window.smartTranslateContainer === 'function') {
+            window.smartTranslateContainer(document.body);
+        }
+    });
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+

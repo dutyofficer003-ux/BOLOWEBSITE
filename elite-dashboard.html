@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const hasAuth = localStorage.getItem('userEmail') ||
+                                localStorage.getItem('elite_access_token') ||
+                                localStorage.getItem('gate_email') ||
+                                localStorage.getItem('site_access_key');
+                if (!hasAuth) {
+                    window.location.replace('account-gate.html');
+                }
+            } catch (e) {
+                window.location.replace('account-gate.html');
+            }
+        })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Elite Dashboard | Illuminati</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="auth-client.js"></script>
+    <script src="global-audio.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0F172A;
+            --bg-secondary: #1E293B;
+            --bg-tertiary: #334155;
+            --text-primary: #F8FAFC;
+            --text-secondary: #CBD5E1;
+            --gold-color: #F3BA2F;
+            --gold-hover: #FCD34D;
+            --success-color: #10B981;
+            --error-color: #EF4444;
+            --border-color: #475569;
+            --shadow-color: rgba(0, 0, 0, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Header Section */
+        .header-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .balance-display {
+            margin-bottom: 20px;
+        }
+
+        .balance-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .total-balance {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .balance-change {
+            font-size: 0.75rem;
+            color: var(--success-color);
+            margin-bottom: 20px;
+        }
+
+        .global-music-mute-btn {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 9990;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: rgba(15, 23, 42, 0.85);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            backdrop-filter: blur(6px);
+        }
+
+        .global-music-mute-btn:hover {
+            color: var(--gold-color);
+            border-color: var(--gold-color);
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Asset Grid */
+        .asset-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .asset-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .asset-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .asset-card:hover {
+            border-color: var(--gold-color);
+            transform: translateY(-2px);
+        }
+
+        .asset-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .asset-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(243, 186, 47, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-color);
+            font-size: 14px;
+        }
+
+        .asset-name {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .asset-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .asset-change {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .asset-change.positive {
+            color: var(--success-color);
+        }
+
+        .asset-change.negative {
+            color: var(--error-color);
+        }
+
+        /* Payout Status Bar */
+        .payout-status-bar {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--error-color);
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.active {
+            background: var(--success-color);
+        }
+
+        .status-text {
+            flex: 1;
+        }
+
+        .status-title {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+
+        .status-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--error-color);
+        }
+
+        .status-value.active {
+            color: var(--success-color);
+        }
+
+        .encryption-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(243, 186, 47, 0.1);
+            border: 1px solid var(--gold-color);
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            color: var(--gold-color);
+            font-weight: 600;
+        }
+
+        .action-btn {
+            background: var(--gold-color);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover:not(:disabled) {
+            background: var(--gold-hover);
+            transform: translateY(-1px);
+        }
+
+        .action-btn:disabled {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .withdraw-btn {
+            background: var(--gold-color);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 20px;
+            min-height: 120px;
+        }
+
+        .loading-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .error-content {
+            text-align: center;
+        }
+
+        .error-icon {
+            font-size: 3rem;
+            color: var(--error-color);
+            margin-bottom: 16px;
+        }
+
+        .error-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--error-color);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .error-message {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .success-content {
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 3rem;
+            color: var(--success-color);
+            margin-bottom: 16px;
+        }
+
+        .success-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--success-color);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .success-message {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-btn.primary {
+            background: var(--gold-color);
+            color: var(--bg-primary);
+        }
+
+        .modal-btn.primary:hover {
+            background: var(--gold-hover);
+        }
+
+        .modal-btn.secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Status Grid */
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .status-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .status-icon {
+            font-size: 2.5rem;
+            color: var(--gold-color);
+            margin-bottom: 15px;
+        }
+
+        .status-title {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .status-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .status-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Recent Activity */
+        .activity-section {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .view-all-btn {
+            background: transparent;
+            color: var(--gold-color);
+            border: 1px solid var(--gold-color);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-all-btn:hover {
+            background: var(--gold-color);
+            color: var(--bg-primary);
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-type {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .activity-member {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .activity-amount {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--success-color);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--bg-secondary);
+            border: 2px solid var(--gold-color);
+            border-radius: 12px;
+            padding: 15px 20px;
+            min-width: 300px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            animation: slideInRight 0.5s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toast-icon {
+            color: var(--gold-color);
+            font-size: 1.2rem;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-message {
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .toast-time {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            z-index: 100;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .nav-item:hover {
+            color: var(--gold-color);
+            background: rgba(243, 186, 47, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--gold-color);
+        }
+
+        .nav-icon {
+            font-size: 1.5rem;
+        }
+
+        .nav-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Animations */
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+
+        /* Security Badge */
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success-color);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            color: var(--success-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .security-badge i {
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 15px;
+            }
+
+            .total-balance {
+                font-size: 3rem;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+                max-width: 100%;
+            }
+
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bottom-nav {
+                padding: 10px 0;
+            }
+
+            .nav-icon {
+                font-size: 1.3rem;
+            }
+
+            .nav-label {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button type="button" id="globalMusicMuteBtn" class="global-music-mute-btn" title="Background music" aria-label="Toggle background music" data-translate>
+        <i class="fas fa-volume-high" aria-hidden="true"></i>
+    </button>
+    <audio id="notification-sound" src="images/SOUND/universfield-new-notification-057-494255.mp3" preload="auto"></audio>
+    <div class="dashboard-container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="balance-display">
+                <div class="balance-label">Total Balance</div>
+                <div class="total-balance" id="totalBalance">$0.00</div>
+                <div class="balance-change" id="balanceChange">+$0.00 (0.00%)</div>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn withdraw-btn" id="withdrawBtn" onclick="openWithdrawalModal()" data-translate>
+                    <i class="fas fa-arrow-up"></i> Withdraw
+                </button>
+                <button class="action-btn" onclick="window.location.href='payout-channels.html'" data-translate>
+                    <i class="fas fa-link"></i> CONFIGURE PAYOUT GATEWAY
+                </button>
+            </div>
+        </div>
+
+       <!-- Payout Status Bar -->
+<div class="payout-status-bar" id="payoutStatus">
+    <div class="status-indicator" id="statusIndicator"></div>
+    <div class="status-text">
+        <div class="status-title" data-translate="payout_status_title">PAYOUT STATUS</div>
+        <div class="status-value" id="statusValue" data-translate="payout_status_offline">OFFLINE</div>
+    </div>
+    <div class="encryption-badge" id="encryptionBadge">
+        <i class="fas fa-lock"></i>
+        <span data-translate="payout_encrypted_path">End-to-End Encrypted Payout Path</span>
+    </div>
+</div>
+       
+        <!-- Asset Grid -->
+        <div class="asset-grid">
+            <div class="asset-card">
+                <div class="asset-header">
+                    <div class="asset-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                <div class="asset-name" data-translate="account_status_label">Account Status</div>
+    </div>
+    <div class="asset-value" id="accountStatus" data-translate="status_elite">ELITE</div>
+    <div class="asset-change positive" data-translate="status_active">Active</div>
+</div>
+
+<div class="asset-card">
+    <div class="asset-header">
+        <div class="asset-icon">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="asset-name" data-translate="security_level_label">Security Level</div>
+    </div>
+    <div class="asset-value" id="securityLevel" data-translate="level_1">Level 1</div>
+    <div class="asset-change" id="securityChange" data-translate="status_restricted">Restricted</div>
+</div>
+
+<div class="asset-card" onclick="window.location.href='referral.html'" style="cursor: pointer;">
+    <div class="asset-header">
+        <div class="asset-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="asset-name" data-translate="referral_hub_label">Referral Hub</div>
+    </div>
+    <div class="asset-value" id="referralCount">0</div>
+    <div class="asset-change positive" data-translate="initiates_label">Initiates</div>
+</div>
+
+<!-- Status Grid -->
+<div class="status-grid">
+    <div class="status-card">
+        <div class="status-icon">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="status-title" data-translate="security_status_title">Security Status</div>
+        <div class="status-value" id="securityStatus" data-translate="status_encrypted">ENCRYPTED</div>
+        <div class="status-description">
+            <div class="security-badge">
+                <i class="fas fa-lock"></i> <span data-translate="encryption_active">Encryption Active</span>
+            </div>
+        </div>
+    </div>
+    <div class="status-card">
+        <div class="status-icon">
+            <i class="fas fa-crown"></i>
+        </div>
+        <div class="status-title" data-translate="account_level_title">Account Level</div>
+        <div class="status-value" id="accountLevel" data-translate="status_elite">ELITE</div>
+        <div class="status-description" data-translate="full_access_granted">Full Access Granted</div>
+    </div>
+</div>
+
+        <!-- Recent Activity -->
+        <div class="activity-section">
+            <div class="section-header">
+                <div class="section-title">Recent Activity</div>
+                <button class="view-all-btn" data-translate>View All</button>
+            </div>
+            <div class="activity-list" id="activityList">
+                <!-- Activity items will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdrawal Modal -->
+    <div class="modal-overlay" id="withdrawalModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" data-translate>Withdrawal Request</div>
+                <button class="modal-close" onclick="closeWithdrawalModal()" data-translate>
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <div class="loading-content">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span data-translate>Checking withdrawal eligibility...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label" data-translate>Home</span>
+        </a>
+        <a href="elite-dashboard.html" class="nav-item active">
+            <i class="fas fa-wallet nav-icon"></i>
+            <span class="nav-label" data-translate>Wallet</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+            <i class="fas fa-cog nav-icon"></i>
+            <span class="nav-label" data-translate>Settings</span>
+        </a>
+    </nav>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO174C8QbyOodW1e5aQ5PW2pWJ01tO7jE",
+            authDomain: "illuminati---oversight.firebaseapp.com",
+            projectId: "illuminati---oversight",
+            storageBucket: "illuminati---oversight.firebasestorage.app",
+            messagingSenderId: "307854810652",
+            appId: "1:307854810652:web:196f634b4f0ebf4be949d9"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // =====================================================================
+        // --- PERMANENT ELITE BALANCING ENGINE (PRODUCTION) ---
+        // This block must stay at the TOP of the script for full visibility.
+        // =====================================================================
+
+        // Global state
+        let currentBalance = 0;
+        let withdrawalEnabled = false;
+        let userEmail = localStorage.getItem('userEmail') || localStorage.getItem('gate_email') || '';
+        /** ISO string for withdrawal maturation checks */
+        let approvalDate = null;
+        /** Unix ms when membership was approved — drives live balance */
+        let memberApprovedAtMs = null;
+        // Dual-layer withdrawal control
+        let globalWithdrawalEnabled = false;
+        let userCanWithdraw = false;
+
+        const TARGET_AMOUNT = 500000;
+        const TOTAL_DURATION_MS = 180 * 24 * 60 * 60 * 1000; // 180 Days
+
+        // --- DYNAMIC WITHDRAWAL MODAL ENGINE ---
+        function openWithdrawalModal() {
+            const modal = document.getElementById('withdrawalModal') || document.getElementById('withdrawal-modal');
+            const modalBody = document.getElementById('modalBody');
+            if (!modal || !modalBody) return;
+
+            modalBody.innerHTML = `
+                <div class="loading-content">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span data-translate>Checking withdrawal eligibility...</span>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+            
+            // Force translation scan over the newly injected modal
+            if (typeof window.translateModal === 'function') {
+                window.translateModal(modalBody);
+            }
+            
+            setTimeout(() => {
+                const eligibility = checkWithdrawalEligibility();
+
+                if (eligibility.eligible) {
+                    modalBody.innerHTML = `
+                        <div class="success-content">
+                            <div class="success-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="success-title" data-translate>Withdrawal Available</div>
+                            <div class="success-message" data-translate>Your account is eligible for withdrawal. Proceed to marketplace to complete your withdrawal request.</div>
+                            <button class="modal-btn primary" onclick="proceedToWithdrawal()" data-translate>Proceed to Withdrawal</button>
+                            <button class="modal-btn secondary" onclick="closeWithdrawalModal()" style="margin-top: 8px;" data-translate>Cancel</button>
+                        </div>
+                    `;
+
+                    // Force translation scan over the newly injected modal
+                    if (typeof window.translateModal === 'function') {
+                        window.translateModal(modalBody);
+                    }
+                } else {
+                    const totalDurationDays = 180;
+                    const totalDurationMs = totalDurationDays * 24 * 60 * 60 * 1000;
+                    
+                    const now = Date.now();
+                    const approvedAtTimestamp = memberApprovedAtMs || (now - 135 * 24 * 60 * 60 * 1000); // Default fallback to 135 days if null
+                    const timeElapsedMs = now - approvedAtTimestamp;
+                    
+                    let daysRemaining = totalDurationDays;
+                    let progressPercent = 0;
+                    
+                    if (timeElapsedMs > 0) {
+                        const daysElapsed = Math.floor(timeElapsedMs / (1000 * 60 * 60 * 24));
+                        daysRemaining = Math.max(0, totalDurationDays - daysElapsed);
+                        progressPercent = Math.min(100, (timeElapsedMs / totalDurationMs) * 100);
+                    }
+
+                    modalBody.innerHTML = `
+                        <div class="error-content">
+                            <div class="error-icon" style="color: var(--gold-color);">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                           <div class="error-title" style="color: var(--gold-color);">
+    🛡️ <span data-translate="secure_channel_title">SECURE CHANNEL ESTABLISHED</span>
+</div>
+
+<div class="error-message" data-translate="payout_protocol_msg">
+    Your payout channel has been successfully linked to the Global Ledger. However, internal protocol 7-B requires a 180-day maturation period before the first $500,000 disbursement can be authorized.
+</div>
+
+<div style="margin: 20px 0;">
+    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 8px;" data-translate="maturation_progress_label">
+        Maturation Progress
+    </div>
+    
+    <div style="background: var(--bg-tertiary); border-radius: 8px; height: 8px; overflow: hidden;">
+        <div id="modal-progress-bar-fill" style="background: linear-gradient(90deg, var(--gold-color), var(--success-color)); width: ${progressPercent}%; height: 100%; border-radius: 8px; transition: width 0.5s ease-out;"></div>
+    </div>
+    
+    <div id="modal-days-remaining" style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">
+        ${daysRemaining} <span data-translate="days_remaining_text">days remaining</span>
+    </div>
+</div>
+
+<button id="view-progress-btn" class="modal-btn primary" data-translate="view_progress_btn">
+    VIEW MATURATION PROGRESS
+</button>
+                    `;
+
+                    // Force translation scan over the newly injected modal
+                    if (typeof window.translateModal === 'function') {
+                        window.translateModal(modalBody);
+                    }
+
+                    // Dynamic event wrapper hook
+                    const viewBtn = document.getElementById("view-progress-btn");
+                    if (viewBtn) {
+                        viewBtn.addEventListener("click", () => {
+                            closeWithdrawalModal();
+                            const mainProgressSection = document.getElementById("progress-percent") || document.getElementById("balanceChange");
+                            if (mainProgressSection) {
+                                mainProgressSection.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        });
+                    }
+                }
+            }, 1500);
+        }
+
+        function closeWithdrawalModal() {
+            const modal = document.getElementById('withdrawalModal') || document.getElementById('withdrawal-modal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function proceedToWithdrawal() {
+            closeWithdrawalModal();
+            window.location.href = 'marketplace.html';
+        }
+
+        function handleWithdrawal() {
+            openWithdrawalModal();
+        }
+
+        // --- 1. FIRESTORE REAL-TIME SNAPSHOT LISTENER ---
+        // Sets up .onSnapshot() on the current user's document.
+        // Fires immediately on load AND whenever the document changes in Firestore.
+        function initRealtimeListener() {
+            if (!userEmail) {
+                window.location.replace('account-gate.html');
+                return;
+            }
+
+            // Listen for user document changes in real-time
+            db.collection('members').doc(userEmail).onSnapshot((doc) => {
+                if (doc.exists) {
+                    const userData = doc.data();
+
+                    // Extract withdrawal flags
+                    withdrawalEnabled = userData.withdrawalEnabled || false;
+                    userCanWithdraw = userData.canWithdraw || false;
+
+                    // --- 2. PROCESS TIMESTAMP (UNIVERSAL FALLBACK MAPPING) ---
+                    // Multiple checks to see if the user is approved in the database - STRICT CHECK
+                    const isApproved = userData.isApproved === true || 
+                                    userData.isApproved === 'true' || 
+                                    userData.status === 'approved' ||
+                                    userData.membershipStatus === 'approved' ||
+                                    userData.approved === true ||
+                                    userData.approved === 'true' ||
+                                    userData.applicationStatus === 'approved' ||
+                                    userData.memberStatus === 'approved';
+                    
+                    // Ensure user is NOT pending before treating as approved
+                    const isPending = userData.status === 'pending' || userData.membershipStatus === 'pending' || userData.applicationStatus === 'pending';
+                    
+                    // Override isApproved if user is pending
+                    if (isPending) {
+                        console.log("⏳ User is pending in elite-dashboard.html, blocking approval display");
+                        return; // Exit early - don't show dashboard to pending users
+                    }
+
+                    // Convert any possible approvedAt/created timestamp into milliseconds
+                    let raw = userData.approved_at != null ? userData.approved_at : 
+                              (userData.approvedAt != null ? userData.approvedAt : 
+                              (userData.createdAt != null ? userData.createdAt : 
+                              (userData.created_at != null ? userData.created_at : 
+                              (userData.approvalDate != null ? userData.approvalDate : 
+                              (userData.applicationDate != null ? userData.applicationDate : userData.account_creation_date)))));
+                    
+                    let approvalMs = firestoreTimestampToMs(raw);
+
+                    // Robust Fallback: If marked approved but lacks any timestamp field,
+                    // fallback to 135 days ago so they have a beautifully matured account (45 days remaining).
+                    if (isApproved && (approvalMs == null || isNaN(approvalMs))) {
+                        console.warn("User is approved but missing timestamp. Healing data with 135-day maturation progress.");
+                        approvalMs = Date.now() - (135 * 24 * 60 * 60 * 1000);
+                        
+                        // Proactively heal database with proper Firestore Timestamp
+                        db.collection('members').doc(userEmail).update({
+                            approved_at: firebase.firestore.Timestamp.fromMillis(approvalMs)
+                        }).then(() => {
+                            console.log("✅ Firestore database healed successfully with resolved approved_at timestamp.");
+                        }).catch(e => {
+                            console.error("❌ Failed to proactively write approved_at to Firestore:", e);
+                        });
+                    }
+
+                    if (isApproved && approvalMs != null) {
+                        memberApprovedAtMs = approvalMs;
+                        approvalDate = new Date(approvalMs).toISOString();
+
+                        // --- 3. START ACCELERATED MATH ENGINE ---
+                        startGlobalEliteEngine(approvalMs);
+                    } else {
+                        // Not approved yet — keep display static at zero
+                        renderBalancesToUI(0.00, 0.00);
+                    }
+
+                    // Update other UI sections
+                    updateSecurityStatus();
+                    loadRecentActivity();
+                } else {
+                    window.location.replace('account-gate.html');
+                }
+            }, (error) => {
+                console.error('Snapshot listener error:', error);
+            });
+
+            // Also listen for global withdrawal status
+            db.collection('system_settings').doc('controls').onSnapshot((doc) => {
+                if (doc.exists) {
+                    globalWithdrawalEnabled = doc.data().globalWithdrawalEnabled || false;
+                }
+            }, (error) => {
+                console.error('Global controls listener error:', error);
+            });
+        }
+
+        // --- TIMESTAMP CONVERTER ---
+        function firestoreTimestampToMs(val) {
+            if (val == null) return null;
+            if (typeof val.toDate === 'function') {
+                return val.toDate().getTime();
+            }
+            if (typeof val === 'number' && !isNaN(val)) return val;
+            if (typeof val === 'object' && typeof val.seconds === 'number') {
+                return val.seconds * 1000 + Math.floor((val.nanoseconds || 0) / 1e6);
+            }
+            const d = new Date(val);
+            return isNaN(d.getTime()) ? null : d.getTime();
+        }
+
+        // --- UNIVERSAL ACCELERATED MATH ENGINE ---
+        function startGlobalEliteEngine(approvedAtTimestamp) {
+            const totalDurationMs = 180 * 24 * 60 * 60 * 1000; // 180 Days
+            const targetBalance = 500000;                      // $500k Cap
+
+            if (window.eliteIntervalKey) clearInterval(window.eliteIntervalKey);
+            if (window.persistIntervalKey) clearInterval(window.persistIntervalKey);
+
+            function calculateLiveProgression() {
+                const now = Date.now();
+                const timeElapsedMs = now - approvedAtTimestamp;
+
+                // Fallback safety to keep UI clean if time math hits a glitch
+                if (timeElapsedMs <= 0) {
+                    renderBalancesToUI(0.00, 4.00);
+                    return;
+                }
+
+                // Cap it exactly at $500k when the 180 days cross
+                if (timeElapsedMs >= totalDurationMs) {
+                    renderBalancesToUI(targetBalance, 0.00);
+                    clearInterval(window.eliteIntervalKey);
+                    return;
+                }
+
+                const daysElapsed = timeElapsedMs / (1000 * 60 * 60 * 24);
+                let calculatedBalance = 0;
+                let activeDailyRate = 0;
+
+                // PHASE 1: The Initial Trickle (Days 0 to 30)
+                // Day 1 accumulates ~$4.00. By Day 30, speed builds to $16.00/day.
+                if (daysElapsed <= 30) {
+                    activeDailyRate = 4.0 + (daysElapsed * (12.0 / 30.0));
+                    calculatedBalance = (4.0 * daysElapsed) + (0.5 * (12.0 / 30.0) * Math.pow(daysElapsed, 2));
+                } 
+                // PHASE 2: The Elite Surge (Days 30 to 180)
+                // Explodes exponentially to hit the $1,000-$2,000/day marks during months 2-3
+                else {
+                    const phase1EndBalance = (4.0 * 30) + (0.5 * 12.0 * 30); // ~$300 baseline at Day 30
+                    const phase2Progress = (daysElapsed - 30) / 150; 
+                    const remainingTarget = targetBalance - phase1EndBalance;
+
+                    // An exponent of 3.10 handles the mid-cycle surge perfectly
+                    calculatedBalance = phase1EndBalance + (Math.pow(phase2Progress, 3.10) * remainingTarget);
+                    activeDailyRate = (3.10 * Math.pow(phase2Progress, 2.10) * remainingTarget) / 150;
+                }
+
+                renderBalancesToUI(calculatedBalance, activeDailyRate);
+            }
+
+            // Fire instantly on window load, then tick every 50ms for a rapid cent ripple
+            calculateLiveProgression();
+            window.eliteIntervalKey = setInterval(calculateLiveProgression, 50);
+
+            // Persist balance snapshot to Firestore every 30 seconds
+            persistBalanceSnapshot(approvedAtTimestamp);
+            window.persistIntervalKey = setInterval(() => persistBalanceSnapshot(approvedAtTimestamp), 30000);
+        }
+
+        // --- DOM DISPLAY UPDATE (UNIVERSAL MAPPING) ---
+        function renderBalancesToUI(balance, dailyRate) {
+            currentBalance = balance;
+
+            // Update legacy template elements
+            const totalEl = document.getElementById("totalBalance");
+            if (totalEl) {
+                totalEl.textContent = "$" + balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+            const changeEl = document.getElementById("balanceChange");
+            if (changeEl) {
+                const percentage = Math.min(100, (balance / 500000) * 100);
+                changeEl.textContent = '+$' + dailyRate.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '/day · ' + percentage.toFixed(2) + '% of $500k';
+            }
+
+            // Update new template elements (if they exist in markup)
+            const newTotalEl = document.getElementById("total-balance");
+            if (newTotalEl) {
+                newTotalEl.innerText = "$" + balance.toFixed(2);
+            }
+            const newRateEl = document.getElementById("daily-rate");
+            if (newRateEl) {
+                newRateEl.innerText = "+$" + dailyRate.toFixed(2) + "/day";
+            }
+            const newPercentEl = document.getElementById("progress-percent");
+            if (newPercentEl) {
+                const percentage = (balance / 500000) * 100;
+                newPercentEl.innerText = percentage.toFixed(2) + "% of $500k";
+            }
+        }
+
+        // --- FIRESTORE BALANCE PERSIST ---
+        async function persistBalanceSnapshot(approvedAtTimestamp) {
+            if (!userEmail || approvedAtTimestamp == null) return;
+            const now = Date.now();
+            const timeElapsedMs = now - approvedAtTimestamp;
+            if (timeElapsedMs <= 0) return;
+
+            const totalDurationMs = 180 * 24 * 60 * 60 * 1000;
+            const targetBalance = 500000;
+            
+            let calculatedBalance = 0;
+            if (timeElapsedMs >= totalDurationMs) {
+                calculatedBalance = targetBalance;
+            } else {
+                const daysElapsed = timeElapsedMs / (1000 * 60 * 60 * 24);
+                if (daysElapsed <= 30) {
+                    calculatedBalance = (4.0 * daysElapsed) + (0.5 * (12.0 / 30.0) * Math.pow(daysElapsed, 2));
+                } else {
+                    const phase1EndBalance = (4.0 * 30) + (0.5 * 12.0 * 30);
+                    const phase2Progress = (daysElapsed - 30) / 150; 
+                    const remainingTarget = targetBalance - phase1EndBalance;
+                    calculatedBalance = phase1EndBalance + (Math.pow(phase2Progress, 3.10) * remainingTarget);
+                }
+            }
+
+            try {
+                await db.collection('members').doc(userEmail).update({
+                    last_saved_balance: calculatedBalance,
+                    current_balance: calculatedBalance,
+                    last_balance_updated: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            } catch (err) {
+                console.error('Balance snapshot save failed:', err);
+            }
+        }
+
+        // Legacy compatibility helpers
+        function computeLiveBalance() {
+            if (memberApprovedAtMs == null) return { balance: 0, dailyRate: 0 };
+            const elapsed = Date.now() - memberApprovedAtMs;
+            if (elapsed <= 0) return { balance: 0, dailyRate: 0 };
+            if (elapsed >= TOTAL_DURATION_MS) return { balance: TARGET_AMOUNT, dailyRate: 0 };
+            const daysElapsed = elapsed / (1000 * 60 * 60 * 24);
+            if (daysElapsed <= 30) {
+                const dailyRate = 4.0 + (daysElapsed * (12.0 / 30.0));
+                const balance = (4.0 * daysElapsed) + (0.5 * (12.0 / 30.0) * Math.pow(daysElapsed, 2));
+                return { balance, dailyRate };
+            } else {
+                const phase1EndBalance = (4.0 * 30) + (0.5 * 12.0 * 30);
+                const phase2Progress = (daysElapsed - 30) / 150; 
+                const remainingTarget = TARGET_AMOUNT - phase1EndBalance;
+                const balance = phase1EndBalance + (Math.pow(phase2Progress, 3.10) * remainingTarget);
+                const dailyRate = (3.10 * Math.pow(phase2Progress, 2.10) * remainingTarget) / 150;
+                return { balance, dailyRate };
+            }
+        }
+        function calculateBalanceFromCreationDate() { return computeLiveBalance().balance; }
+        function updateBalanceDisplay() { const { balance, dailyRate } = computeLiveBalance(); renderBalancesToUI(balance, dailyRate); }
+
+        // =====================================================================
+        // --- WITHDRAWAL LOGIC ---
+        // =====================================================================
+
+        // Dual-Layer Withdrawal Logic
+        function checkWithdrawalEligibility() {
+            if (!approvalDate) {
+                return { eligible: false, message: 'Account not approved' };
+            }
+            
+            const now = new Date();
+            const approved = new Date(approvalDate);
+            const daysPassed = Math.floor((now - approved) / (1000 * 60 * 60 * 24));
+            
+            const timeEligible = daysPassed >= 180;
+            
+            if (!globalWithdrawalEnabled) {
+                return { 
+                    eligible: false, 
+                    message: 'System Alert: Regional servers are currently undergoing a security audit. All outward transfers are temporarily queued. Estimated resolution: 24-48 hours.' 
+                };
+            }
+            
+            if (!userCanWithdraw) {
+                if (timeEligible) {
+                    return { 
+                        eligible: false, 
+                        message: 'Verification Required: Your account is currently under secondary review by the Board of Directors. Please complete all Marketplace bindings to proceed.' 
+                    };
+                } else {
+                    return { 
+                        eligible: false, 
+                        message: 'Withdrawal Locked: Initial 180-day maturation period in progress. Security Level 1.' 
+                    };
+                }
+            }
+            
+            if (timeEligible && userCanWithdraw && globalWithdrawalEnabled) {
+                return { eligible: true, message: 'Withdrawal available' };
+            } else {
+                return { 
+                    eligible: false, 
+                    message: 'Withdrawal Restricted: Awaiting final signature from the Regional Secretary. Please contact support if this persists.' 
+                };
+            }
+        }
+
+
+
+        function updateSecurityStatus() {
+            const eligibility = checkWithdrawalEligibility();
+            const statusElement = document.getElementById('securityStatus');
+            
+            if (eligibility.eligible) {
+                statusElement.textContent = 'VERIFIED';
+                statusElement.style.color = 'var(--success-color)';
+            } else {
+                statusElement.textContent = 'RESTRICTED';
+                statusElement.style.color = 'var(--error-color)';
+            }
+        }
+
+        // =====================================================================
+        // --- NOTIFICATION ENGINE ---
+        // =====================================================================
+
+        async function showNotification(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            
+            const icon = type === 'withdrawal' ? 'fa-arrow-up' : 'fa-coins';
+            const time = new Date().toLocaleTimeString();
+            
+            // Translate the message if translation function is available
+            let translatedMessage = message;
+            if (window.translateText) {
+                try {
+                    translatedMessage = await window.translateText(message);
+                } catch (error) {
+                    console.warn('Translation failed for notification:', error);
+                }
+            }
+            
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="fas ${icon}"></i>
+                </div>
+                <div class="toast-content">
+                    <div class="toast-message">${translatedMessage}</div>
+                    <div class="toast-time">${time}</div>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.5s ease-out forwards';
+                setTimeout(() => {
+                    container.removeChild(toast);
+                }, 500);
+            }, 5000);
+        }
+
+        const eliteUsers = [
+            "@Crypto_King", "@Alpha_Vibe", "@Delta_Trader", "@Zenith_Wealth", "@Shadow_Broker",
+            "@Nova_Finance", "@Swift_Payout", "@Golden_Hand", "@Matrix_Node", "@Elite_User_7",
+            "@Prime_Asset", "@Global_Ventures", "@Legacy_Holder", "@Apex_Investor", "@Flow_State",
+            "@Secure_Vault", "@Titan_Capital", "@Orion_Payout", "@Velocity_X", "@Infinity_Link"
+        ];
+
+        const services = ["Binance P2P", "Western Union", "PayPal Business", "Direct Bank Wire", "Coinbase"];
+
+        async function triggerSmartNotification() {
+            const user = eliteUsers[Math.floor(Math.random() * eliteUsers.length)];
+            const service = services[Math.floor(Math.random() * services.length)];
+            const rand = Math.random();
+            let message = "";
+            let type = "info";
+
+            if (rand > 0.95) {
+                message = `User ${user} withdrew $50,000.00 via ${service}`;
+                type = "withdrawal";
+            } else if (rand > 0.80) {
+                const amount = [15000, 20000][Math.floor(Math.random() * 2)];
+                message = `User ${user} withdrew $${amount.toLocaleString()} to ${service}`;
+                type = "withdrawal";
+            } else if (rand > 0.50) {
+                const amount = [2000, 5000, 7000][Math.floor(Math.random() * 3)];
+                message = `User ${user} linked ${service} and withdrew $${amount.toLocaleString()}`;
+                type = "withdrawal";
+            } else {
+                message = `User ${user} just connected to the ${service} Payout Gateway`;
+            }
+
+            await showNotification(message, type);
+            
+            const audio = document.getElementById('notification-sound');
+            if (audio) {
+                audio.currentTime = 0; 
+                audio.play().catch(e => console.log("Audio play blocked by browser"));
+            }
+
+            const nextTick = Math.floor(Math.random() * (300000 - 45000 + 1)) + 45000;
+            setTimeout(triggerSmartNotification, nextTick);
+        }
+
+        // =====================================================================
+        // --- RECENT ACTIVITY ---
+        // =====================================================================
+
+        function loadRecentActivity() {
+            const activityList = document.getElementById('activityList');
+            
+            const fakeActivities = [
+                { type: 'System Grant', member: 'Member_122', amount: 5000, time: '2 hours ago' },
+                { type: 'System Grant', member: 'Elite_Pro', amount: 8500, time: '5 hours ago' },
+                { type: 'System Grant', member: 'Phoenix_77', amount: 12000, time: '1 day ago' },
+                { type: 'System Grant', member: 'Crypto_King', amount: 3000, time: '2 days ago' },
+                { type: 'System Grant', member: 'Golden_Eagle', amount: 7500, time: '3 days ago' }
+            ];
+            
+            activityList.innerHTML = fakeActivities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-info">
+                        <div class="activity-type">${activity.type}</div>
+                        <div class="activity-member">${activity.member}</div>
+                    </div>
+                    <div class="activity-amount">+$${activity.amount.toLocaleString()}</div>
+                </div>
+            `).join('');
+        }
+
+        // =====================================================================
+        // --- DASHBOARD INITIALIZATION ---
+        // =====================================================================
+
+        function syncGlobalMusicMuteIcon() {
+            const btn = document.getElementById('globalMusicMuteBtn');
+            if (!btn || !window.GlobalAudio) return;
+            const muted = GlobalAudio.isMusicMuted();
+            const icon = btn.querySelector('i');
+            if (icon) {
+                icon.className = muted ? 'fas fa-volume-xmark' : 'fas fa-volume-high';
+            }
+            btn.setAttribute('aria-label', muted ? 'Unmute background music' : 'Mute background music');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Music mute button
+            const muteBtn = document.getElementById('globalMusicMuteBtn');
+            if (muteBtn && window.GlobalAudio) {
+                syncGlobalMusicMuteIcon();
+                muteBtn.addEventListener('click', function () {
+                    GlobalAudio.toggleMusicMute();
+                    syncGlobalMusicMuteIcon();
+                });
+                window.addEventListener('global-audio-mute-changed', syncGlobalMusicMuteIcon);
+            }
+
+            console.log('=== ELITE DASHBOARD LOADED ===');
+            console.log('User Email from localStorage:', userEmail);
+
+            // --- SINGLE ENTRY POINT ---
+            // initRealtimeListener sets up .onSnapshot() which handles EVERYTHING:
+            // balance engine, withdrawal flags, security status, activity feed
+            initRealtimeListener();
+
+            // Start notification engine
+            setTimeout(triggerSmartNotification, 2000);
+        });
+    </script>
+</body>
+</html>
+
+
+
+

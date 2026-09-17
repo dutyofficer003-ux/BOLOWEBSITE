@@ -1,0 +1,149 @@
+[
+  {
+    "title": "NASA Discovers Quantum Anomaly in Deep Space",
+    "description": "Space agency's deep space observatory detects unprecedented quantum fluctuations suggesting artificial manipulation of spacetime fabric.",
+    "entity": "NASA",
+    "url": "https://www.nasa.gov/news",
+    "fallbackUrl": "https://www.nasa.gov"
+  },
+  {
+    "title": "CIA Global Network Exposed in International Operation",
+    "description": "Leaked documents reveal extensive CIA surveillance network spanning 47 countries, targeting both allies and adversaries.",
+    "entity": "CIA",
+    "url": "https://www.cia.gov/news-information",
+    "fallbackUrl": "https://www.cia.gov"
+  },
+  {
+    "title": "FBI Launches Domestic Counter-Intelligence Program",
+    "description": "Federal Bureau initiates nationwide operation to neutralize foreign espionage threats within critical infrastructure.",
+    "entity": "FBI",
+    "url": "https://www.fbi.gov/news",
+    "fallbackUrl": "https://www.fbi.gov"
+  },
+  {
+    "title": "Vatican Secret Archives Reveal Ancient Prophecies",
+    "description": "Hidden manuscripts uncovered in Vatican vaults contain detailed predictions of current global events.",
+    "entity": "VATICAN",
+    "url": "https://www.vatican.va/news",
+    "fallbackUrl": "https://www.vatican.va"
+  },
+  {
+    "title": "IMF Implements Global Digital Currency Framework",
+    "description": "International Monetary Fund coordinates with central banks worldwide to establish unified digital currency system.",
+    "entity": "IMF",
+    "url": "https://www.imf.org/en/news",
+    "fallbackUrl": "https://www.imf.org"
+  },
+  {
+    "title": "UN Security Council Convenes for Emergency Session",
+    "description": "United Nations calls urgent meeting following unprecedented geopolitical developments in multiple regions.",
+    "entity": "UNS",
+    "url": "https://www.un.org/news",
+    "fallbackUrl": "https://www.un.org"
+  },
+  {
+    "title": "White House Executive Order Restructures Intelligence Agencies",
+    "description": "Presidential directive reorganizes all US intelligence operations under centralized command structure.",
+    "entity": "WHOUSE",
+    "url": "https://www.whitehouse.gov/news",
+    "fallbackUrl": "https://www.whitehouse.gov"
+  },
+  {
+    "title": "Freemasonry Grand Lodge Activates Global Network",
+    "description": "Secret society initiates worldwide coordination among influential members across government and corporate sectors.",
+    "entity": "MASONS",
+    "url": "https://www.freemason.org/news",
+    "fallbackUrl": "https://www.freemason.org"
+  },
+  {
+    "title": "Interpol Launches Global Surveillance Initiative",
+    "description": "International police organization implements advanced monitoring system tracking cross-border activities worldwide.",
+    "entity": "INTPO",
+    "url": "https://www.interpol.int/News-and-events",
+    "fallbackUrl": "https://www.interpol.int"
+  },
+  {
+    "title": "NATO Conducts Largest Military Exercise in History",
+    "description": "Alliance forces mobilize unprecedented military deployment across European theater in response to emerging threats.",
+    "entity": "NATOS",
+    "url": "https://www.nato.int/news",
+    "fallbackUrl": "https://www.nato.int"
+  },
+  {
+    "title": "Rosicrucian Order Reveals Ancient Knowledge",
+    "description": "Mystical society releases previously hidden texts detailing advanced scientific and spiritual knowledge.",
+    "entity": "ROSICRUCIAN",
+    "url": "https://www.rosicrucian.org/news",
+    "fallbackUrl": "https://www.rosicrucian.org"
+  },
+  {
+    "title": "OTO Temples Activate Worldwide Ritual Network",
+    "description": "Esoteric order coordinates synchronized ceremonies across temples on five continents.",
+    "entity": "OTO",
+    "url": "https://www.oto.org/news",
+    "fallbackUrl": "https://www.oto.org"
+  },
+  {
+    "title": "Hollywood Studios Coordinate Global Messaging",
+    "description": "Major entertainment companies align content production to influence public opinion on key geopolitical issues.",
+    "entity": "HOLLY",
+    "url": "https://www.hollywoodreporter.com/news",
+    "fallbackUrl": "https://www.hollywoodreporter.com"
+  },
+  {
+    "title": "UEFA Champions League Used for Diplomatic Channels",
+    "description": "European football competitions serve as cover for high-level negotiations between global leaders.",
+    "entity": "UEFA",
+    "url": "https://www.uefa.com/news",
+    "fallbackUrl": "https://www.uefa.com"
+  },
+  {
+    "title": "African Union Establishes Continental Intelligence Network",
+    "description": "Pan-African organization creates unified surveillance system monitoring all member states.",
+    "entity": "AF",
+    "url": "https://au.int/en/press-releases",
+    "fallbackUrl": "https://au.int"
+  },
+  {
+    "title": "ASEAN Forms Regional Economic Alliance",
+    "description": "Southeast Asian nations coordinate economic policies to counter Western financial dominance.",
+    "entity": "Asia",
+    "url": "https://asean.org/news",
+    "fallbackUrl": "https://asean.org"
+  },
+  {
+    "title": "Argentina Implements New Economic Model",
+    "description": "South American nation launches revolutionary financial system independent of global banking institutions.",
+    "entity": "ARGENTINA",
+    "url": "https://www.argentina.gob.ar/noticias",
+    "fallbackUrl": "https://www.argentina.gob.ar"
+  },
+  {
+    "title": "Brazil Discovers Strategic Resource Deposits",
+    "description": "Amazon region reveals rare earth minerals critical for advanced technology manufacturing.",
+    "entity": "BRAZIL",
+    "url": "https://www.gov.br/noticias",
+    "fallbackUrl": "https://www.gov.br"
+  },
+  {
+    "title": "Mexico Strengthens Border Security Network",
+    "description": "North American country implements advanced surveillance system along all international boundaries.",
+    "entity": "MEXICO",
+    "url": "https://www.gob.mx/noticias",
+    "fallbackUrl": "https://www.gob.mx"
+  },
+  {
+    "title": "Nicaragua Forms Unconventional Alliances",
+    "description": "Central American nation establishes partnerships with non-traditional global powers.",
+    "entity": "NICARAGUA",
+    "url": "https://www.presidencia.gob.ni/noticias",
+    "fallbackUrl": "https://www.presidencia.gob.ni"
+  },
+  {
+    "title": "Ecuador Activates Strategic Defense Systems",
+    "description": "Andean country implements advanced military technology in response to regional threats.",
+    "entity": "ECUADOR",
+    "url": "https://www.presidencia.gob.ec/noticias",
+    "fallbackUrl": "https://www.presidencia.gob.ec"
+  }
+]

@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About the Order | Illuminati New World Order</title>
+    <style>
+        
+        :root {
+            --gold: #FFD700;
+            --dark-bg: #000000;
+            --text-gray: #e0e0e0;
+            --faded-white: #a0a0a0; 
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-gray);
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* 1. STAGNANT (FIXED) RETURN TO HOME BUTTON */
+        .top-nav {
+            position: fixed; /* Keeps it on screen during scroll */
+            top: 20px;
+            left: 20px;
+            z-index: 1000; /* Ensures it stays above all other content */
+        }
+
+        .home-box {
+            display: inline-block;
+            border: 1px solid var(--gold);
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: rgba(0, 0, 0, 0.8); /* Dark background so text stays readable over images */
+            transition: 0.3s;
+        }
+
+        .home-link {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .home-box:hover {
+            background-color: var(--gold);
+            box-shadow: 0 0 15px var(--gold);
+        }
+        
+        .home-box:hover .home-link {
+            color: black;
+        }
+
+        /* 2. LARGE MAIN BORDER BOX */
+        .main-border-box {
+            border: 2px solid var(--gold);
+            width: 95%; 
+            max-width: 1200px; 
+            margin: 100px auto 40px auto; /* Added top margin so it doesn't overlap the fixed button */
+            padding: 50px 30px;
+            background: rgba(255, 215, 0, 0.02);
+            box-sizing: border-box;
+        }
+
+        h1, h2, h3 {
+            color: var(--gold);
+            text-align: center;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+       
+          /* Google Translate styling moved to global.css for consistency */
+
+        body { background-color: #0a0a14; color:#ffffff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
+        
+    
+
+        .section-divider {
+            border: 0;
+            border-top: 1px solid var(--gold);
+            width: 40%;
+            margin: 40px auto;
+            opacity: 0.5;
+        }
+
+        /* 3. IMAGE GALLERY */
+        .image-gallery {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .history-photo {
+            width: 100%;
+            max-width: 450px;
+            filter: sepia(0.4) contrast(1.1);
+            border: 1px solid var(--gold);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border: 1px solid #333;
+            margin: 40px 0;
+            width: 50%;
+            height:50% ;
+
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+
+        .narrative-text {
+            text-align: justify;
+            font-size: 1.15rem;
+            margin-bottom: 40px;
+        }
+
+        .cta-box {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .seek-btn {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 15px 40px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: 0.4s;
+            margin-top: 20px;
+        }
+
+        .seek-btn:hover {
+            background: var(--gold);
+            color: black;
+        }
+
+        /* 4. FOOTER (Subtle White/Gray) */
+        .page-footer {
+            text-align: center;
+            padding: 50px 20px;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            margin-top: 40px;
+            font-size: 12px;
+            color: #a0a0a0;
+        }
+
+        .hq-info {
+            margin-top: 8px;
+            color: #a0a0a0;
+        }
+        /* Slider Container */
+.slider-window {
+    max-width: 800px;
+    position: relative;
+    margin: 40px auto;
+    overflow: hidden;
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+/* Individual Slides */
+.mySlides {
+    display: none; /* Hidden by default */
+    width: 100%;
+}
+
+.mySlides img {
+    width: 100%;
+    filter: sepia(0.5) contrast(1.1);
+    display: block;
+}
+
+/* Fade animation */
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@keyframes fade {
+    from {opacity: .4} 
+    to {opacity: 1}
+}
+/* THE SLIDE WINDOW: Must have a fixed height */
+.reality-slideshow {
+    width: 100% !important;
+    height: 300px !important; /* This prevents the 'black box' collapse */
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+/* THE IMAGES: Absolute stacking keeps them from vertical stacking */
+.slide-group img {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    opacity: 0 !important; /* Start invisible */
+    transition: opacity 0.8s ease-in-out !important;
+}
+
+/* SCRIPT TRIGGER: This must be stronger than the base opacity */
+.slide-group img.active {
+    opacity: 1 !important;
+    z-index: 10 !important;
+}
+
+/* MOBILE VIEW: Flip to vertical stack */
+@media screen and (max-width: 768px) {
+    .reality-slider-row {
+        flex-direction: column !important;
+    }
+    .reality-slider-card {
+        width: 100% !important;
+        flex: none !important;
+    }
+    .reality-slideshow {
+        height: 250px !important;
+    }
+}
+        @media screen and (max-width: 950px) {
+            body {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .content-section p, .archive-section p {
+                font-size: 1rem !important;
+                line-height: 1.8 !important;
+                margin: 0 0 1em 0 !important;
+                text-align: left !important;
+            }
+            h1, h2, h3 {
+                font-size: 1.5rem !important;
+                letter-spacing: 2px !important;
+            }
+            .top-nav {
+                top: 10px !important;
+                left: 10px !important;
+            }
+            .home-box {
+                padding: 8px 12px !important;
+            }
+            .home-link {
+                font-size: 0.7rem !important;
+            }
+
+            div[style*="border"]:not(button) {
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 auto !important;
+                padding: 10px 16px !important;
+                box-sizing: border-box !important;
+            }
+
+            /* Cinematic section mobile responsiveness */
+            .cinematic-text-section {
+                width: 100% !important;
+                margin: 20px auto !important;
+                padding: 15px !important;
+            }
+
+            .cinematic-text-section h3 {
+                font-size: 1.2rem !important;
+                margin: 10px 0 15px 0 !important;
+            }
+
+            .cinematic-text-section > div:first-of-type {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+
+            .cinematic-text-section > div > div {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+
+            .cinematic-text-section video {
+                width: 100% !important;
+                height: auto !important;
+                max-width: 100% !important;
+            }
+
+            .cinematic-text-section p {
+                text-align: left !important;
+                font-size: 0.9rem !important;
+                line-height: 1.6 !important;
+                margin: 12px 0 !important;
+            }
+
+            /* Reality slider row mobile */
+            .reality-slider-row {
+                display: flex !important;
+                flex-direction: column !important;
+                width: 100% !important;
+                gap: 15px !important;
+                padding: 0 !important;
+                margin: 20px 0 !important;
+            }
+
+            .reality-slider-card {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .reality-slide-wrapper {
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            .reality-slideshow img {
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            /* Archive sliders mobile */
+            div[style*="display: flex"][style*="gap: 20px"] {
+                flex-direction: column !important;
+                gap: 15px !important;
+                width: 100% !important;
+                padding: 0 !important;
+            }
+
+            div[style*="display: flex"][style*="gap: 20px"] > div {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 10px !important;
+            }
+
+            #leftSlider, #rightSlider {
+                height: 250px !important;
+            }
+        }
+       
+/* This container forces the two sliders to sit side-by-side */
+
+/* DESKTOP: Forces side-by-side */
+.reality-slider-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 20px !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+.reality-slider-card {
+    flex: 1 !important;
+    min-width: 320px !important;
+        background: #000 !important;
+    padding: 10px !important;
+}
+
+    </style>
+    <link rel="stylesheet" href="global.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="archive-page">
+
+    <div style="position: fixed; top: 15px; left: 15px; z-index: 999;">
+        <a href="index.html" style="text-decoration: none; color: var(--gold); font-weight: bold; font-size: 0.75rem;">
+            &#8592; Back
+        </a>
+    </div>
+
+
+    <!-- LARGE MAIN CONTENT BOX -->
+    <div class="main-border-box">
+        <div class="container">
+            <h1 data-translate>The Stewards of Stability</h1>
+            <p style="text-align: center; font-style: italic; color: #818181; font-size: 1.2rem;" data-translate>"Maintaining the balance so the world never falls."</p>
+            
+            <hr class="section-divider">
+
+            <div class="narrative-text">
+                <h2 data-translate>I. The Roots of Order</h2>
+                <p data-translate>
+                    The Illuminati Brotherhood is based on global collaboration, not transactional barriers, and its roots trace back to a family of kings and businessmen. This legacy of elite stewardship created a well-structured organization encompassing the <strong><span style="color: #FFD700;">United Nations</span></strong>, the <strong><span style="color: #FFD700;">Bilderberg Assembly</span></strong>, and the <strong><span style="color: #FFD700;">Rosicrucian Council</span></strong>,
+                With the sole objective of maintaining global unity.<br>
+                 <p data-translate> Current events exemplify our work,we maintain the balance so that the world never falls into a total collapse of global peace
+                </p>
+                
+        <div style="display: flex; justify-content: center; gap: 20px; width: 95%; max-width: 1300px; margin: 40px auto;">
+    
+    <!-- LEFT SLIDER -->
+    <div style="flex: 1; border: none; padding: 15px; text-align: center; position: relative; background: rgba(0,0,0,0.5);">
+        <h3 style="color: #FFD700; text-transform: uppercase; font-size: 1rem;" data-translate>Council Archive A</h3>
+        <div id="leftSlider" style="position: relative; height: 400px; overflow: hidden; background: #111;">
+            <div class="left-slide" style="display: block; width: 100%; height: 100%;"><img src="images/MZX.jpeg" style="width: 100%; height: 100%; object-fit: cover;"></div>
+            <div class="left-slide" style="display: none; width: 100%; height: 100%;"><img src="images/MG.jpg" style="width: 100%; height: 100%; object-fit: cover;"></div>
+            <div class="left-slide" style="display: none; width: 100%; height: 100%;"><img src="images/NUR.jpg" style="width: 100%; height: 100%; object-fit: cover;"></div>
+            <button onclick="moveSlide('left-slide', -1)" style="position: absolute; top: 50%; left: 5px; background: rgba(0,0,0,0.7); color: #FFD700; border: 1px solid #FFD700; cursor: pointer; padding: 10px;" data-translate>&#10094;</button>
+            <button onclick="moveSlide('left-slide', 1)" style="position: absolute; top: 50%; right: 5px; background: rgba(0,0,0,0.7); color: #FFD700; border: 1px solid #FFD700; cursor: pointer; padding: 10px;" data-translate>&#10095;</button>
+        </div>
+    </div>
+
+    <!-- RIGHT SLIDER -->
+    <div style="flex: 1; border: none; padding: 15px; text-align: center; position: relative; background: rgba(0,0,0,0.5);">
+        <h3 style="color: #FFD700; text-transform: uppercase; font-size: 1rem;" data-translate>Council Archive B</h3>
+        <div id="rightSlider" style="position: relative; height: 400px; overflow: hidden; background: #111;">
+            <div class="right-slide" style="display: block; width: 100%; height: 100%;"><img src="images/NM.jpg" style="width: 100%; height: 100%; object-fit: cover;"></div>
+            <div class="right-slide" style="display: none; width: 100%; height: 100%;"><img src="images/BUND.jpg" style="width: 100%; height: 100%; object-fit: cover;"></div>
+            <div class="right-slide" style="display: none; width: 100%; height: 100%;"><img src="images/PPO.jpg" style="width: 100%; height: 100%; object-fit: cover;"></div>
+            <button onclick="moveSlide('right-slide', -1)" style="position: absolute; top: 50%; left: 5px; background: rgba(0,0,0,0.7); color: #FFD700; border: 1px solid #FFD700; cursor: pointer; padding: 10px;" data-translate>&#10094;</button>
+            <button onclick="moveSlide('right-slide', 1)" style="position: absolute; top: 50%; right: 5px; background: rgba(0,0,0,0.7); color: #FFD700; border: 1px solid #FFD700; cursor: pointer; padding: 10px;" data-translate>&#10095;</button>
+        </div>
+    </div>
+
+</div>
+      
+
+    </div>
+</div>
+            <div class="narrative-text">
+                <h2 data-translate>II. The Necessity of Recruitment</h2>
+                <p data-translate>
+                    No empire is built in idolation. Great movement do not survive on ideas alone; they strive on the collective power of exceptional minds.<br>
+                    Throughout history, the true currency of global influence has always been human capital. strategic requitment is merely not a practice, it is the vital engine that sustains our legacy, ensures our evolution, and secures our place in tomorrow's world.
+                </p>
+                <p data-translate>If you peel back the layers of our shared history, you will not find a record of progress, but a rentless, bloody cycle of violence</p>
+<!-- FIRST VIDEO (WW1) -->
+<div style="margin-bottom: 30px; border: none; background: #000;">
+    <video width="100%" controls autoplay muted loop preload="auto">
+        <source src="images/WW1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+<!-- SECOND VIDEO (WW2) -->
+<div style="border: none; background: #000;">
+    <video width="100%" controls autoplay muted loop preload="auto">
+        <source src="images/WORLD_WAR_II_Original_Color_Footage_With_Sounds(144p).mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+      
+            </div>
+   <div class="cinematic-text-section" style="margin-top: 40px; width: 100%; text-align: center;">
+                    <h3 style="color: var(--gold); text-align: center; letter-spacing: 2px; text-transform: uppercase; margin: 0 auto 20px auto;" data-translate>THE DIVINE LIGHT</h3>
+                    <div style="display: flex; justify-content: center; margin: 30px auto; width: 100%; padding: 0 10px; box-sizing: border-box;\">
+                        <div style="width: 100%; max-width: 400px; aspect-ratio: 1 / 1; border: 0px solid rgba(255, 215, 0, 0.4); background: #000; box-shadow: 0 0 20px rgba(0,0,0,0.8); overflow: hidden; position: relative; margin: 0 auto;">
+                            <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.8) contrast(1.1);">
+                                <source src="images/Light.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <p style="font-size: 9px; color: #666; text-align: center; margin: 0px; padding: 5px 0; letter-spacing: 3px; font-family: sans-serif; text-transform: uppercase; background: #000; position: absolute; bottom: 0px; left: 0; width: 100%; z-index: 10;" data-translate>INTELLIGENCE FEED// SQUARE SCALE</p>
+                        </div>
+                    </div>
+                    <p data-translate>It first began with one person a U.S Scientist called  Tesla during one of his most ambitious laboratory experiment called project wardenclyffe intended to provide free, wireless energy and communication to the entire planet.</p>
+                    <p data-translate>He built the wardenclyffe Tower on long island between 1901 and 1905.  The goal was to use the earth itself as a conductor to send  electricity and information through the ground and atmosphere without wires</p>
+                    <p data-translate>But in the end his primary funder J.P.Morgan, withdrew support when he realized the project aimed for free energy that couldn't be easily metered and sold</p>
+                    <p data-translate>Before the wardenclyffe tower was demolished for scrap in 1917, Tesla and his team went behind the back of morgan and quickly tried to activate the tower, but because they had little or no time and few resources they accidently triggered the unfinished tower which led to a new discovery </p>
+                    <p data-translate>He discovered an infinite source of energy, one that would later breach the gap between science and spirituallity.  When this infinite source of energy was exposed by the tower, it existed in way, that one could not explained, it was like they tored through the very fabric of reality itself</p>
+                    <p data-translate>It wasn't a sun or a battery. It was an omnipresent, shimmering lattice that tore through every layer of existence. It was everywhere—in the air, in the soil, in the very space between your heartbeats. But as he reached out, he realized a haunting truth: there was no doorway and the light wasn't just energy, it was a <b><i data-translate>higher conciousness</i></b>.</p>
+                    <p data-translate>The Light could speak. The Light didn't use words, it was telepathic and it communicated through a direct, overwhelming transmission of "knowing." Only those standing in its immediate radiance—those whose frequencies had been tuned by alchemical preparation—could receive the signal. It flooded their minds with Visions of the Broad Universe.</p>
+                    <p data-translate>The Light showed them how humanity was vibrating at a frequency of "Separation" and "Ego," which acted like a gravity well, pinning us to the 3 dimensional Plane. It revealed that our wars and our chains were symptoms and nature of the 3D. A plane materialism and ego.</p>
+                    <p data-translate>The Source showed them that the universe was teeming with layers of life and extraterestrial dimensional planes, but humanity was trapped within the 3 dimension(3D), because of our ignorance to see and move beyond our current state of conciousness . </p>
+                    <p style="margin-top: 30px;" data-translate></p>
+
+                 <div class="reality-slider-row">
+    <div class="reality-slider-card">
+        <div class="reality-slide-wrapper">
+            <div class="reality-slideshow">
+                <img src="images/21.jpeg" alt="Tesla & Wardenclyffe Tower - Image 1" class="active">
+                <img src="images/Tower 1.jpeg" alt="Tesla & Wardenclyffe Tower - Image 2">
+                <img src="images/VIRAL.jpeg" alt="Tesla & Wardenclyffe Tower - Image 3">
+            </div>
+        </div>
+        <p class="reality-slider-caption" data-translate>FEED_ALPHA // 01</p>
+        <p class="reality-slider-caption" data-translate>Tesla & The Wardenclyffe Tower</p>
+        <div class="slider-controls">
+            <button class="prev" data-translate>❮</button>
+            <button class="next" data-translate>❯</button>
+        </div>
+    </div>
+
+    <div class="reality-slider-card">
+        <div class="reality-slide-wrapper">
+            <div class="reality-slideshow">
+                <img src="images/OAP PM.jpeg" alt="Office of Alien Property - Image 1" class="active">
+                <img src="images/cia 2.jpeg" alt="Office of Alien Property - Image 2">
+                <img src="images/OAp.jpeg" alt="Office of Alien Property - Image 3">
+            </div>
+        </div>
+        <p class="reality-slider-caption" data-translate>FEED_BETA // 02</p>
+        <p class="reality-slider-caption" data-translate>Office of Alien Property</p>
+        <div class="slider-controls">
+            <button class="prev" data-translate>❮</button>
+            <button class="next" data-translate>❯</button>
+        </div>
+    </div>
+</div>
+
+                    <p data-translate> Because of the nature of this new discovery, tesla decided to keep it for himself not untill the day he died. When tesla died it was rumored of how he had encountered/made contact with alliens(Infinite Source of energy).</p>
+                    <p data-translate>Tesla's death  during the world war II was major security concern for the U.S government because of his previous claims regarding advanced military technology.</p>
+                    <p data-translate>So after his death the US goverment carried  out an operation called<b><i data-translate> project Nick under the Office of Alien property(OAP)</i></b> to officially confiscasted his scientific reasearch and inventions due to national security reasons, so they classfied some of his documents including project wardenclyffe.</p>
+                    <p data-translate>This happened because after the wardenclyffe tower project failed, where he discovered the light and kept it secret. Nicolas tesla was believe to have been  in contact with several foriegn goverments, most notably the soviet Union on a contract to built a massive mechanical device called<b><span style="color: #FFD700;"> "TELEFORCE"</span></b>.</p>
+                    <p data-translate>Although tesla had a fluctuate of interest, he believed that his teleforce was a defensive weapon hoping on the fact if every nation had a wall of power to destroy invading planes, war would become impossible.</p>
+                    <P data-translate>Through Project Nick the O.A.P became aware of this higher conciousness and with the vast knowledge and secrets that came with it.</P>
+                    <p data-translate>However because the light had a complex nature which required rare extensive resources and regular fundings to fully understand. The U.S had to make confidential contracts with national and foriegn  global business families in Order to maintain funding the light, which they later called <b><i data-translate>project Aether</i></b>.</p>
+                    <p data-translate>This later lead to begining and creation of the very foundations of this prestigeous Organision, which they named;</p>
+                    <h4 style="color:#FFD700;" data-translate><b> 'ILLUMINATI'</b>, extracted from the english word illumination derived from both the latin words illuminare and illuminatus meaning: <i data-translate>Enlightened, To throw into light or Light up</i>.</h4>
+                </div>
+
+<P data-translate>When the Great Wars ended, every nation was exhausted and where all in a state of dispair, their citizen starving because they spend nearly all of their resources on fighting each other.This is when the Order stepped in. we didn't just offer money; we offered the Science of the Ascension. We didn't offer a loan, we offered evolution.  We provided futuristic insight. We gave the world the blueprints for modernization, for technology that was actually a reflection of celestial geometry. We made the nations sign a Sacred Contract and bound the world's kingdoms together through international marriages and debt, an underlying tie to an Irreplaceable Essence that anchored their loyalty not to a man, but to the Source itself.</P>
+
+<P data-translate>This contract was both physically and spiritually binding, woven into the DNA of the nations and their future generations, this was the very foundation of global peace. The leaders saw the Light and believed; they understood that if they ever broke this peace to begin another war, the price would be a catastrophic soul-debt and the total erasure of their lineage.</P>
+
+<P data-translate>The Illuminati did not need every small nation. They targeted the Great Colonizers, the power nations whose reach spanned the globe. By binding the masters, they bound the territories. Everything implemented in London, Paris, or Berlin flowed directly into the veins of their colonies.</P>
+
+<P data-translate>The physical price was absolute. The Order provided the trillions needed to rebuild from the rubble, but in return, those nations signed over an annual share of their resources. Their minerals, their energy, and their labor became an inventory held by the Order.</P>
+<P data-translate>To keep this hidden, the United States was chosen as the primary Puppet Leader. It was the perfect mask—a young, loud "democracy" that could act as the enforcer of the 3D grid while the Order remained in the 5th-dimensional shadows.</P>
+
+ <div class="cinematic-text-section" style="margin-top: 40px; width: 100%; text-align: center;">
+                    <h3 style="color: var(--gold); text-align: center; letter-spacing: 2px; text-transform: uppercase; margin: 0 auto 20px auto;" data-translate></h3>
+                    <div style="display: flex; justify-content: center; margin: 30px auto; width: 100%; padding: 0 10px; box-sizing: border-box;\">
+                        <div style="width: 100%; max-width: 400px; aspect-ratio: 1 / 1; border: 0px solid rgba(255, 215, 0, 0.4); background: #000; box-shadow: 0 0 20px rgba(0,0,0,0.8); overflow: hidden; position: relative; margin: 0 auto;">
+                            <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.8) contrast(1.1);">
+                                <source src="images/MOND.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <p style="font-size: 9px; color: #666; text-align: center; margin: 2px; padding: 1px 0; letter-spacing: 3px; font-family: sans-serif; text-transform: uppercase; background: #000; position: absolute; bottom: 1px; left: 0; width: 100%; z-index: 10;" data-translate>INTELLIGENCE FEED// SQUARE SCALE</p>
+                        </div>
+                    </div>
+
+<P data-translate>The US Dollar Bill was created as a talisman of this pact. It is not just currency; it is a contract printed on paper. The US dollar holds binding power and it is the global recognition for the status of wealth. The All-Seeing Eye atop the pyramid on the dollar bill is the mark of the Order’s surveillance, a reminder to the initiated that the wealth of the nation flows upward to the Capstone.</P>
+
+<P data-translate>The people who hold the true power in these nations know. They are the high-level initiates who manage the resources and pay the annual tribute to the Light. They maintain the Secrecy because they know that to manifest true power, it must remain unseen by the masses.</P>
+
+<P data-translate>We are no longer a species of warring egos. We are a controlled and civilised society, tuned to a frequency of order. The Light didn't just end the wars; it liberated the mind from the illusions of thy seperate self.</P>
+<h3 style="color: var(--gold); text-align: center; letter-spacing: 2px; text-transform: uppercase; margin: 0 auto 20px auto;" data-translate>WHY MUST HUMANITY BE GOVERENED</h3>
+<P data-translate>The truth is far heavier than it seems: for It is in the very nature of humans to be governed. Without a hand to rule the darkness, what you call "free will" is the very thing that has been forever destroying humanity.You have seen it in your actions.</P>
+<p data-translate>Give a man a choice, and he will eventually choose to strike his neighbor, give a nation liberty and it will use it to build a better way to burn the earth to ash</p>
+<p data-translate>Humans are like a cattle who believe they are choosing their path, while they are actually being driven by background causes they cannot see. Because  humans have the power to choose, they choose wrong every single time,leading to a cacophony of selfish wants that eventually burns the world down </p>
+<p data-translate>Left to their own devices humanity is a plague that consumes it's own host.Free will is a burden  of independence that humanity is too immature to carry without destroying itself.</p>
+ <h3 style="color: var(--gold); text-align: center; letter-spacing: 2px; text-transform: uppercase; margin: 0 auto 20px auto;" data-translate>THE CLIMAX</h3>
+<p data-translate>We exist in the climax of this truth and the truth is  much simpler than you think; Life is a race where the finish line keeps moving and the world is a game where most people are just peices on the board.</p>
+<p data-translate>They work, they sleep and they follow the path either we create or others made for them(family lineage).</p>
+<p data-translate>But you can become an author  of this world.For the world is a tragedy of free will, something which is divine and we cannot controll.</p>
+<p data-translate>Even with our current system, the free will of humanuty still leads to wars , poverty and chaos things which are out of our agenda and also limits our influence.</p>
+<p data-translate>We are constantly looking not just for high level  thinkers who are tired of the average life, but for individuals who are smart enough to see beyond the viel of ignorance right up to the truth and brave enough to take controll.</p>
+<p data-translate>If you are exactly of this desciptions, someone who has attain a full understanding about life, then you are highly welcome to our sacred ground.</p>
+<p data-translate>For you have been working too hard for results that should be coming to you naturally and have been trying to solve a problem on thesame level it was created.</p>
+<p style="margin-top: 30px;" data-translate></p>
+<p>Now that you are at the treshhold and have felt the malfunctions of the system. You have seen that national liberation, religion are all cages and human action are often march towards ash.</p>
+<p data-translate> WE offer you the only thing that truly matters in a collapsing world: <span style="color: #FFD700;"> Achitectural Authority.</span></p>
+<p data-translate>Joint us and stop being a victim of what happens in the news and start being the individual who decides what happens.</p>
+<p data-translate>With us we offer you the power to protect your family and the chance to finally belong to the group that actually runs the planet</p>
+<p data-translate>You will no longer worry about money, safety or your future. We will give you the resources, the connections and protection you need to reach the top inorder to attain full awareness, hence exit the myth. You will have a seat at the system where you will have to journey your way right to the top of the pyramid, where the real decisions are made.</p>
+<p data-translate>For true peace is a fragile equilibrium maintain by the few. To protect world peace and security, one must transcend thy self from being a <span style="color: #FFD700;">'subject of history'</span> to becoming a <span style="color: #FFD700;">'Guardian of history'.</span></p>
+<p data-translate>As we donot recruit to dominate, we reruit to sustian. Without the council, the scales of history will tip into a permanent shadow.</p>
+<div class="cta-box">
+                <h3 data-translate>III. The Sole Objective</h3>
+                <p data-translate>To ensure the continuity of the human species through enlightened governance. </p>
+                <button class="seek-btn" onclick="alert('Verification required. Access denied.')" data-translate>Seek Authorization</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER OUTSIDE BOX -->
+    <footer class="page-footer">
+        © 2026 Illuminati New World Order. All rights reserved.
+        <div class="hq-info" style="text-align: justify;" data-translate>Official HQ: Undisclosed Location</div>
+    </footer>
+<script>
+    // 1. Function to change slides manually or automatically
+    function moveSlide(className, step) {
+        let slides = document.getElementsByClassName(className);
+        let activeIndex = 0;
+        
+        // Find current visible slide
+        for (let i = 0; i < slides.length; i++) {
+            if (slides[i].style.display === "block") {
+                activeIndex = i;
+                slides[i].style.display = "none";
+                break;
+            }
+        }
+        
+        // Calculate and show the next slide index
+        let nextIndex = (activeIndex + step + slides.length) % slides.length;
+        slides[nextIndex].style.display = "block";
+    }
+
+    // 2. Set up the Automatic Timer (5 seconds)
+    function startAutoArchives() {
+        setInterval(() => {
+            moveSlide('left-slide', 1);
+            moveSlide('right-slide', 1);
+        }, 5000); // 5000ms = 5 seconds
+    }
+
+    // 3. Trigger the auto-slide as soon as the page loads
+    window.onload = startAutoArchives;
+
+    // JavaScript for the reality sliders under "THE DIVINE LIGHT"
+    document.addEventListener('DOMContentLoaded', function() {
+        const sliderCards = document.querySelectorAll('.reality-slider-card');
+
+        sliderCards.forEach((card, cardIndex) => {
+            const images = card.querySelectorAll('.reality-slideshow img');
+            const prevBtn = card.querySelector('.prev');
+            const nextBtn = card.querySelector('.next');
+
+            let currentImageIndex = 0;
+            const totalImages = images.length;
+
+            // Function to show current image
+            function showImage(index) {
+                // Hide all images
+                images.forEach(img => img.classList.remove('active'));
+                // Show current image
+                images[index].classList.add('active');
+            }
+
+            // Function to go to next image
+            function nextImage() {
+                currentImageIndex = (currentImageIndex + 1) % totalImages;
+                showImage(currentImageIndex);
+            }
+
+            // Function to go to previous image
+            function prevImage() {
+                currentImageIndex = (currentImageIndex - 1 + totalImages) % totalImages;
+                showImage(currentImageIndex);
+            }
+
+            // Auto-slide every 5 seconds
+            const autoSlide = setInterval(nextImage, 5000);
+
+            // Manual controls
+            nextBtn.addEventListener('click', function() {
+                nextImage();
+                // Reset auto-slide timer
+                clearInterval(autoSlide);
+                setTimeout(() => setInterval(nextImage, 5000), 5000);
+            });
+
+            prevBtn.addEventListener('click', function() {
+                prevImage();
+                // Reset auto-slide timer
+                clearInterval(autoSlide);
+                setTimeout(() => setInterval(nextImage, 5000), 5000);
+            });
+
+            // Initialize first image
+            showImage(0);
+        });
+    });
+
+    // JavaScript for the reality sliders under "THE DIVINE LIGHT"
+    let currentSlideIndex = {};
+
+    function initializeSliders() {
+        const sliderCards = document.querySelectorAll('.reality-slider-card');
+        sliderCards.forEach((card, cardIndex) => {
+            currentSlideIndex[cardIndex] = 0;
+            const slideGroups = card.querySelectorAll('.slide-group');
+            const prevBtn = card.querySelector('.prev');
+            const nextBtn = card.querySelector('.next');
+
+            // Show first slide group
+            slideGroups[0].classList.add('active');
+
+            // Add event listeners
+            prevBtn.addEventListener('click', () => changeSlide(cardIndex, -1));
+            nextBtn.addEventListener('click', () => changeSlide(cardIndex, 1));
+        });
+    }
+
+    function changeSlide(cardIndex, direction) {
+        const card = document.querySelectorAll('.reality-slider-card')[cardIndex];
+        const slideGroups = card.querySelectorAll('.slide-group');
+        const totalSlides = slideGroups.length;
+
+        // Hide current slide
+        slideGroups[currentSlideIndex[cardIndex]].classList.remove('active');
+
+        // Calculate new index
+        currentSlideIndex[cardIndex] = (currentSlideIndex[cardIndex] + direction + totalSlides) % totalSlides;
+
+        // Show new slide
+        slideGroups[currentSlideIndex[cardIndex]].classList.add('active');
+    }
+
+    // Initialize sliders when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initializeSliders);
+</script>
+
+<script type="text/javascript" src="translation-utils.js"></script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>
+// Closes the translator if you tap anywhere else on the screen
+document.addEventListener('click', function(e) {
+    const translateBtn = document.querySelector('#google_translate_element');
+    const menu = document.querySelector('.goog-te-menu-frame');
+    
+    if (menu && translateBtn && !translateBtn.contains(e.target)) {
+        menu.style.display = 'none';
+    }
+});
+</script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>◆</span>
+    </div>
+        <span></span>
+    </div>
+
+</html>
+
+
+
+
+

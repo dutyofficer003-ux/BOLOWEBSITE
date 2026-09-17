@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Account Security | Illuminati</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+            --gold-color: #FFD700;
+            --gold-hover: #FFA500;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
+            --shadow-color: rgba(0, 0, 0, 0.8);
+            --security-blue: #0066cc;
+            --alert-green: #00ff88;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: var(--gold-color);
+            border: 2px solid var(--gold-color);
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .back-btn:hover {
+            background: var(--gold-color);
+            color: var(--bg-color);
+            transform: scale(1.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .access-banner {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1), rgba(0, 102, 204, 0.05));
+            border: 2px solid var(--security-blue);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .access-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--security-blue);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .access-desc {
+            color: #e0e0e0;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .security-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .security-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--security-blue), var(--gold-color));
+            opacity: 0.7;
+        }
+
+        .box-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .protocol-list {
+            list-style: none;
+        }
+
+        .protocol-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .protocol-icon {
+            font-size: 1.3rem;
+            margin-right: 12px;
+            color: var(--security-blue);
+            flex-shrink: 0;
+        }
+
+        .protocol-text {
+            flex: 1;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .protocol-text strong {
+            color: var(--gold-color);
+            font-weight: 600;
+        }
+
+        .feed-section {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05));
+            border: 2px solid var(--alert-green);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .feed-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--alert-green);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .feed-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .notification-popup {
+            position: absolute;
+            top: 50%;
+            right: -300px;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.9), rgba(0, 255, 136, 0.8));
+            border: 2px solid var(--success-color);
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            min-width: 250px;
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from { 
+                opacity: 0;
+                transform: translateY(-50%) translateX(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        .notification-popup.slide-out {
+            animation: slideOutRight 0.5s ease-out forwards;
+        }
+
+        @keyframes slideOutRight {
+            from { 
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+            to { 
+                opacity: 0;
+                transform: translateY(-50%) translateX(20px);
+            }
+        }
+
+        .notification-header {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--success-color);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .notification-amount {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--gold-color);
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .notification-details {
+            font-size: 0.8rem;
+            color: #e0e0e0;
+            line-height: 1.4;
+        }
+
+        .notification-time {
+            font-size: 0.7rem;
+            color: var(--success-color);
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+
+        .feed-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--success-color);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .feed-time {
+            color: var(--success-color);
+            font-weight: 600;
+            margin-right: 10px;
+            font-size: 0.8rem;
+            min-width: 40px;
+        }
+
+        .feed-content {
+            flex: 1;
+            color: #e0e0e0;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .feed-amount {
+            color: var(--gold-color);
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        .status-indicator {
+            background: var(--card-bg);
+            border: 2px solid var(--gold-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .status-light {
+            width: 60px;
+            height: 60px;
+            background: var(--gold-color);
+            border-radius: 50%;
+            margin: 20px auto;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+            }
+            50% { 
+                transform: scale(1.1);
+                box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        .status-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-desc {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+                letter-spacing: 3px;
+            }
+
+            .security-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .security-box {
+                padding: 20px;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="Terms & Conditions.html" class="back-btn">
+            ← Back to Hub
+        </a>
+
+        <div class="header">
+            <h1 data-translate>Account Security</h1>
+            <p data-translate>Elite Dashboard Rules and access protocols for verified members</p>
+        </div>
+
+        <div class="access-banner">
+            <h2 class="access-title" data-translate>Access Protocol</h2>
+            <p class="access-desc" data-translate>Access to the Elite Dashboard is granted only after physical or digital convention with the Masters (Secretary General). This ensures complete verification and security clearance before account activation.</p>
+        </div>
+
+        <div class="security-grid">
+            <div class="security-box">
+                <h2 class="box-title" data-translate>Convention Requirements</h2>
+                <ul class="protocol-list">
+                    <li class="protocol-item">
+                        <div class="protocol-icon">👤</div>
+                        <div class="protocol-text">
+                            <strong data-translate>Physical Meeting</strong>: <span data-translate>In-person convention with Secretary General at designated secure location.</span>
+                        </div>
+                    </li>
+                    <li class="protocol-item">
+                        <div class="protocol-icon">💻</div>
+                        <div class="protocol-text">
+                            <strong data-translate>Digital Verification</strong>: <span data-translate>Secure video conference with multi-factor authentication for remote verification.</span>
+                        </div>
+                    </li>
+                    <li class="protocol-item">
+                        <div class="protocol-icon">🔐</div>
+                        <div class="protocol-text">
+                            <strong data-translate>Identity Confirmation</strong>: <span data-translate>Biometric verification and document authentication during convention.</span>
+                        </div>
+                    </li>
+                    <li class="protocol-item">
+                        <div class="protocol-icon">📋</div>
+                        <div class="protocol-text">
+                            <strong data-translate>Protocol Agreement</strong>: <span data-translate>Signed agreement to all Elite Dashboard terms and security protocols.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="security-box">
+                <h2 class="box-title" data-translate>Security Measures</h2>
+                <ul class="protocol-list">
+                    <li class="protocol-item">
+                        <div class="protocol-icon">🛡️</div>
+                        <div class="protocol-text">
+                            <strong data-translate>Multi-Factor Authentication</strong>: <span data-translate>Required for all dashboard access attempts.</span>
+                        </div>
+                    </li>
+                    <li class="protocol-item">
+                        <div class="protocol-icon">🌍</div>
+                        <div class="protocol-text">
+                            <strong data-translate>Geographic Verification</strong>: <span data-translate>Access limited to pre-approved geographic locations.</span>
+                        </div>
+                    </li>
+                    <li class="protocol-item">
+                        <div class="protocol-icon">⏱️</div>
+                        <div class="protocol-text">
+                            <strong data-translate>Session Timeouts</strong>: <span data-translate>Automatic logout after 15 minutes of inactivity.</span>
+                        </div>
+                    </li>
+                    <li class="protocol-item">
+                        <div class="protocol-icon">📊</div>
+                        <div class="protocol-text">
+                            <strong data-translate>Activity Monitoring</strong>: <span data-translate>All dashboard actions logged and monitored in real-time.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="feed-section">
+            <h2 class="feed-title" data-translate>The Notification Feed</h2>
+            <p style="text-align: center; color: #e0e0e0; margin-bottom: 20px;" data-translate>Live global feed showing Elite members withdrawing funds every 5 minutes to prove system activity.</p>
+            
+            <div class="feed-demo" id="notificationFeed">
+                <!-- Feed items will be dynamically added here -->
+            </div>
+        </div>
+
+        <div class="status-indicator">
+            <h3 class="status-text" data-translate>OVERSIGHT PROTECTION: ACTIVE</h3>
+            <div class="status-light"></div>
+            <p class="status-desc" data-translate>Real-time monitoring and protection protocols are currently active for all Elite accounts</p>
+        </div>
+    </div>
+
+    <script>
+        // Generate sliding notification pop-ups
+        const countries = ['Nicaragua', 'Argentina', 'Brazil', 'Mexico', 'Ecuador', 'Panama', 'Chile', 'Peru', 'Colombia', 'Venezuela'];
+        const feedContainer = document.getElementById('liveFeed');
+        let notificationId = 0;
+        
+        function generateNotification() {
+            const country = countries[Math.floor(Math.random() * countries.length)];
+            const amount = Math.floor(Math.random() * 25000) + 5000;
+            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            
+            // Create notification popup
+            const notification = document.createElement('div');
+            notification.className = 'notification-popup';
+            notification.id = `notification-${notificationId++}`;
+            notification.innerHTML = `
+                <div class="notification-header">WITHDRAWAL ALERT</div>
+                <div class="notification-amount">$${amount.toLocaleString()}</div>
+                <div class="notification-details">Member [REDACTED] - ${country}</div>
+                <div class="notification-time">${time}</div>
+            `;
+            
+            feedContainer.appendChild(notification);
+            
+            // Position notification at random vertical position
+            const maxTop = feedContainer.offsetHeight - 100;
+            notification.style.top = Math.random() * maxTop + 'px';
+            
+            // Auto-remove notification after 8 seconds
+            setTimeout(() => {
+                notification.classList.add('slide-out');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 500);
+            }, 8000);
+        }
+        
+        // Generate initial notifications
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => generateNotification(), i * 1000);
+        }
+        
+        // Add new notification every 1-2 minutes
+        setInterval(() => {
+            generateNotification();
+        }, Math.random() * 60000 + 60000); // Random between 1-2 minutes
+        
+        // Add cinematic entrance animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.access-banner, .security-box, .feed-section, .status-indicator');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(50px)';
+                setTimeout(() => {
+                    section.style.transition = 'all 0.8s ease';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, index * 300);
+            });
+        });
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+

@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    
+    <script src="local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Worthy Ascension | Membership</title>
+    
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<!-- Gate Check Script - Must run immediately -->
+<script>
+    // Check if user has already passed the gate
+    (function() {
+        const gatePassed = localStorage.getItem('gatePassed');
+        const membershipStatus = localStorage.getItem('membershipStatus');
+        
+        // If gate is passed, hide gate and redirect appropriately
+        if (gatePassed === 'true') {
+            // Hide gate section immediately
+            document.addEventListener('DOMContentLoaded', function() {
+                const gateSection = document.getElementById('gate-section');
+                const mainContent = document.getElementById('main-content');
+                
+                if (gateSection) {
+                    gateSection.style.display = 'none';
+                }
+                
+                if (mainContent) {
+                    mainContent.style.display = 'block';
+                }
+            });
+            
+            // Check membership status and redirect if needed
+            if (membershipStatus === 'pending') {
+                // User is in processing state - show processing page
+                window.location.href = 'processing.html';
+            } else if (membershipStatus === 'approved') {
+                // User is approved - show final page
+                showFinalIlluminatiPage();
+            }
+        }
+    })();
+</script>
+
+    <style>
+      /* Google Translate styling moved to global.css for consistency */
+/* This makes sure the "Select Language" label is also Gold */
+.goog-te-gadget {
+    color: #ffd700 !important;
+}
+        .progress-bar {
+    width: 0%;
+    height: 10px;
+    background: #333;
+    transition: width 0.5s ease;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+#ascension-gate {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: #000; /* Deep black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.gate-box {
+    border: 3px solid #d4af37; /* Solid Gold Border */
+    padding: 50px;
+    background: #111;
+    text-align: center;
+    box-shadow: 0 0 30px #d4af37; /* Golden Glow */
+    max-width: 500px;
+}
+
+#ascension-gate h1 {
+    color: #d4af37;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+}
+
+#ascension-gate p {
+    color: #fff;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+#gate-input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #d4af37;
+    color: #fff;
+    font-size: 1.2rem;
+    text-align: center;
+    outline: none;
+    width: 80%;
+}
+/* This styles the button in its normal state */
+#ascension-gate button {
+    background: #d4af37; /* Your gold color */
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.4s ease; /* Makes the color change smooth */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* This is the magic part for the Blue Hover */
+#ascension-gate button:hover {
+    background: #0077ff; /* A bright, deep blue */
+    color: #fff; /* Changes text to white for better contrast */
+    box-shadow: 0 0 20px #0077ff, 0 0 40px #0033ff; /* Creates the blue "light" glow */
+    transform: scale(1.05); /* Makes the button slightly bigger */
+}
+.submit-btn.active {
+    background-color: #007bff !important;
+    box-shadow: 0 0 20px rgba(0, 162, 255, 0.8); /* The Light Blue Glow */
+    cursor: pointer;
+    opacity: 1;
+}
+        body { background: #0a0a14; color: #FFF; padding: 0; margin: 0; top: 0px !important; font-family: sans-serif; overflow-x: hidden; }
+        
+        /* --- RETURN TO HOME BUTTON --- */
+        .home-nav { max-width: 1000px; margin: 0 auto 20px auto; }
+        .btn-home {
+    position: absolute !important; /* Pinned to top-left */
+    top: 10px !important;       /* Distance from the top */
+    left: 10px !important;      /* Distance from the left */
+    margin: 0 !important;       /* Removes the centering you had before */
+    z-index: 1001 !important;   /* Ensures it stays on top of other elements */
+    padding: 8px 12px !important;
+    text-decoration: none !important;
+    border: 1px solid #FFD700 !important;
+    color: #FFD700 !important;
+    font-weight: bold !important;
+    font-size: 0.65rem !important;
+    background: transparent !important;
+    transition: 0.3s;
+}
+
+.btn-home:hover {
+    background: #FFD700;
+    color: #000;
+}
+
+        .membership-box { 
+            max-width: 1000px; 
+            margin: auto; 
+            border: none; 
+            padding: 50px; 
+            background: rgba(0,0,0,0.6); 
+            line-height: 1.8;
+        }
+
+        /* --- WHATSAPP BUBBLE EFFECT --- */
+        .whatsapp-notice { background: #3c0c00; color: white; padding: 20px; text-align: center; margin-bottom: 30px; border-radius: 8px; }
+        .whatsapp-link-hover {
+            display: inline-flex; 
+            align-items: center; 
+            background: #25D366; 
+            color: #fff !important; 
+            text-decoration: none; 
+            padding: 15px 30px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            transition: all 0.3s ease;
+        }
+        .whatsapp-link-hover:hover { transform: scale(1.1); box-shadow: 0 0 20px #25D366; }
+
+        /* --- GOLD/WHITE HEADINGS --- */
+        .field-label { 
+            display: block; 
+            margin-top: 35px;
+            margin-bottom: 10px; 
+            font-weight: bold; 
+            color: #FFD700; 
+            text-transform: uppercase; 
+            border-left: 4px solid #007bff; 
+            padding-left: 15px;
+            font-size: 1.1rem;
+        }
+
+        input, textarea { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a2e; border: 1px solid #333; color: white; box-sizing: border-box; }
+
+/* Phone Input Container Styles - Total Style Sync */
+.iti {
+    width: 100% !important;
+    margin-bottom: 20px !important; /* Match the spacing between your other fields */
+}
+
+/* Force the phone input to mirror the Email field exactly */
+.iti input, .iti input[type=tel] {
+    background-color: #0b0c15 !important; /* Match your Email background */
+    border: 1px solid #1f2235 !important; /* Match your Email border */
+    color: #ffffff !important;
+    height: 50px !important; /* Match Email height */
+    width: 100% !important;
+    font-size: 16px !important;
+    border-radius: 4px !important; /* Match Email corners */
+    padding-left: 52px !important; /* Keep space for the flag */
+}
+
+/* Force the flag box to be transparent so it doesn't look like a separate box */
+.iti__selected-flag {
+    background-color: transparent !important;
+    height: 50px !important;
+    padding-left: 12px !important;
+}
+
+/* Clean up the dropdown */
+.iti__country-list {
+    background-color: #0b0c15 !important;
+    border: 1px solid #1f2235 !important;
+    color: white !important;
+}
+
+/* Ensure phone number label alignment matches email label */
+.field-label {
+    margin-bottom: 10px !important;
+    font-family: sans-serif !important;
+}
+
+        /* --- PURE BLUE BUTTONS --- */
+        .btn-blue {
+            background-color: #007bff !important;
+            color: #ffffff !important;
+            font-weight: bold;
+            border: none;
+            padding: 15px 25px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            border-radius: 4px;
+        }
+        .btn-blue:hover { background-color: #0056b3 !important; transform: scale(1.05); }
+
+        .submit-btn { 
+            background: #007bff; color: white; padding: 22px; width: 100%; border: none; 
+            font-weight: bold; cursor: pointer; font-size: 1.3rem; margin-top: 40px; 
+            transition: all 0.3s; text-transform: uppercase;
+        }
+        .submit-btn:disabled { background: #222; color: #555; cursor: not-allowed; }
+        
+        .status-text { color: #28a745; font-weight: bold; display: none; margin-top: 10px; }
+   #submit-btn {
+    background-color: #333; /* Dark when disabled */
+    transition: all 0.3s ease;
+}
+
+#submit-btn.active {
+    background-color: #007bff; /* Turns Blue when ready */
+    cursor: pointer;
+}
+
+#submit-btn.active:hover {
+    background-color: #00a2ff;
+    box-shadow: 0 0 20px rgba(0, 162, 255, 0.7); /* The Light Blue Glow */
+    transform: translateY(-2px);
+}
+
+/* Loading Spinner Animation */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 215, 0, 0.3);
+    border-radius: 50%;
+    border-top-color: #FFD700;
+    animation: spin 1s ease-in-out infinite;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+@keyframes spin { 
+    to { transform: rotate(360deg); } 
+}
+   </style>
+    <link rel="stylesheet" href="global.css?v=2">
+    <style>
+        @media screen and (max-width: 950px) {
+            body {
+                padding: 0 !important;
+                padding-top: 70px !important;
+                margin: 0 !important;
+                overflow-x: hidden;
+            }
+            .gate-box, .form-container {
+                max-width: 100% !important;
+                width: 100% !important;
+                padding: 20px 10px !important;
+                margin: 0 auto !important;
+            }
+            .gate-box p, .form-container p, label {
+                font-size: 1rem !important;
+                line-height: 1.8 !important;
+                margin: 0 0 1em 0 !important;
+                text-align: left !important;
+            }
+            h1, h2, h3 {
+                font-size: 1.5rem !important;
+                letter-spacing: 0px !important;
+            }
+            input, textarea, select {
+                width: 100% !important;
+                font-size: 1rem !important;
+            }
+            #submit-btn {
+                width: 100% !important;
+                padding: 15px !important;
+            }
+
+            div[style*="border"]:not(button) {
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 auto !important;
+                padding: 10px 16px !important;
+                box-sizing: border-box !important;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="global.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="membership-page">
+<div id="ascension-gate">
+    <div class="gate-box">
+        <h1 id="gate-title" data-translate>THE LAW OF REVELATION</h1>
+        <p id="gate-question" data-translate style="color: white; font-style: italic; margin-bottom: 20px;">
+            "To manifest abundance and wealth, one must master the three stages of creation: thought, frequency, and form. Enter the three-digit sequence that governs the spiritual law of attraction and universal energy."
+        </p>
+        
+        <input type="text" id="gate-input" data-translate placeholder="Enter 3-digit sequence..." style="background: transparent; border: none; border-bottom: 2px solid #d4af37; color: #fff; font-size: 1.2rem; text-align: center; outline: none; width: 80%;">
+        <br><br>
+        
+        <button id="gate-button" data-translate onclick="handleGate()" style="background:#d4af37; color:#000; border:none; padding:10px 20px; cursor:pointer; font-weight:bold; text-transform: uppercase; letter-spacing: 2px;">
+            SUBMIT FREQUENCY
+        </button>
+        <p id="gate-error" data-translate style="color: #ff3333; margin-top: 15px; font-weight: bold; display: none;"></p>
+    </div>
+</div>
+    <nav class="home-nav">
+        <a href="index.html" class="btn-home">← Return to Home</a>
+    
+    <a href="/alladin.html" class="alladin-nav-item" style="color: #ffd700; font-weight: bold; text-shadow: 0 0 8px rgba(212,175,55,0.6);">ALLADIN AI</a></nav>
+  
+    <div style="width: 100%; max-width: 600px; border: 1px solid rgba(255, 215, 0, 0.4); background: #000; overflow: hidden; box-shadow: 0 0 15px rgba(0,0,0,0.5);">
+        <video autoplay muted loop playsinline style="width: 100%; height: auto; display: block;">
+            <source src="images/M.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
+<h6 data-translate style="color: white; text-align: center;"><span style="color:  blue; font-size:12px !important;" data-translate><b><i>Remember anyone can wear the suit regardless of race, religion or finacial status, the suit is just the uniform;your ambition is the superpower</i></b></span></h6>
+    <!-- Gate Section - Hidden if gatePassed = true -->
+<div id="gate-section" class="gate-section">
+    <div class="membership-box">
+        <h1 style="color: #FFD700; font-family: 'Times New Roman', serif; text-align: center; width: 100%; letter-spacing: 2px; text-transform: uppercase;" data-translate>
+            Membership Application: The Rite of Worthiness
+        </h1>
+        
+        <p data-translate>
+        If the root of all human suffering is found in our limitations, then the purpose of the Light is to remove them. To truly serve the global order, an initiate must be unburdened by the earthly constraints of poverty and borders. 
+        Stepping into the service of the <span style="color: #FFD700; font-weight: bold;" data-translate>New World Order</span> is to 
+        transition from a life of random chance to a life of deliberate purpose. This decision is absolute, for it 
+        marks the moment you choose to become a pillar upon which the future of our world is built. We do not merely 
+        seek members; we seek <strong>stewards of stability</strong> who understand that the true meaning of life is found 
+        in serving a vision larger than oneself.
+        <br><br>
+        However, if one is truly worthy by offering your absolute truth in this application, you are already securing a 
+        <span style="color: #FFD700; font-weight: bold;" data-translate>Generational Win</span>. This is the restoration of your 
+        family's dignity—ensuring that those who come after you are never left to the mercy of chaos. In return 
+        for your commitment to the Great Architect's design, the Order ensures that your bloodline is anchored 
+        in <span style="color: #87CEEB;" data-translate>Security, Recognition, and Financial Stability</span>. 
+        <br><br>
+        <em>Do not just apply for yourself. Apply for the thousand years of peace and prosperity 
+        you are about to gift to your descendants.</em>
+        </p>
+
+        <div class="whatsapp-notice">
+            <p style="color: #FFD700;" data-translate>WARNING: Obtain the "Formal Legal Authorized Instrument" PDF first from the secretary general.</p>
+            <a href="https://wa.me/15182778750" target="_blank" class="whatsapp-link-hover">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white" style="margin-right:10px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884 0 2.225.584 3.911 1.701 5.651l-.991 3.616 3.779-.991z"/></svg>
+                OPEN WHATSAPP PROTOCOL
+            </a>
+        </div>
+
+        <form action="https://formspree.io/f/xojjagee" method="POST">
+            <label data-translate class="field-label">Full Legal Name (Per National ID)</label>
+           <input type="text" id="full-name" name="full_name" oninput="this.value = this.value.replace(/[0-9]/g, '')" placeholder="Full Legal Identity" required data-translate>
+
+            <label data-translate class="field-label">National ID Photo / Passport</label>
+            <input type="file" id="real-id-input" accept="image/*" style="display: none;">
+            <button type="button" class="btn-blue" id="upload_id_btn" data-translate>Upload ID Photo</button>
+            <input type="hidden" name="national_id_url" id="id_url" required>
+            <p id="id_status" class="status-text" data-translate>✔ ID LINK SECURED</p>
+
+            <label data-translate class="field-label">Formal Legal Authorized Instrument (PDF)</label>
+            <input type="file" id="real-pdf-input" accept="application/pdf" style="display: none;">
+            <button type="button" class="btn-blue" id="upload_pdf_btn" data-translate>Upload PDF Instrument</button>
+            <input type="hidden" name="pdf_instrument_url" id="pdf_url" required>
+            <p id="pdf_status" class="status-text" data-translate>✔ INSTRUMENT SECURED</p>
+
+         <div style="margin-top: 25px; display: block; clear: both;">
+    <label data-translate class="field-label" style="color: gold; font-weight: bold; display: block; margin-bottom: 10px;">
+        EVIDENCE OF PERSONAL PROPERTY OWNERSHIP
+    </label>
+    
+    <input type="file" id="real-asset-input" accept="image/*,application/pdf" style="display: none;">
+    <input type="hidden" name="asset_inventory_url" id="asset_url" required>
+    <button type="button" class="btn-blue" id="upload-asset-btn" style="margin-bottom: 10px;" data-translate>
+        UPLOAD ASSET INVENTORY
+    </button>
+    
+    <div id="asset-progress" class="progress-bar" style="width: 0%; height: 6px; background: #007bff; margin-bottom: 5px; border-radius: 3px;"></div>
+    <p id="asset-success" class="status-text" style="display:none; color: #00ff00;" data-translate>✓ ASSET RECORD SECURED</p>
+
+    <textarea id="property-description" name="asset_description" 
+              placeholder="Describe your assets and holdings here..." 
+              style="width: 100%; height: 100px; background: #1a1a1a; color: white; border: 1px solid #333; padding: 10px; margin-top: 10px;"></textarea>
+</div>
+
+            <label data-translate class="field-label">Secure Contact Email</label>
+            <input type="email" name="email" required>
+
+            <label data-translate class="field-label">Secure Phone Number</label>
+           <div class="phone-input-container">
+    <select id="country-code" class="area-code-select">
+        <option value="+1">🇺🇸 +1 (United States)</option>
+        <option value="+1">🇨🇦 +1 (Canada)</option>
+        <option value="+44">🇬🇧 +44 (United Kingdom)</option>
+        <option value="+61">🇦🇺 +61 (Australia)</option>
+        <option value="+49">🇩🇪 +49 (Germany)</option>
+        <option value="+33">🇫🇷 +33 (France)</option>
+        <option value="+39">🇮🇹 +39 (Italy)</option>
+        <option value="+34">🇪🇸 +34 (Spain)</option>
+        <option value="+81">🇯🇵 +81 (Japan)</option>
+        <option value="+86">🇨🇳 +86 (China)</option>
+        <option value="+82">🇰🇷 +82 (South Korea)</option>
+        <option value="+91">🇮🇳 +91 (India)</option>
+        <option value="+55">🇧🇷 +55 (Brazil)</option>
+        <option value="+52">🇲🇽 +52 (Mexico)</option>
+        <option value="+54">🇦🇷 +54 (Argentina)</option>
+        <option value="+56">🇨🇱 +56 (Chile)</option>
+        <option value="+57">🇨🇴 +57 (Colombia)</option>
+        <option value="+58">🇻🇪 +58 (Venezuela)</option>
+        <option value="+51">🇵🇪 +51 (Peru)</option>
+        <option value="+53">🇨🇺 +53 (Cuba)</option>
+        <option value="+502">🇬🇹 +502 (Guatemala)</option>
+        <option value="+503">🇸🇻 +503 (El Salvador)</option>
+        <option value="+504">🇭🇳 +504 (Honduras)</option>
+        <option value="+505">🇳🇮 +505 (Nicaragua)</option>
+        <option value="+506">🇨🇷 +506 (Costa Rica)</option>
+        <option value="+507">🇵🇦 +507 (Panama)</option>
+        <option value="+598">🇺🇾 +598 (Uruguay)</option>
+        <option value="+595">🇵🇾 +595 (Paraguay)</option>
+        <option value="+591">🇧🇴 +591 (Bolivia)</option>
+        <option value="+593">🇪🇨 +593 (Ecuador)</option>
+        <option value="+27">🇿🇦 +27 (South Africa)</option>
+        <option value="+20">🇪🇬 +20 (Egypt)</option>
+        <option value="+212">🇲🇦 +212 (Morocco)</option>
+        <option value="+213">🇩🇿 +213 (Algeria)</option>
+        <option value="+216">🇹🇳 +216 (Tunisia)</option>
+        <option value="+234">🇳🇬 +234 (Nigeria)</option>
+        <option value="+233">🇬🇭 +233 (Ghana)</option>
+        <option value="+254">🇰🇪 +254 (Kenya)</option>
+        <option value="+255">🇹🇿 +255 (Tanzania)</option>
+        <option value="+256">🇺🇬 +256 (Uganda)</option>
+        <option value="+258">🇲🇿 +258 (Mozambique)</option>
+        <option value="+260">🇿🇲 +260 (Zambia)</option>
+        <option value="+263">🇿🇼 +263 (Zimbabwe)</option>
+        <option value="+237">🇨🇲 +237 (Cameroon)</option>
+        <option value="+225">🇨🇮 +225 (Ivory Coast)</option>
+        <option value="+224">🇬🇳 +224 (Guinea)</option>
+        <option value="+228">🇹🇬 +228 (Togo)</option>
+        <option value="+221">🇸🇳 +221 (Senegal)</option>
+        <option value="+220">🇬🇲 +220 (Gambia)</option>
+        <option value="+236">🇨🇫 +236 (Central African Republic)</option>
+        <option value="+241">🇬🇦 +241 (Gabon)</option>
+        <option value="+242">🇨🇬 +242 (Congo)</option>
+        <option value="+243">🇨🇩 +243 (Democratic Republic of Congo)</option>
+        <option value="+245">🇬🇼 +245 (Guinea-Bissau)</option>
+        <option value="+250">🇷🇼 +250 (Rwanda)</option>
+        <option value="+251">🇪🇹 +251 (Ethiopia)</option>
+        <option value="+252">🇸🇴 +252 (Somalia)</option>
+        <option value="+253">🇩🇯 +253 (Djibouti)</option>
+        <option value="+257">🇧🇮 +257 (Burundi)</option>
+        <option value="+259">🇲🇺 +259 (Mayotte)</option>
+        <option value="+351">🇵🇹 +351 (Portugal)</option>
+        <option value="+358">🇫🇮 +358 (Finland)</option>
+        <option value="+352">🇱🇺 +352 (Luxembourg)</option>
+        <option value="+353">🇮🇪 +353 (Ireland)</option>
+        <option value="+354">🇮🇸 +354 (Iceland)</option>
+        <option value="+355">🇦🇱 +355 (Albania)</option>
+        <option value="+356">🇲🇹 +356 (Malta)</option>
+        <option value="+357">🇨🇾 +357 (Cyprus)</option>
+        <option value="+358">🇦🇽 +358 (Åland Islands)</option>
+        <option value="+359">🇧🇬 +359 (Bulgaria)</option>
+        <option value="+36">🇭🇺 +36 (Hungary)</option>
+        <option value="+372">🇪🇪 +372 (Estonia)</option>
+        <option value="+373">🇲🇩 +373 (Moldova)</option>
+        <option value="+374">🇦🇲 +374 (Armenia)</option>
+        <option value="+375">🇧🇾 +375 (Belarus)</option>
+        <option value="+376">🇦🇩 +376 (Andorra)</option>
+        <option value="+377">🇲🇨 +377 (Monaco)</option>
+        <option value="+378">🇸🇲 +378 (San Marino)</option>
+        <option value="+380">🇺🇦 +380 (Ukraine)</option>
+        <option value="+381">🇷🇸 +381 (Serbia)</option>
+        <option value="+382">🇲🇪 +382 (Montenegro)</option>
+        <option value="+383">🇽🇰 +383 (Kosovo)</option>
+        <option value="+385">🇭🇷 +385 (Croatia)</option>
+        <option value="+386">🇸🇮 +386 (Slovenia)</option>
+        <option value="+387">🇧🇦 +387 (Bosnia and Herzegovina)</option>
+        <option value="+389">🇲🇰 +389 (North Macedonia)</option>
+        <option value="+420">🇨🇿 +420 (Czech Republic)</option>
+        <option value="+421">🇸🇰 +421 (Slovakia)</option>
+        <option value="+423">🇱🇮 +423 (Liechtenstein)</option>
+        <option value="+43">🇦🇹 +43 (Austria)</option>
+        <option value="+31">🇳🇱 +31 (Netherlands)</option>
+        <option value="+32">🇧🇪 +32 (Belgium)</option>
+        <option value="+33">🇫🇷 +33 (France)</option>
+        <option value="+41">🇨🇭 +41 (Switzerland)</option>
+        <option value="+45">🇩🇰 +45 (Denmark)</option>
+        <option value="+46">🇸🇪 +46 (Sweden)</option>
+        <option value="+47">🇳🇴 +47 (Norway)</option>
+        <option value="+48">🇵🇱 +48 (Poland)</option>
+        <option value="+7">🇷🇺 +7 (Russia)</option>
+        <option value="+90">🇹🇷 +90 (Turkey)</option>
+        <option value="+92">🇵🇰 +92 (Pakistan)</option>
+        <option value="+93">🇦🇫 +93 (Afghanistan)</option>
+        <option value="+94">🇱🇰 +94 (Sri Lanka)</option>
+        <option value="+95">🇲🇲 +95 (Myanmar)</option>
+        <option value="+960">🇲🇻 +960 (Maldives)</option>
+        <option value="+961">🇱🇧 +961 (Lebanon)</option>
+        <option value="+962">🇯🇴 +962 (Jordan)</option>
+        <option value="+963">🇸🇾 +963 (Syria)</option>
+        <option value="+964">🇮🇶 +964 (Iraq)</option>
+        <option value="+965">🇰🇼 +965 (Kuwait)</option>
+        <option value="+966">🇸🇦 +966 (Saudi Arabia)</option>
+        <option value="+967">🇾🇪 +967 (Yemen)</option>
+        <option value="+968">�🇲 +968 (Oman)</option>
+        <option value="+971">🇦🇪 +971 (United Arab Emirates)</option>
+        <option value="+972">🇮🇱 +972 (Israel)</option>
+        <option value="+973">🇧🇭 +973 (Bahrain)</option>
+        <option value="+974">🇶🇦 +974 (Qatar)</option>
+        <option value="+975">🇧🇹 +975 (Bhutan)</option>
+        <option value="+976">�� +976 (Mongolia)</option>
+        <option value="+977">🇳🇵 +977 (Nepal)</option>
+        <option value="+992">🇹🇯 +992 (Tajikistan)</option>
+        <option value="+993">🇹🇲 +993 (Turkmenistan)</option>
+        <option value="+994">🇦🇿 +994 (Azerbaijan)</option>
+        <option value="+995">🇬🇪 +995 (Georgia)</option>
+        <option value="+996">🇰🇬 +996 (Kyrgyzstan)</option>
+        <option value="+998">🇺🇿 +998 (Uzbekistan)</option>
+        <option value="+670">🇹🇱 +670 (Timor-Leste)</option>
+        <option value="+672">🇦� +672 (Australian External Territories)</option>
+        <option value="+673">�🇧🇳 +673 (Brunei)</option>
+        <option value="+674">🇳🇷 +674 (Nauru)</option>
+        <option value="+675">🇵🇬 +675 (Papua New Guinea)</option>
+        <option value="+676">🇹🇴 +676 (Tonga)</option>
+        <option value="+677">🇸🇧 +677 (Solomon Islands)</option>
+        <option value="+678">🇻🇺 +678 (Vanuatu)</option>
+        <option value="+679">🇫🇯 +679 (Fiji)</option>
+        <option value="+680">🇵🇼 +680 (Palau)</option>
+        <option value="+681">🇼🇫 +681 (Wallis and Futuna)</option>
+        <option value="+682">🇨🇰 +682 (Cook Islands)</option>
+        <option value="+683">🇳🇺 +683 (Niue)</option>
+        <option value="+684">🇦� +684 (American Samoa)</option>
+        <option value="+685">🇼🇸 +685 (Samoa)</option>
+        <option value="+686">🇰🇮 +686 (Kiribati)</option>
+        <option value="+687">�🇳🇨 +687 (New Caledonia)</option>
+        <option value="+688">🇹🇻 +688 (Tuvalu)</option>
+        <option value="+689">🇵🇫 +689 (French Polynesia)</option>
+        <option value="+690">🇹� +690 (Tokelau)</option>
+        <option value="+691">🇫🇲 +691 (Micronesia)</option>
+        <option value="+692">🇲🇭 +692 (Marshall Islands)</option>
+        <option value="+850">🇰🇵 +850 (North Korea)</option>
+        <option value="+852">🇭🇰 +852 (Hong Kong)</option>
+        <option value="+853">🇲🇴 +853 (Macau)</option>
+        <option value="+855">🇰🇭 +855 (Cambodia)</option>
+        <option value="+856">🇱🇦 +856 (Laos)</option>
+        <option value="+880">🇧🇩 +880 (Bangladesh)</option>
+        <option value="+886">🇹🇼 +886 (Taiwan)</option>
+        <option value="+960">🇲🇻 +960 (Maldives)</option>
+    </select>
+    <input type="tel" id="phone-number" name="phone" required 
+           oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
+           placeholder="Phone Number" 
+           class="phone-number-input" data-translate>
+</div>
+
+            <button type="submit" id="final_submit" class="submit-btn" disabled data-translate>SUBMIT TO THE SECURITY COUNCIL</button>
+        </form>
+    </div>
+</div>
+
+<!-- Main Content - Hidden by default, shown when gate is passed -->
+<div id="main-content" style="display: none;">
+    <!-- This will contain the final processing/approved content -->
+</div>
+
+    <!-- Processing Overlay -->
+    <div id="processing-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 9999; justify-content: center; align-items: center; flex-direction: column;">
+        <div style="background: rgba(0, 0, 0, 0.95); padding: 40px; border-radius: 15px; border: 2px solid #d4af37; max-width: 500px; text-align: center;">
+            <div style="font-size: 4rem; color: #d4af37; margin-bottom: 20px;">⏳</div>
+            <h2 style="color: #d4af37; font-size: 2.5rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 3px;" data-translate>PROCESSING APPLICATION</h2>
+            <div style="color: #e0e0e0; font-size: 1.2rem; margin-bottom: 30px; line-height: 1.6;">
+                <p style="margin: 8px 0; text-align: justify;" data-translate>Your membership application is being submitted to the Security Council.</p> 
+                
+                <p style="margin: 8px 0; text-align: justify;" data-translate>Please wait while we process your credentials and verify your information.</p>
+            </div>
+            <div style="margin-top: 30px;">
+                <div style="width: 100%; height: 6px; background: #333; border-radius: 3px; overflow: hidden;">
+                    <div id="processing-progress" style="height: 100%; background: linear-gradient(90deg, #d4af37 0%, #facc15 100%); width: 0%; transition: width 2s ease-in-out;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<footer class="global-footer" style="text-align: center; padding: 50px 20px; border-top: 1px solid rgba(212, 175, 55, 0.1); margin-top: 40px; color: #a0a0a0; font-size: 12px; width: 100%;">
+    <hr class="footer-line" style="width: 85%; border: 0; border-top: 1px solid rgba(212, 175, 55, 0.1); margin: 0 auto 20px auto;">
+    <p style="margin: 8px 0; text-align: justify;" data-translate>© 2026 Illuminati New World Order. All rights reserved.</p>
+    <p style="margin: 8px 0; text-align: justify;" data-translate>Official HQ: Undisclosed Location</p>
+</footer>
+   <style>
+     .global-footer {
+       display: flex !important;
+       flex-direction: column !important;
+       align-items: center !important;
+       justify-content: center !important;
+       text-align: center !important;
+       width: 100% !important;
+     }
+   </style>
+   <script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCO174C8QbyOodW1e5aQ5PW2pWJ01tO7jE",
+        authDomain: "illuminati---oversight.firebaseapp.com",
+        projectId: "illuminati---oversight",
+        storageBucket: "illuminati---oversight.firebasestorage.app",
+        messagingSenderId: "307854810652",
+        appId: "1:307854810652:web:196f634b4f0ebf4be949d9"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    var idDone = false;
+    var pdfDone = false;
+    var assetDone = false;
+
+    // Function to check if all 3 uploads are done and enable the glowing button
+    function validate() {
+        if (idDone && pdfDone && assetDone) {
+            let btn = document.getElementById('final_submit');
+            btn.disabled = false;
+            btn.classList.add('active'); // Activates the light blue glow CSS
+        }
+    }
+
+    // Manual Cloudinary Upload Function
+    async function uploadToCloudinary(file, uploadType, progressElement, statusElement, urlElement) {
+        const cloudName = 'dvdgm9ph5';
+        const uploadPreset = 'Fernando';
+        const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+        
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', uploadPreset);
+        
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (data.secure_url) {
+                // Save the Cloudinary URL to the form
+                urlElement.value = data.secure_url;
+                
+                // Show success status
+                statusElement.style.display = 'block';
+                
+                // Mark as done and validate
+                if (uploadType === 'id') {
+                    idDone = true;
+                } else if (uploadType === 'pdf') {
+                    pdfDone = true;
+                } else if (uploadType === 'asset') {
+                    assetDone = true;
+                    // Show progress bar at 100% for assets
+                    progressElement.style.width = '100%';
+                    progressElement.style.background = 'gold';
+                }
+                
+                validate();
+                return true;
+            } else {
+                throw new Error('Upload failed');
+            }
+        } catch (error) {
+            console.error('Upload error:', error);
+            alert('Upload failed. Please try again.');
+            return false;
+        }
+    }
+
+    // Unified Upload Handler Function
+    function handleUpload(fileInput, buttonId, hiddenInputId, statusId, uploadType, progressId = null) {
+        const btn = document.getElementById(buttonId);
+        const hiddenInput = document.getElementById(hiddenInputId);
+        const statusElement = document.getElementById(statusId);
+        const progressElement = progressId ? document.getElementById(progressId) : null;
+        
+        // Show Loading Circle
+        const originalText = btn.innerHTML;
+        let loadingText = 'SECURING ID...';
+        if (uploadType === 'pdf') loadingText = 'SECURING INSTRUMENT...';
+        if (uploadType === 'asset') loadingText = 'SECURING ASSET...';
+        
+        btn.innerHTML = '<div class="spinner"></div>' + loadingText;
+        btn.disabled = true;
+
+        // Send to Cloudinary
+        uploadToCloudinary(
+            fileInput.files[0], 
+            uploadType, 
+            progressElement, 
+            statusElement,
+            hiddenInput
+        ).then(success => {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            
+            if (success) {
+                fileInput.value = ''; // Clear input for potential re-upload
+            }
+        });
+    }
+
+    // 1. National ID Upload - Manual
+    document.getElementById('upload_id_btn').addEventListener('click', () => {
+        document.getElementById('real-id-input').click();
+    });
+
+    document.getElementById('real-id-input').addEventListener('change', (e) => {
+        if (e.target.files[0]) {
+            handleUpload(e.target, 'upload_id_btn', 'id_url', 'id_status', 'id');
+        }
+    });
+
+    // 2. PDF Instrument Upload - Manual
+    document.getElementById('upload_pdf_btn').addEventListener('click', () => {
+        document.getElementById('real-pdf-input').click();
+    });
+
+    document.getElementById('real-pdf-input').addEventListener('change', (e) => {
+        if (e.target.files[0]) {
+            handleUpload(e.target, 'upload_pdf_btn', 'pdf_url', 'pdf_status', 'pdf');
+        }
+    });
+
+    // 3. Asset Inventory Upload - Manual
+    document.getElementById('upload-asset-btn').addEventListener('click', () => {
+        document.getElementById('real-asset-input').click();
+    });
+
+    document.getElementById('real-asset-input').addEventListener('change', (e) => {
+        if (e.target.files[0]) {
+            handleUpload(e.target, 'upload-asset-btn', 'asset_url', 'asset-success', 'asset', 'asset-progress');
+        }
+    });
+
+    // Parallel Execution: Formspree + Firestore (Promise.all)
+    function handleMembershipSubmission(event) {
+        event.preventDefault(); // Prevent default form submission
+        
+        // Gather all FormData
+        const form = document.querySelector('form');
+        const formData = new FormData(form);
+        const fullName = document.getElementById('full-name').value;
+        const email = document.querySelector('input[name="email"]').value;
+        const countryCode = document.getElementById('country-code').value;
+        const phoneNumber = document.getElementById('phone-number').value;
+        const phone = countryCode + phoneNumber;
+        
+        // Get selected country from dropdown
+        const countrySelect = document.getElementById('country-code');
+        const country = countrySelect.options[countrySelect.selectedIndex].text.split('(')[1].replace(')', '').trim();
+        
+        // Save to localStorage for persistence BEFORE redirect
+        localStorage.setItem('gate_email', email);
+        localStorage.setItem('userEmail', email);
+        localStorage.setItem('submittedEmail', email);
+        localStorage.setItem('submittedFullName', fullName);
+        
+        // Prepare Firestore payload with correct fields
+        const memberData = {
+            full_name: fullName,
+            email: email,
+            phone: phone,
+            country: country,
+            applicationDate: new Date().toLocaleString(),
+            isApproved: false,
+            userId: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+            national_id_url: document.getElementById('id_url').value,
+            pdf_instrument_url: document.getElementById('pdf_url').value,
+            asset_inventory_url: document.getElementById('asset_url').value,
+            asset_description: document.getElementById('property-description').value
+        };
+        
+        console.log("Starting parallel execution...");
+        console.log("FormData contents:");
+        for (let [key, value] of formData.entries()) {
+            console.log(`  ${key}: ${value}`);
+        }
+        console.log("Firestore payload:", memberData);
+        
+        // Task 1 (Firestore): Send Name, Email, Phone, and Country to members collection using Email as Document ID
+        const firestoreTask = db.collection('members').doc(email).set(memberData);
+        
+        // Task 2 (Formspree): Use fetch() to post entire form data to formspree.io
+        const formspreeTask = fetch('https://formspree.io/f/xojjagee', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
+        // Show processing overlay immediately when submission starts
+        document.getElementById('processing-overlay').style.display = 'flex';
+        
+        // Parallel Execution: Use Promise.allSettled([task1, task2])
+        Promise.allSettled([firestoreTask, formspreeTask])
+            .then((results) => {
+                console.log("Both tasks completed with results:", results);
+                
+                const firestoreResult = results[0];
+                const formspreeResult = results[1];
+                
+                // Save persistent lock state
+                localStorage.setItem('accountStep', 'pending');
+                localStorage.setItem('membershipStatus', 'pending');
+                localStorage.setItem('gatePassed', 'true');
+                
+                // Check if both tasks attempted to send
+                let bothTasksAttempted = true;
+                
+                if (formspreeResult.status === 'fulfilled' && formspreeResult.value.ok) {
+                    console.log("Formspree submission successful");
+                    console.log("Firestore task status:", firestoreResult.status);
+                    
+                    // Show processing overlay and start real-time approval check
+                    setTimeout(() => {
+                        displayLockedProcessingScreen();
+                        startApprovalCheck();
+                    }, 1000);
+                } else {
+                    console.error("Formspree failed");
+                    if (formspreeResult.status === 'rejected') {
+                        alert(`Formspree error: ${formspreeResult.reason}. Please try again.`);
+                    } else {
+                        alert(`Formspree submission failed (${formspreeResult.value.status}). Please try again.`);
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error("Parallel execution error:", error);
+                alert('System error occurred. Please try again.');
+            });
+    }
+
+        // Run this on page load - Comprehensive status check with admin grant handling
+        async function checkUserProgress() {
+            const userEmail = localStorage.getItem('userEmail') || localStorage.getItem('gate_email');
+            const localStatus = localStorage.getItem('membershipStatus');
+            const userName = localStorage.getItem('submittedFullName') || localStorage.getItem('userName') || 'Elite Member';
+
+            console.log("🔍 Checking user progress:", { userEmail, localStatus, userName });
+
+            // 1. Check Database FIRST for live status (Sync different browsers and verify current state)
+            if (userEmail) {
+                const userDoc = await db.collection('members').doc(userEmail).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    const remoteStatus = userData.status || userData.membershipStatus;
+                    
+                    console.log("📊 Remote status:", remoteStatus);
+                    console.log("👤 User data:", userData);
+                    
+                    if (remoteStatus === 'pending') {
+                        // Clear any stale approved status in localStorage
+                        if (localStatus === 'approved') {
+                            localStorage.setItem('membershipStatus', 'pending');
+                        }
+                        displayLockedProcessingScreen();
+                        // Start real-time approval check
+                        startApprovalCheck();
+                    } else if (remoteStatus === 'approved' || userData.isApproved === true) {
+                        localStorage.setItem('membershipStatus', 'approved');
+                        localStorage.setItem('submittedFullName', userData.full_name || userName);
+                        
+                        // Remove lock screen completely
+                        const lockScreen = document.getElementById('locked-processing-overlay');
+                        if (lockScreen) {
+                            lockScreen.remove();
+                        }
+                        
+                        // Show welcome screen with user's name
+                        showFinalIlluminatiPage();
+                    }
+                } else {
+                    // If no document found, check if user is in processing state
+                    const processingStatus = localStorage.getItem('accountStep');
+                    if (processingStatus === 'pending') {
+                        displayLockedProcessingScreen();
+                        startApprovalCheck();
+                    }
+                }
+            }
+        }
+
+        // Display Locked Processing Screen with elite UI behaviors
+        function displayLockedProcessingScreen() {
+            // Hide gate and main content
+            document.getElementById('gate-section').style.display = 'none';
+            document.getElementById('main-content').style.display = 'none';
+            
+            // Disable scrollbar for contained feeling
+            document.body.style.overflow = 'hidden';
+            
+            // Create locked processing overlay
+            const lockedOverlay = document.createElement('div');
+            lockedOverlay.id = 'locked-processing-overlay';
+            lockedOverlay.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0, 0, 0, 0.98); z-index: 10000;
+                display: flex; justify-content: center; align-items: center;
+                overflow: hidden;
+            `;
+            
+            lockedOverlay.innerHTML = `
+                <div style="background: rgba(0, 0, 0, 0.99); padding: 60px; border-radius: 20px; border: 3px solid #d4af37; max-width: 600px; text-align: center; box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);">
+                    <div style="font-size: 5rem; color: #d4af37; margin-bottom: 30px; animation: pulse 2s infinite;">🔒</div>
+                   <h1 style="color: #d4af37; font-size: 2.5rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 3px;" data-translate="app_under_review_title">
+    APPLICATION UNDER REVIEW
+</h1>
+<div style="color: #e0e0e0; font-size: 1.2rem; margin-bottom: 30px; line-height: 1.6;">
+    <p>
+        <span data-translate="app_review_desc_1">Your membership application is currently being reviewed by the Security Council.</span>
+        <br><br>
+        <span data-translate="app_review_desc_2">This page is locked until approval is granted.</span>
+    </p>
+    <br><br>
+    <div style="color: #d4af37; font-weight: bold; font-size: 1.2rem; margin-bottom: 30px;">
+        <span data-translate="status_label">Status:</span> 
+        <span data-translate="status_pending_approval">PENDING APPROVAL</span>
+    </div>
+</div>
+<div style="margin-top: 40px;">
+    <div style="width: 100%; height: 8px; background: #333; border-radius: 4px; overflow: hidden;">
+        <div id="locked-progress" style="height: 100%; background: linear-gradient(90deg, #d4af37 0%, #facc15 100%); width: 30%; transition: width 3s ease-in-out; animation: shimmer 2s infinite;"></div>
+    </div>
+</div>
+<div style="margin-top: 30px; color: #888; font-size: 0.9rem;">
+    <span data-translate="protocol_active_footer">🔐 Protocol Active: Real-time monitoring enabled</span>
+</div>
+            `;
+            
+            document.body.appendChild(lockedOverlay);
+            
+            // Force translation execution on newly inserted DOM elements
+            if (typeof window.applyDataTranslations === 'function') {
+                window.applyDataTranslations(lockedOverlay);
+            } else if (typeof window.smartTranslateContainer === 'function') {
+                window.smartTranslateContainer(lockedOverlay);
+            }
+            
+            // Add CSS animations
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes pulse {
+                    0%, 100% { transform: scale(1); opacity: 1; }
+                    50% { transform: scale(1.1); opacity: 0.8; }
+                }
+                @keyframes shimmer {
+                    0% { background-position: -200% 0; }
+                    100% { background-position: 200% 0; }
+                }
+                #locked-progress {
+                    background-size: 200% 100%;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Real-time approval check - Enhanced debugging and multiple field checks
+        function startApprovalCheck() {
+            const email = localStorage.getItem('gate_email') || localStorage.getItem('userEmail');
+            if (!email) {
+                console.error("❌ No email found for approval check");
+                return;
+            }
+
+            console.log("🔍 Starting real-time approval check for:", email);
+
+            // Listen for approval status changes
+            db.collection('members').doc(email).onSnapshot((docSnapshot) => {
+                const userData = docSnapshot.data();
+                console.log("📊 Real-time update received:", userData);
+                console.log("🔍 All fields in document:", Object.keys(userData));
+                
+                // Check for approval - comprehensive field checking
+                const approvalChecks = {
+                    isApproved: userData.isApproved,
+                    isApprovedString: userData.isApproved === 'true',
+                    status: userData.status,
+                    membershipStatus: userData.membershipStatus,
+                    approved: userData.approved,
+                    applicationStatus: userData.applicationStatus,
+                    memberStatus: userData.memberStatus
+                };
+                
+                console.log("🔍 Approval field checks:", approvalChecks);
+                
+                // Multiple approval detection methods - STRICT CHECK
+                const isApproved = userData.isApproved === true || 
+                                userData.isApproved === 'true' || 
+                                userData.status === 'approved' ||
+                                userData.membershipStatus === 'approved' ||
+                                userData.approved === true ||
+                                userData.approved === 'true' ||
+                                userData.applicationStatus === 'approved' ||
+                                userData.memberStatus === 'approved';
+                
+                // Ensure user is NOT pending before showing approval
+                const isPending = userData.status === 'pending' || userData.membershipStatus === 'pending' || userData.applicationStatus === 'pending';
+                
+                console.log("🎯 Final approval decision:", isApproved);
+                console.log("⏳ Pending status check:", isPending);
+                
+                if (isApproved && !isPending) {
+                    console.log("🎉 APPROVAL DETECTED! Replacing content...");
+                    localStorage.setItem('membershipStatus', 'approved');
+                    localStorage.setItem('gatePassed', 'true');
+                    
+                    // Remove any existing overlays first
+                    const existingOverlay = document.getElementById('locked-processing-overlay');
+                    if (existingOverlay) {
+                        existingOverlay.remove();
+                    }
+                    
+                    // Replace entire body content with personalized welcome
+                    document.body.innerHTML = `
+                        <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.97); z-index: 10001; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+                            <div style="background: rgba(0, 0, 0, 0.99); padding: 80px; border-radius: 25px; border: 4px solid #d4af37; max-width: 700px; text-align: center; box-shadow: 0 0 100px rgba(212, 175, 55, 0.5); animation: goldGlow 3s ease-in-out;">
+                                <div style="font-size: 6rem; color: #d4af37; margin-bottom: 30px; animation: pulse 2s infinite;">🎉</div>
+                                <h1 style="color: #d4af37; font-size: 3rem; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 4px; text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);" data-translate="congratulations_title">
+                                    CONGRATULATIONS
+                                </h1>
+                                <h2 style="color: #fff; font-size: 2rem; margin-bottom: 25px; animation: fadeInGlow 2s ease-in;">
+                                    <span data-translate="welcome_prefix">Welcome</span>, <span id="user-display-name">${userData.full_name || 'Elite Member'}</span>
+                                </h2>
+                                <p style="color: #e0e0e0; font-size: 1.3rem; margin-bottom: 40px; line-height: 1.8; animation: fadeIn 1.5s ease-in;">
+                                    <span data-translate="membership_approved_part1">Your membership has been</span> 
+                                    <span style="color: #d4af37; font-weight: bold;" data-translate="approved_text">APPROVED</span> 
+                                    <span data-translate="membership_approved_part2">by the Security Council.</span>
+                                    <br><br>
+                                    <span data-translate="you_are_now_label">You Are Now</span> 
+                                    <span style="color: #d4af37; font-weight: bold; font-size: 1.6rem;" data-translate="illuminati_rank_label">AN ILLUMINATI</span>
+                                </p>
+                                <div style="background: linear-gradient(45deg, #d4af37 0%, #facc15 100%); color: #000; padding: 20px 30px; border-radius: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);" data-translate="elite_status_active">
+                                    🏛️ ELITE STATUS: ACTIVE
+                                </div>
+                                <button onclick="window.location.href='elite-dashboard.html'" style="background: linear-gradient(45deg, #d4af37 0%, #facc15 100%); color: #000; padding: 20px 40px; border: none; border-radius: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 0 40px rgba(212, 175, 55, 0.7); transition: all 0.3s ease;" data-translate="enter_dashboard_btn">
+                                    🏛️ ENTER ELITE DASHBOARD
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    // Force translation engine to scan the page after dynamic content injection
+                    if (typeof window.applyDataTranslations === 'function') {
+                        window.applyDataTranslations(document);
+                    }
+
+                    // Add animations CSS
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        @keyframes goldGlow {
+                            0% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+                            50% { box-shadow: 0 0 60px rgba(212, 175, 55, 0.8); }
+                            100% { box-shadow: 0 0 100px rgba(212, 175, 55, 0.5); }
+                        }
+                        @keyframes fadeInGlow {
+                            0% { opacity: 0; text-shadow: none; }
+                            100% { opacity: 1; text-shadow: 0 0 30px rgba(212, 175, 55, 0.8); }
+                        }
+                        @keyframes fadeIn {
+                            0% { opacity: 0; }
+                            100% { opacity: 1; }
+                        }
+                        @keyframes pulse {
+                            0%, 100% { transform: scale(1); opacity: 1; }
+                            50% { transform: scale(1.1); opacity: 0.8; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            });
+        }
+
+        // Show Final Illuminati Page with personalized welcome
+        function showFinalIlluminatiPage() {
+            // Remove any existing overlays
+            const existingOverlay = document.getElementById('locked-processing-overlay');
+            if (existingOverlay) {
+                existingOverlay.remove();
+            }
+            
+            // Hide all existing content
+            document.getElementById('gate-section').style.display = 'none';
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('processing-overlay').style.display = 'none';
+            
+            // Restore scrollbar
+            document.body.style.overflow = 'auto';
+            
+            // Get user name from submitted form data
+            const userName = localStorage.getItem('submittedFullName') || 
+                            localStorage.getItem('userName') || 
+                            localStorage.getItem('full_name') || 
+                            'Elite Member';
+            
+            // Replace entire body content with welcome screen
+            document.body.innerHTML = `
+                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.97); z-index: 10001; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+                    <div style="background: rgba(0, 0, 0, 0.99); padding: 80px; border-radius: 25px; border: 4px solid #d4af37; max-width: 700px; text-align: center; box-shadow: 0 0 100px rgba(212, 175, 55, 0.5); animation: goldGlow 3s ease-in-out;">
+                        <div style="font-size: 6rem; color: #d4af37; margin-bottom: 30px; animation: pulse 2s infinite;">🎉</div>
+                        <h1 style="color: #d4af37; font-size: 3rem; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 4px; text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);" data-translate="congratulations_title">
+                            CONGRATULATIONS
+                        </h1>
+                        <h2 style="color: #fff; font-size: 2rem; margin-bottom: 25px; animation: fadeInGlow 2s ease-in;">
+                            <span data-translate="welcome_prefix">Welcome</span>, <span id="user-display-name">${userName}</span>
+                        </h2>
+                        <p style="color: #e0e0e0; font-size: 1.3rem; margin-bottom: 40px; line-height: 1.8; animation: fadeIn 1.5s ease-in;">
+                            <span data-translate="membership_approved_part1">Your membership has been</span> 
+                            <span style="color: #d4af37; font-weight: bold;" data-translate="approved_text">APPROVED</span> 
+                            <span data-translate="membership_approved_part2">by Secretary General.</span>
+                            <br><br>
+                            <span data-translate="you_are_now_label">You Are Now</span> 
+                            <span style="color: #d4af37; font-weight: bold; font-size: 1.6rem;" data-translate="illuminati_rank_label">AN ILLUMINATI</span>
+                        </p>
+                        <div style="background: linear-gradient(45deg, #d4af37 0%, #facc15 100%); color: #000; padding: 20px 30px; border-radius: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);" data-translate="elite_status_active">
+                            🏛️ ELITE STATUS: ACTIVE
+                        </div>
+                        <button onclick="window.location.href='elite-dashboard.html'" style="background: #1d4ed8; color: #fff; padding: 15px 30px; border: none; border-radius: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; font-size: 0.9rem; box-shadow: 0 0 30px rgba(29, 78, 216, 0.7); transition: all 0.3s ease; min-width: 180px; max-width: 250px; margin-top: 25px;" data-translate="enter_dashboard_btn">
+                            🏛️ ENTER ELITE DASHBOARD
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Add animations CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes goldGlow {
+                    0% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+                    50% { box-shadow: 0 0 60px rgba(212, 175, 55, 0.8); }
+                    100% { box-shadow: 0 0 100px rgba(212, 175, 55, 0.5); }
+                }
+                @keyframes fadeInGlow {
+                    0% { opacity: 0; text-shadow: none; }
+                    100% { opacity: 1; text-shadow: 0 0 30px rgba(212, 175, 55, 0.8); }
+                }
+                @keyframes fadeIn {
+                    0% { opacity: 0; }
+                    100% { opacity: 1; }
+                }
+                @keyframes pulse {
+                    0%, 100% { transform: scale(1); opacity: 1; }
+                    50% { transform: scale(1.1); opacity: 0.8; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Manual approval check function for debugging
+        async function manualApprovalCheck() {
+            const email = localStorage.getItem('gate_email') || localStorage.getItem('userEmail');
+            if (!email) {
+                console.error("❌ No email found for manual check");
+                alert("No email found. Please submit application first.");
+                return;
+            }
+
+            console.log("🔍 Manual approval check for:", email);
+            
+            try {
+                const userDoc = await db.collection('members').doc(email).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    console.log("📊 Current user data:", userData);
+                    console.log("🔍 All fields:", Object.keys(userData));
+                    
+                    // Check all possible approval fields
+                    const approvalChecks = {
+                        isApproved: userData.isApproved,
+                        status: userData.status,
+                        membershipStatus: userData.membershipStatus,
+                        approved: userData.approved,
+                        applicationStatus: userData.applicationStatus,
+                        memberStatus: userData.memberStatus
+                    };
+                    
+                    console.log("🔍 Approval field checks:", approvalChecks);
+                    
+                    // Force approval if any field indicates approval - STRICT CHECK
+                    const isApproved = userData.isApproved === true || 
+                                    userData.isApproved === 'true' || 
+                                    userData.status === 'approved' ||
+                                    userData.membershipStatus === 'approved' ||
+                                    userData.approved === true ||
+                                    userData.approved === 'true' ||
+                                    userData.applicationStatus === 'approved' ||
+                                    userData.memberStatus === 'approved';
+                    
+                    // Ensure user is NOT pending before showing approval
+                    const isPending = userData.status === 'pending' || userData.membershipStatus === 'pending' || userData.applicationStatus === 'pending';
+                    
+                    if (isApproved && !isPending) {
+                        console.log("🎉 Manual check: APPROVAL DETECTED!");
+                        alert("Approval detected! Updating page...");
+                        localStorage.setItem('membershipStatus', 'approved');
+                        localStorage.setItem('gatePassed', 'true');
+                        
+                        // Remove existing overlay and show welcome
+                        const existingOverlay = document.getElementById('locked-processing-overlay');
+                        if (existingOverlay) {
+                            existingOverlay.remove();
+                        }
+                        
+                        // Trigger welcome screen
+                        showFinalIlluminatiPage();
+                    } else {
+                        console.log("⏳ Manual check: Still pending");
+                        alert("Status is still pending. Current status: " + JSON.stringify(approvalChecks));
+                    }
+                } else {
+                    console.error("❌ No document found for email:", email);
+                    alert("No document found for this email in Firestore.");
+                }
+            } catch (error) {
+                console.error("❌ Manual check error:", error);
+                alert("Error checking approval status: " + error.message);
+            }
+        }
+
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            await checkUserProgress();
+        });
+
+    // Add form submission handler
+    const membershipForm = document.querySelector('form');
+    if (membershipForm) {
+        membershipForm.addEventListener('submit', handleMembershipSubmission);
+    }
+
+    // Listen for Formspree success page
+    window.addEventListener('load', function() {
+        // Check if we're on Formspree's success page
+        if (window.location.href.includes('formspree.io')) {
+            console.log("Formspree submission successful - redirecting to processing.html");
+            setTimeout(() => {
+                window.location.href = 'processing.html';
+            }, 2000);
+        }
+    });
+
+    // 1. AS SOON AS THE PAGE LOADS: Check if they already passed
+    window.onload = function() {
+        if (localStorage.getItem('gate_cleared') === 'true') {
+            // Hide the gate and show the form immediately
+            document.getElementById('ascension-gate').style.display = 'none';
+            document.getElementById('membership-content').style.display = 'block';
+        }
+    };
+    let currentStep = 1;
+
+    function handleGate() {
+        console.log("Gate submission initiated. Current Step: " + currentStep);
+        
+        const inputField = document.getElementById('gate-input');
+        const inputVal = inputField.value.trim();
+        const questionText = document.getElementById('gate-question');
+        const titleText = document.getElementById('gate-title');
+        const errorText = document.getElementById('gate-error');
+        const gateBtn = document.getElementById('gate-button');
+
+        if (!inputField || !questionText || !titleText || !errorText) {
+            console.error("Critical error: Gate elements missing!");
+            return;
+        }
+
+        if (currentStep === 1) {
+            if (inputVal === "369") {
+                currentStep = 2;
+                titleText.innerText = "THE FREQUENCY OF TRANSFORMATION";
+                questionText.innerText = '"Human ascension requires shifting from a state of lack and fear to a state of infinite love and cellular healing. Enter the exact numerical frequency, in Hertz, known as the transformation tone of the Solfeggio scale."'; 
+                inputField.value = ""; 
+                inputField.placeholder = "Enter frequency in Hz...";
+                if (gateBtn) gateBtn.innerText = "REVEAL TRUTH";
+                errorText.style.display = 'none';
+                console.log("Step 1 complete. Shifting to frequency alignment.");
+                
+                // Translate the new text immediately
+                if (window.translateElement) {
+                    window.translateElement(titleText);
+                    window.translateElement(questionText);
+                    window.translateElement(inputField);
+                    if (gateBtn) window.translateElement(gateBtn);
+                }
+            } else {
+                errorText.innerText = "ACCESS DENIED: FREQUENCY ALIGNMENT FAILED.";
+                errorText.style.display = 'block';
+            }
+        } else if (currentStep === 2) {
+            if (inputVal === "528") {
+                localStorage.setItem('gate_cleared', 'true');
+                localStorage.setItem('gateAccepted', 'true'); // Sync with index.html
+                localStorage.setItem('site_access_key', 'granted');
+                
+                document.getElementById('ascension-gate').style.display = 'none';
+                const membershipContent = document.getElementById('membership-content');
+                if (membershipContent) membershipContent.style.display = 'block';
+                
+                errorText.style.display = 'none';
+                console.log("Gate cleared. Membership access granted.");
+            } else {
+                errorText.innerText = "ACCESS DENIED: REVELATION INCOMPLETE.";
+                errorText.style.display = 'block';
+            }
+        }
+    }
+
+    // Listen for Formspree success page
+    window.addEventListener('load', function() {
+        // Check if we're on Formspree's success page
+        if (window.location.href.includes('formspree.io')) {
+            console.log("Formspree submission successful - redirecting to processing.html");
+            setTimeout(() => {
+                window.location.href = 'processing.html';
+            }, 2000);
+        }
+    });
+
+    function checkMembershipStatus() {
+        const membershipSubmitted = localStorage.getItem('membershipSubmitted');
+        const membershipApproved = localStorage.getItem('membershipApproved');
+        
+        // If accessing Elite Account page directly
+        if (window.location.pathname.includes('account-gate.html')) {
+            if (membershipSubmitted === 'false' || !membershipSubmitted) {
+                // Show Access Denied page (already on account-gate.html)
+                return;
+            } else if (membershipSubmitted === 'true' && membershipApproved !== 'true') {
+                // Show under review message
+                showUnderReviewMessage();
+            } else if (membershipApproved === 'true') {
+                // Redirect to elite dashboard
+                window.location.href = 'elite-dashboard.html';
+            }
+        }
+    }
+
+    function showUnderReviewMessage() {
+        document.body.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #0a0a0a; font-family: Inter, sans-serif;">
+                <div style="text-align: center; padding: 40px; max-width: 600px;">
+                    <div style="font-size: 4rem; color: #FFD700; margin-bottom: 20px;">⏳</div>
+                    <h1 style="color: #FFD700; font-size: 2.5rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 3px;" data-translate="app_under_review_title">
+                        INFORMATION UNDER REVIEW
+                    </h1>
+                    <p style="color: #e0e0e0; font-size: 1.2rem; margin-bottom: 30px;" data-translate="app_review_desc_3">
+                        BY SECRETARY GENERAL
+                    </p>
+                    <div style="background: rgba(255, 215, 0, 0.1); border: 2px solid #FFD700; border-radius: 15px; padding: 30px; margin-bottom: 30px;">
+                        <p style="color: #a0a0a0; line-height: 1.6;">
+                            <span data-translate="app_review_desc_4">Your membership application is currently under review by the Secretary General.</span> 
+                            <span data-translate="app_review_desc_5">This process typically takes 24-72 hours. You will receive notification once your Elite Account access has been approved.</span>
+                        </p>
+                    </div>
+                    <a href="index.html" style="background: #FFD700; color: #000; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;" data-translate="return_to_portal">
+                        Return to Portal
+                    </a>
+                </div>
+            </div>
+        `;
+
+        // Force translation execution on newly inserted DOM elements
+        if (typeof window.applyDataTranslations === 'function') {
+            window.applyDataTranslations(document);
+        } else if (typeof window.smartTranslateContainer === 'function') {
+            window.smartTranslateContainer(document.body);
+        }
+    }
+
+    // Admin function to approve membership (for testing)
+    function approveMembership() {
+        const approvalDateTime = new Date().toISOString();
+        const userEmail = localStorage.getItem('gate_email') || localStorage.getItem('userEmail');
+        
+        // Set in localStorage
+        localStorage.setItem('membershipApproved', 'true');
+        localStorage.setItem('approvalDate', approvalDateTime);
+        
+        // Also save to Firestore for Elite balance system
+        if (userEmail && typeof firebase !== 'undefined') {
+            firebase.firestore().collection('members').doc(userEmail).update({
+                approved_at: firebase.firestore.Timestamp.now(), // Use Timestamp field
+                approvalDate: approvalDateTime,
+                isApproved: true,
+                status: 'approved'
+            }).then(() => {
+                console.log('Membership approved with timestamp saved to Firestore');
+            }).catch((error) => {
+                console.error('Error saving approval to Firestore:', error);
+            });
+        }
+        
+        console.log('Membership approved for testing');
+    }
+
+    // Admin function to reset membership (for testing)
+    function resetMembership() {
+        localStorage.removeItem('membershipSubmitted');
+        localStorage.removeItem('membershipApproved');
+        localStorage.removeItem('submissionDate');
+        localStorage.removeItem('approvalDate');
+        console.log('Membership status reset for testing');
+    }
+
+    // Make admin functions available in console for testing
+    window.approveMembership = approveMembership;
+    window.resetMembership = resetMembership;
+</script>
+    <script src="local-router.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Force retrieval of current active language
+        const activeLang = localStorage.getItem('detected_language') || 'pt';
+        localStorage.setItem('detected_language', activeLang);
+
+        // 2. Inject dynamic user name while keeping wrapper intact
+        const userName = localStorage.getItem('user_name') || 'PANEL OSCAR BOB';
+        const nameElement = document.getElementById('user-display-name');
+        if (nameElement) {
+            nameElement.textContent = userName;
+        }
+
+        // 3. Immediately trigger data-translate scan
+        if (typeof window.applyDataTranslations === 'function') {
+            window.applyDataTranslations(document);
+        } else if (typeof window.smartTranslateContainer === 'function') {
+            window.smartTranslateContainer(document.body);
+        }
+    });
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>◆</span>
+    </div>
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+

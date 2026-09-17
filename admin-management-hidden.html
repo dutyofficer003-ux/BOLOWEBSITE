@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Management Panel - Illuminati Elite</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --dark-bg: #0a0a14;
+            --darker-bg: #05050a;
+            --gold: #d4af37;
+            --light-gold: #e6c229;
+            --text: #e0e0e0;
+            --card-bg: rgba(20, 20, 35, 0.8);
+            --accent-red: #ad4f37;
+            --success-green: #28a745;
+            --pending-yellow: #ffc107;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .admin-header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 2px solid var(--gold);
+            margin-bottom: 30px;
+        }
+
+        .admin-header h1 {
+            color: var(--gold);
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .admin-header p {
+            color: var(--text);
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .members-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .member-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .member-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .member-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .member-info h3 {
+            color: var(--gold);
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .member-info .email {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .member-info .date {
+            color: var(--text);
+            opacity: 0.6;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: var(--pending-yellow);
+            color: #000;
+        }
+
+        .status-approved {
+            background: var(--success-green);
+            color: #fff;
+        }
+
+        .status-elite {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .member-message {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 3px solid var(--gold);
+        }
+
+        .member-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .btn-approve {
+            background: var(--success-green);
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-elite {
+            background: var(--gold);
+            color: black;
+        }
+
+        .btn-elite:hover {
+            background: #c4a028;
+            transform: translateY(-2px);
+        }
+
+        .btn-reject {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background: #9a4330;
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        .no-members {
+            text-align: center;
+            padding: 50px;
+            color: var(--text);
+            opacity: 0.6;
+        }
+
+        .user-id {
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            color: var(--light-gold);
+        }
+
+        .refresh-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--gold);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .refresh-btn:hover {
+            background: var(--light-gold);
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: var(--text);
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <button class="refresh-btn" onclick="loadMembers()" data-translate><span data-translate>Refresh</span></button>
+    
+    <div class="admin-header">
+        <h1 data-translate>Admin Management Panel</h1>
+        <p data-translate>Illuminati Elite Membership Control Center</p>
+    </div>
+
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-number" id="totalCount">0</div>
+            <div class="stat-label" data-translate>Total Applications</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="pendingCount">0</div>
+            <div class="stat-label" data-translate>Pending Review</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="approvedCount">0</div>
+            <div class="stat-label" data-translate>Approved</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="eliteCount">0</div>
+            <div class="stat-label" data-translate>Elite Status</div>
+        </div>
+    </div>
+
+    <div class="members-container">
+        <div id="membersList" class="loading">
+            <span data-translate>Loading member applications...</span>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO174C8QbyOodW1e5aQ5PW2pWJ01tO7jE",
+            authDomain: "illuminati---oversight.firebaseapp.com",
+            projectId: "illuminati---oversight",
+            storageBucket: "illuminati---oversight.firebasestorage.app",
+            messagingSenderId: "307854810652",
+            appId: "1:307854810652:web:196f634b4f0ebf4be949d9"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Load members from Firebase
+        function loadMembers() {
+            const membersList = document.getElementById('membersList');
+            membersList.innerHTML = '<div class="loading"><span data-translate>Loading member applications...</span></div>';
+
+            db.collection('members').orderBy('applicationDate', 'desc').get()
+                .then((querySnapshot) => {
+                    if (querySnapshot.empty) {
+                        membersList.innerHTML = '<div class="no-members"><span data-translate>No member applications found.</span></div>';
+                        updateStats([]);
+                        return;
+                    }
+
+                    const members = [];
+                    let html = '';
+
+                    querySnapshot.forEach((doc) => {
+                        const member = doc.data();
+                        member.id = doc.id;
+                        members.push(member);
+
+                        html += createMemberCard(member);
+                    });
+
+                    membersList.innerHTML = html;
+                    updateStats(members);
+                })
+                .catch((error) => {
+                    console.error("Error loading members:", error);
+                    membersList.innerHTML = '<div class="no-members"><span data-translate>Error loading members. Please check Firebase configuration.</span></div>';
+                });
+        }
+
+        // Create member card HTML
+        function createMemberCard(member) {
+            const statusClass = member.isElite ? 'status-elite' : 
+                              member.isApproved ? 'status-approved' : 'status-pending';
+            const statusText = member.isElite ? 'Elite' : 
+                              member.isApproved ? 'Approved' : 'Pending';
+
+            return `
+                <div class="member-card">
+                    <div class="member-header">
+                        <div class="member-info">
+                            <h3 data-translate>${member.email}</h3>
+                            <div class="email">User ID: <span class="user-id" data-translate>${member.userId}</span></div>
+                            <div class="date">Applied: ${member.applicationDate}</div>
+                        </div>
+                        <div class="status-badge ${statusClass}">${statusText}</div>
+                    </div>
+                    
+                    <div class="member-message">
+                        <strong data-translate>Application Message:</strong><br>
+                        ${member.message}
+                    </div>
+                    
+                    <div class="member-actions">
+                        ${!member.isApproved ? `<button class="btn btn-approve" onclick="approveMember('${member.id}')" data-translate><span data-translate>Approve Application</span></button>` : ''}
+                        ${member.isApproved && !member.isElite ? `<button class="btn btn-elite" onclick="activateEliteStatus('${member.id}')" data-translate><span data-translate>Activate Elite Status</span></button>` : ''}
+                        ${member.isElite ? '<button class="btn btn-elite" disabled data-translate><span data-translate>Elite Status Active</span></button>' : ''}
+                        <button class="btn btn-reject" onclick="rejectMember('${member.id}')" data-translate><span data-translate>Reject Application</span></button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update statistics
+        function updateStats(members) {
+            document.getElementById('totalCount').textContent = members.length;
+            document.getElementById('pendingCount').textContent = members.filter(m => !m.isApproved).length;
+            document.getElementById('approvedCount').textContent = members.filter(m => m.isApproved && !m.isElite).length;
+            document.getElementById('eliteCount').textContent = members.filter(m => m.isElite).length;
+        }
+
+        // Approve member
+        function approveMember(memberId) {
+            db.collection('members').doc(memberId).update({
+                isApproved: true,
+                status: 'approved',
+                approved_at: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                console.log("Member approved successfully");
+                loadMembers();
+            })
+            .catch((error) => {
+                console.error("Error approving member:", error);
+            });
+        }
+
+        // Activate Elite Status
+        function activateEliteStatus(memberId) {
+            db.collection('members').doc(memberId).update({
+                isElite: true,
+                status: 'elite'
+            })
+            .then(() => {
+                console.log("Elite status activated successfully");
+                loadMembers();
+            })
+            .catch((error) => {
+                console.error("Error activating elite status:", error);
+            });
+        }
+
+        // Reject member
+        function rejectMember(memberId) {
+            if (confirm("<span data-translate>Are you sure you want to reject this application?</span>")) {
+                db.collection('members').doc(memberId).delete()
+                    .then(() => {
+                        console.log("Member rejected and deleted");
+                        loadMembers();
+                    })
+                    .catch((error) => {
+                        console.error("Error rejecting member:", error);
+                    });
+            }
+        }
+
+        // Load members on page load
+        loadMembers();
+
+        // Auto-refresh every 30 seconds
+        setInterval(loadMembers, 30000);
+    </script>
+    <script src="global-audio.js"></script>
+</body>
+</html>
+
+
+
+

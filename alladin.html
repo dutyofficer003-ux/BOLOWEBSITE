@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALLADIN AI | BlackRock-Grade Global Intelligence Telemetry</title>
+    <link rel="stylesheet" href="global.css">
+    <style>
+        :root {
+            --bg-dark: #000000;
+            --panel-bg: rgba(10, 10, 15, 0.85);
+            --border-gold: rgba(255, 215, 0, 0.35);
+            --border-gold-bright: #FFD700;
+            --text-gold: #FFD700;
+            --accent-red: #DC143C;
+            --accent-red-glow: rgba(220, 20, 60, 0.4);
+            --neon-blue: #00e5ff;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 100% 100%, rgba(220, 20, 60, 0.06) 0%, transparent 50%),
+                linear-gradient(to bottom, #000000, #05050a);
+            color: #e2e8f0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Header */
+        .alladin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background: rgba(0, 0, 0, 0.92);
+            border-bottom: 1px solid var(--border-gold);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid var(--border-gold-bright);
+            box-shadow: 0 0 14px rgba(255, 215, 0, 0.5);
+            background: radial-gradient(circle, #FFD700 0%, #DC143C 70%, #000 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .brand-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--text-gold);
+            text-transform: uppercase;
+        }
+
+        .brand-sub {
+            font-size: 0.72rem;
+            color: #a0aec0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid var(--border-gold);
+            color: var(--text-gold);
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 215, 0, 0.25);
+            border-color: var(--border-gold-bright);
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+            color: #fff;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            background: rgba(0, 229, 255, 0.05);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            color: var(--neon-blue);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00ff88;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00ff88;
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        /* Layout Grid */
+        .alladin-container {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1700px;
+            margin: 0 auto;
+            width: 100%;
+            flex-grow: 1;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 1100px) {
+            .alladin-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Telemetry Sidebar */
+        .telemetry-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .telemetry-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-gold);
+            border-left: 3px solid var(--border-gold-bright);
+            border-radius: 6px;
+            padding: 15px;
+            backdrop-filter: blur(12px);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .telemetry-card:hover {
+            border-color: var(--border-gold-bright);
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.15);
+        }
+
+        .telemetry-card.alert-card {
+            border-left-color: var(--accent-red);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 6px;
+        }
+
+        .card-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-gold);
+            text-transform: uppercase;
+        }
+
+        .card-val {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 4px 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .card-meta {
+            font-size: 0.75rem;
+            color: #8899a6;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--border-gold-bright), var(--accent-red));
+            width: 78%;
+        }
+
+        /* Main Chat Workspace */
+        .chat-workspace {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-gold);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 120px);
+            min-height: 600px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 12px 20px;
+            background: rgba(5, 5, 10, 0.95);
+            border-bottom: 1px solid var(--border-gold);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-icon {
+            color: var(--border-gold-bright);
+            font-size: 1.2rem;
+        }
+
+        .chat-stream-box {
+            flex-grow: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            scroll-behavior: smooth;
+        }
+
+        /* Messages */
+        .msg-bubble {
+            max-width: 85%;
+            padding: 18px 22px;
+            border-radius: 8px;
+            line-height: 1.8;
+            font-size: 0.95rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .msg-bubble p {
+            margin: 16px 0;
+            line-height: 1.8;
+        }
+
+        .msg-bubble h1, .msg-bubble h2, .msg-bubble h3 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .msg-bubble li {
+            margin: 12px 0;
+            line-height: 1.7;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .msg-system {
+            align-self: flex-start;
+            background: rgba(10, 10, 20, 0.95);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-left: 4px solid var(--border-gold-bright);
+            color: #e2e8f0;
+        }
+
+        .msg-user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(220, 20, 60, 0.3));
+            border: 1px solid var(--border-gold);
+            color: #ffffff;
+        }
+
+        .msg-bubble img, .msg-bubble video {
+            border-radius: 6px;
+            border: 1px solid var(--border-gold);
+            margin-top: 10px;
+            max-width: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+
+        .shortcut-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .action-chip {
+            background: rgba(255, 215, 0, 0.15);
+            border: 1px solid var(--border-gold-bright);
+            color: var(--text-gold);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .action-chip:hover {
+            background: var(--border-gold-bright);
+            color: #000;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Control Footer */
+        .chat-input-bar {
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.98);
+            border-top: 1px solid var(--border-gold);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quick-prompts {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .prompt-pill {
+            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #a0aec0;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .prompt-pill:hover {
+            border-color: var(--border-gold);
+            color: var(--text-gold);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .input-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .alladin-input {
+            flex-grow: 1;
+            background: rgba(5, 5, 10, 0.9);
+            border: 1px solid var(--border-gold);
+            border-radius: 6px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .alladin-input:focus {
+            border-color: var(--border-gold-bright);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, var(--border-gold-bright), var(--accent-red));
+            border: none;
+            color: #fff;
+            padding: 0 24px;
+            border-radius: 6px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover {
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            transform: translateY(-1px);
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="alladin-header">
+        <div class="brand-section">
+            <div class="brand-logo">A</div>
+            <div>
+                <div class="brand-title">ALLADIN AI</div>
+                <div class="brand-sub">Central Nervous System of Modern Finance & Portal Intel</div>
+            </div>
+        </div>
+
+        <div class="header-nav">
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                <span>TELEMETRY ONLINE // MULTI-NODE GROUNDED</span>
+            </div>
+            <a href="/index.html" class="nav-btn">PORTAL HOME</a>
+            <a href="/membership.html" class="nav-btn">MEMBERSHIP</a>
+            <a href="/financial-protocol.html" class="nav-btn">FINANCIAL PROTOCOL</a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="alladin-container">
+
+        <!-- Telemetry Cards Sidebar -->
+        <aside class="telemetry-sidebar">
+            
+            <!-- Card 1 -->
+            <div class="telemetry-card">
+                <div class="card-header">
+                    <span class="card-title">Global Portfolios Monitored</span>
+                    <span style="color: #00ff88; font-size: 0.75rem;">LIVE</span>
+                </div>
+                <div class="card-val">$42,891,402,190</div>
+                <div class="card-meta">
+                    <span>Central Banking & Institutional Assets</span>
+                    <span style="color: var(--text-gold);">+3.4% YoY</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 88%;"></div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="telemetry-card alert-card">
+                <div class="card-header">
+                    <span class="card-title">Risk & Scenario Analysis</span>
+                    <span style="color: var(--accent-red); font-size: 0.75rem;">SHIELD ACTIVE</span>
+                </div>
+                <div class="card-val">0.04% TAIL RISK</div>
+                <div class="card-meta">
+                    <span>Post-WWII Rules Verification</span>
+                    <span style="color: var(--accent-red);">SECURE</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 14%; background: var(--accent-red);"></div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="telemetry-card">
+                <div class="card-header">
+                    <span class="card-title">Exposures Tracked</span>
+                    <span style="color: var(--text-gold); font-size: 0.75rem;">NODES ONLINE</span>
+                </div>
+                <div class="card-val">4 NODES ACTIVE</div>
+                <div class="card-meta">
+                    <span>Banking, Healthcare, Citizens, Politics</span>
+                    <span>100% GROUNDED</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 95%;"></div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="telemetry-card">
+                <div class="card-header">
+                    <span class="card-title">Market Performance Engine</span>
+                    <span style="color: #00e5ff; font-size: 0.75rem;">PREDICTIVE</span>
+                </div>
+                <div class="card-val">99.98% ACCURACY</div>
+                <div class="card-meta">
+                    <span>Alpha Optimization Stream</span>
+                    <span style="color: #00e5ff;">OPTIMAL</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 99%; background: #00e5ff;"></div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="telemetry-card">
+                <div class="card-header">
+                    <span class="card-title">Compliance & Operations</span>
+                    <span style="color: #00ff88; font-size: 0.75rem;">GATE VERIFIED</span>
+                </div>
+                <div class="card-val">ASCENSION LEVEL 5</div>
+                <div class="card-meta">
+                    <span>Zero-Trust Validation</span>
+                    <span style="color: #00ff88;">PASSING</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%; background: #00ff88;"></div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Main Chat Console -->
+        <section class="chat-workspace">
+            <div class="chat-header">
+                <div class="chat-title-group">
+                    <span class="chat-icon">❖</span>
+                    <span style="font-weight: 700; letter-spacing: 1px; color: var(--text-gold);">ALLADIN INTELLIGENCE FEED</span>
+                </div>
+                <div id="alladin-location-tag" style="font-size: 0.75rem; color: #8899a6; letter-spacing: 1px;">
+                    INITIALIZING GEOLOCATION...
+                </div>
+            </div>
+
+            <!-- Chat Message Stream -->
+            <div class="chat-stream-box" id="alladin-chat-stream">
+                <div class="msg-bubble msg-system">
+                    <div style="font-weight: 700; color: var(--border-gold-bright); margin-bottom: 4px; font-size: 0.8rem; letter-spacing: 1px;">
+                        SYSTEM INIT // ALLADIN CENTRAL ENGINE
+                    </div>
+                    I am ALLADIN, the central nervous system of modern finance and global portal intelligence. I can help you navigate site protocols, member benefits, and distinguish institutional reality from internet myth.
+                    <div class="shortcut-container">
+                        <a href="/membership.html" class="action-chip">MEMBERSHIP APPLICATION ➔</a>
+                        <a href="/financial-protocol.html" class="action-chip">FINANCIAL PROTOCOL ➔</a>
+                        <a href="/conduct-intel.html" class="action-chip">CONDUCT & INTEL ➔</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Controls -->
+            <div class="chat-input-bar">
+                <div class="quick-prompts">
+                    <div class="prompt-pill" onclick="window.alladinEngine.sendQuickPrompt('Explain Illuminati origins and separate reality from myth')">Origins: Reality vs Myth</div>
+                    <div class="prompt-pill" onclick="window.alladinEngine.sendQuickPrompt('What are the official membership application steps and benefits?')">Membership & Benefits</div>
+                    <div class="prompt-pill" onclick="window.alladinEngine.sendQuickPrompt('How does the Ascension Protocol and 369/528 Hz frequencies work?')">Ascension 369/528 Hz</div>
+                    <div class="prompt-pill" onclick="window.alladinEngine.sendQuickPrompt('How does the Financial Protocol operate?')">Financial Protocol</div>
+                </div>
+
+                <div class="input-row">
+                    <input type="text" id="alladin-user-input" class="alladin-input" placeholder="Ask ALLADIN" onkeypress="if(event.key === 'Enter') window.handleSendClick()">
+                    <button class="send-btn" onclick="window.handleSendClick()">EXECUTE</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="alladin-engine.js?v=20260905"></script>
+</body>
+</html>
+
+
+
+

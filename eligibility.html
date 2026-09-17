@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Eligibility Requirements | Illuminati</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+            --gold-color: #FFD700;
+            --gold-hover: #FFA500;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
+            --shadow-color: rgba(0, 0, 0, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: var(--gold-color);
+            border: 2px solid var(--gold-color);
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .back-btn:hover {
+            background: var(--gold-color);
+            color: var(--bg-color);
+            transform: scale(1.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold-color), var(--gold-hover));
+            opacity: 0.7;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .requirement-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid var(--gold-color);
+        }
+
+        .requirement-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            color: var(--gold-color);
+        }
+
+        .requirement-text {
+            flex: 1;
+        }
+
+        .requirement-text h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--gold-color);
+            margin-bottom: 10px;
+        }
+
+        .requirement-text p {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        .verification-box {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+            border: 2px solid var(--gold-color);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .verification-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .verification-steps {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .step-number {
+            background: var(--gold-color);
+            color: var(--bg-color);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            color: #e0e0e0;
+        }
+
+        .warning-box {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            border-left: 4px solid #ff4444;
+        }
+
+        .warning-title {
+            color: #ff4444;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+                letter-spacing: 3px;
+            }
+
+            .content-section {
+                padding: 25px;
+            }
+
+            .requirement-item {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .requirement-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="Terms & Conditions.html" class="back-btn">
+            ← Back to Hub
+        </a>
+
+        <div class="header">
+            <h1 data-translate>Eligibility Requirements</h1>
+            <p data-translate>Strict age verification and Secretary General approval process for membership consideration</p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title" data-translate>Sovereign Eligibility Requirements</h2>
+            <ul class="requirement-list">
+                <li class="requirement-item">
+                    <div class="requirement-icon">🔞</div>
+                    <div class="requirement-text">
+                        <h3 data-translate>The 35+ Rule</h3>
+                        <p data-translate>Strict Age 35+ requirement with no exceptions. Only individuals exactly 35 years of age or older are eligible for sovereign membership consideration. Age verification requires official government documentation.</p>
+                    </div>
+                </li>
+                <li class="requirement-item">
+                    <div class="requirement-icon">👤</div>
+                    <div class="requirement-text">
+                        <h3 data-translate>Secretary General Verification</h3>
+                        <p data-translate>All membership procedures must be initiated by contacting the Secretary General directly. No third-party agents or intermediaries are authorized to process applications.</p>
+                    </div>
+                </li>
+                <li class="requirement-item">
+                    <div class="requirement-icon">🌍</div>
+                    <div class="requirement-text">
+                        <h3 data-translate>Global Standing</h3>
+                        <p data-translate>Applicants must demonstrate significant influence or standing within their respective fields of operation. International recognition preferred for elite-tier consideration.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title" data-translate>The Struggle Clause</h2>
+            <p style="color: var(--gold-color); font-weight: 600; text-align: center; margin-bottom: 25px;" data-translate>"Potential is the First Currency"</p>
+            <ul class="requirement-list">
+                <li class="requirement-item">
+                    <div class="requirement-icon">💡</div>
+                    <div class="requirement-text">
+                        <h3 data-translate>Provision for the Struggling</h3>
+                        <p data-translate>Dedicated provisions for applicants in financial hardship who demonstrate exceptional potential and alignment with the Architect's vision.</p>
+                    </div>
+                </li>
+                <li class="requirement-item">
+                    <div class="requirement-icon">�</div>
+                    <div class="requirement-text">
+                        <h3 data-translate>Talent-Based Sponsorship</h3>
+                        <p data-translate>Struggling applicants may apply for deferred annual quota until their first successful business cycle under the Architect's influence.</p>
+                    </div>
+                </li>
+                <li class="requirement-item">
+                    <div class="requirement-icon">📈</div>
+                    <div class="requirement-text">
+                        <h3 data-translate>First Cycle Support</h3>
+                        <p data-translate>Comprehensive support system including Influence Injection and strategic positioning to ensure successful initial business ventures.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="verification-box">
+            <h2 class="verification-title" data-translate>Secretary General Verification Process</h2>
+            <p data-translate>All membership applications must be initiated through direct contact with the Secretary General. No third-party agents or intermediaries are authorized to process applications.</p>
+            
+            <div class="verification-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-text" data-translate>Initial contact through official channels</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-text" data-translate>Submission of comprehensive eligibility documentation</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-text" data-translate>Background verification and security clearance</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-text" data-translate>Secretary General personal review and approval</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-text" data-translate>Formal acceptance and integration protocol</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="warning-box">
+            <h3 class="warning-title" data-translate>Critical Notice</h3>
+            <p data-translate>Any attempts to circumvent the age requirement or verification process will result in immediate and permanent disqualification. The Secretary General's decision is final and cannot be appealed.</p>
+        </div>
+    </div>
+
+    <script>
+        // Add cinematic entrance animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.content-section, .verification-box, .warning-box');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(50px)';
+                setTimeout(() => {
+                    section.style.transition = 'all 0.8s ease';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, index * 300);
+            });
+        });
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+
