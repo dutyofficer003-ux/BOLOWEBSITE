@@ -395,7 +395,7 @@
             </a>
         </div>
 
-        <form action="https://formspree.io/f/xojjagee" method="POST">
+        <form action="https://formspree.io/f/mzedgvop" method="POST">
             <label data-translate class="field-label">Full Legal Name (Per National ID)</label>
            <input type="text" id="full-name" name="full_name" oninput="this.value = this.value.replace(/[0-9]/g, '')" placeholder="Full Legal Identity" required data-translate>
 
@@ -833,7 +833,7 @@
         const firestoreTask = db.collection('members').doc(email).set(memberData);
         
         // Task 2 (Formspree): Use fetch() to post entire form data to formspree.io
-        const formspreeTask = fetch('https://formspree.io/f/xojjagee', {
+        const formspreeTask = fetch('https://formspree.io/f/mzedgvop', {
             method: 'POST',
             body: formData,
             headers: {
