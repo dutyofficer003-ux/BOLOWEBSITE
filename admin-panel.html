@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin Panel | Illuminati</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <style>
+        :root {
+            --bg-color: #000;
+            --text-color: #fff;
+            --gold-color: #FFD700;
+            --border-color: #333;
+            --success-color: #00ff88;
+            --danger-color: #ff0044;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .auth-section {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--gold-color), #FFA500);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .users-section {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            animation: slideUp 1s ease-out;
+        }
+
+        .users-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .user-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .user-card:hover {
+            border-color: var(--gold-color);
+            transform: translateY(-5px);
+        }
+
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 1.1rem;
+        }
+
+        .user-email {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .user-date {
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        .access-toggle {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .access-granted {
+            background: var(--success-color);
+            color: var(--bg-color);
+        }
+
+        .access-denied {
+            background: var(--danger-color);
+            color: var(--text-color);
+        }
+
+        .access-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Global Controls Styles */
+        .global-controls {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid var(--gold-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            animation: slideUp 1s ease-out;
+        }
+
+        .controls-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .control-info {
+            flex: 1;
+        }
+
+        .control-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        .control-description {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .control-action {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #666;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.active {
+            background: var(--success-color);
+        }
+
+        .status-indicator.locked {
+            background: var(--danger-color);
+        }
+
+        .status-text {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .global-toggle {
+            background: var(--danger-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .global-toggle.active {
+            background: var(--success-color);
+        }
+
+        .global-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .withdrawal-toggle {
+            background: var(--danger-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .withdrawal-toggle.enabled {
+            background: var(--success-color);
+        }
+
+        .withdrawal-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .user-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-top: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+
+            .users-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 data-translate>🔐 ADMIN PANEL</h1>
+        </div>
+
+        <!-- Global Kill-Switch Section -->
+        <div class="global-controls" id="globalControls">
+            <h2 class="controls-title" data-translate>🌐 GLOBAL SYSTEM CONTROLS</h2>
+            <div class="control-item">
+                <div class="control-info">
+                    <div class="control-label" data-translate>Global Withdrawal Status</div>
+                    <div class="control-description" data-translate>Master control for all user withdrawals</div>
+                </div>
+                <div class="control-action">
+                    <div class="system-status" id="globalStatus">
+                        <span class="status-indicator" id="statusIndicator" data-translate></span>
+                        <span class="status-text" id="statusText" data-translate>Checking...</span>
+                    </div>
+                    <button class="global-toggle" id="globalToggle" onclick="toggleGlobalWithdrawal()" data-translate>
+                        <i class="fas fa-power-off"></i>
+                        <span id="toggleText" data-translate>Enable</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-section" id="authSection">
+            <input type="password" class="auth-input" id="adminPassword" placeholder="Enter Admin Password" data-translate>
+            <button class="auth-btn" onclick="authenticateAdmin()" data-translate><span data-translate>Authenticate</span></button>
+        </div>
+
+        <div class="users-section hidden" id="usersSection">
+            <h2 class="users-title" data-translate>👥 Member Applications</h2>
+            <div class="users-grid" id="usersGrid">
+                <!-- Users will be loaded here from Firebase -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO174C8QbyOodW1e5aQ5PW2pWJ01tO7jE",
+            authDomain: "illuminati---oversight.firebaseapp.com",
+            projectId: "illuminati---oversight",
+            storageBucket: "illuminati---oversight.firebasestorage.app",
+            messagingSenderId: "307854810652",
+            appId: "1:307854810652:web:196f634b4f0ebf4be949d9"
+        };
+
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+        
+        console.log(" Admin panel initialized with Firebase config:");
+        console.log(" Project ID:", firebaseConfig.projectId);
+        console.log(" API Key:", firebaseConfig.apiKey.substring(0, 10) + "...");
+        
+        // Test Firebase connection
+        db.collection('members').limit(1).get().then((testSnapshot) => {
+            console.log("✅ Firebase connection test successful");
+            console.log("📊 Test query result:", testSnapshot.size, "documents found");
+        }).catch((error) => {
+            console.error("❌ Firebase connection test failed:", error);
+        });
+
+        let isAuthenticated = false;
+        let globalWithdrawalEnabled = false;
+
+        // Admin authentication
+        function authenticateAdmin() {
+            const password = document.getElementById('adminPassword').value;
+            
+            // Simple password protection (in production, use proper auth)
+            if (password === 'IlluminatiAdmin2026') {
+                isAuthenticated = true;
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('usersSection').classList.remove('hidden');
+                loadUsers();
+            } else {
+                alert('Invalid password. Access denied.');
+            }
+        }
+
+        // Load user stats for each user
+        function loadUserStats(userId) {
+            // Load referral count
+            const referralId = generateReferralId(userId);
+            db.collection('referrals')
+                .where('referrerId', '==', referralId)
+                .get()
+                .then((referralSnapshot) => {
+                    const referralCount = referralSnapshot.size;
+                    const referralElement = document.getElementById(`referralCount_${userId}`);
+                    if (referralElement) {
+                        referralElement.textContent = referralCount;
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error loading referral count:', error);
+                });
+
+            // Load payment proofs count
+            db.collection('payment_proofs')
+                .where('userEmail', '==', userId)
+                .get()
+                .then((paymentSnapshot) => {
+                    const paymentCount = paymentSnapshot.size;
+                    const paymentElement = document.getElementById(`paymentProofs_${userId}`);
+                    if (paymentElement) {
+                        paymentElement.textContent = paymentCount;
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error loading payment proofs:', error);
+                });
+        }
+
+        // Generate referral ID from email
+        function generateReferralId(email) {
+            if (!email) return 'ELITE000';
+            const cleanEmail = email.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+            const hash = cleanEmail.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            const uniqueId = (hash % 100000).toString().padStart(5, '0');
+            return `ELITE${uniqueId}`;
+        }
+
+        // Load users from Firestore
+        function loadUsers() {
+            const usersGrid = document.getElementById('usersGrid');
+            usersGrid.innerHTML = '<div style="text-align: center; color: #888;">Loading users...</div>';
+
+            console.log("🔍 Loading users from Firebase...");
+            console.log("📊 Collection: members");
+            console.log("🔗 Project:", firebaseConfig.projectId);
+            console.log("🔐 Authenticated:", isAuthenticated);
+
+            db.collection('members').get().then((querySnapshot) => {
+                console.log("📋 Query result:", querySnapshot);
+                console.log("📊 Documents found:", querySnapshot.size);
+                console.log("📋 Query metadata:", querySnapshot.metadata);
+                
+                usersGrid.innerHTML = '';
+                
+                // Show debug info on page
+                const debugInfo = document.createElement('div');
+                debugInfo.style.cssText = 'background: rgba(255,215,0,0.1); border: 1px solid #FFD700; padding: 10px; margin: 10px 0; border-radius: 5px; color: #FFD700; font-family: monospace; font-size: 12px;';
+                debugInfo.innerHTML = `
+                    <strong>🔍 ADMIN DEBUG:</strong><br>
+                    Project: ${firebaseConfig.projectId}<br>
+                    Authenticated: ${isAuthenticated}<br>
+                    Documents Found: ${querySnapshot.size}<br>
+                    Query Success: ${querySnapshot.metadata ? '✅' : '❌'}<br>
+                    Timestamp: ${new Date().toISOString()}
+                `;
+                usersGrid.appendChild(debugInfo);
+                
+                if (querySnapshot.empty) {
+                    usersGrid.innerHTML += '<div style="text-align: center; color: #ff0044; padding: 20px;">No member applications found. Check Firebase configuration.</div>';
+                    console.error("❌ No documents found in members collection");
+                    return;
+                }
+                
+                querySnapshot.forEach((doc) => {
+                    const userData = doc.data();
+                    const userId = doc.id;
+                    console.log("👤 User data:", userData);
+                    
+                    const userCard = document.createElement('div');
+                    userCard.className = 'user-card';
+                    userCard.innerHTML = `
+                        <div class="user-info">
+                            <div>
+                                <div class="user-name">${userData.full_name || 'Unknown'}</div>
+                                <div class="user-email">${userData.email || 'No email'}</div>
+                                <div class="user-phone">📞 ${userData.phone || 'No phone'}</div>
+                                <div class="user-country">🌍 ${userData.country || 'Unknown'}</div>
+                                <div class="user-date">Applied: ${userData.applicationDate || 'Unknown date'}</div>
+                                <div class="user-status">Status: ${userData.isApproved ? '✅ Approved' : '⏳ Pending'}</div>
+                            </div>
+                            <button class="access-toggle ${userData.isApproved ? 'access-granted' : 'access-denied'}" 
+                                    onclick="grantEliteAccess('${userId}', ${userData.isApproved})" data-translate>
+                                ${userData.isApproved ? '✓ ELITE ACCESS GRANTED' : 'GRANT ELITE ACCESS'}
+                            </button>
+                        </div>
+                    `;
+                    
+                    usersGrid.appendChild(userCard);
+                });
+            }).catch((error) => {
+                console.error('❌ Firebase Error loading users:', error);
+                console.error('Error details:', error.code, error.message);
+                usersGrid.innerHTML = `
+                    <div style="text-align: center; color: #ff0044; padding: 20px;">
+                        <h3 data-translate>❌ Firebase Connection Error</h3>
+                        <p data-translate>Failed to load member data</p>
+                        <p data-translate><strong>Error:</strong> ${error.message}</p>
+                        <p data-translate><strong>Code:</strong> ${error.code || 'Unknown'}</p>
+                        <button onclick="location.reload()" style="background: #FFD700; color: #000; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" data-translate>
+                            Retry Connection
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        // Toggle Global Withdrawal (Kill-Switch)
+        function toggleGlobalWithdrawal() {
+            const newStatus = !globalWithdrawalEnabled;
+            
+            // Update system_settings/controls document
+            db.collection('system_settings').doc('controls').set({
+                globalWithdrawalEnabled: newStatus,
+                lastUpdated: new Date().toISOString(),
+                updatedBy: 'admin'
+            }).then(() => {
+                globalWithdrawalEnabled = newStatus;
+                updateGlobalStatusUI(newStatus);
+                console.log(`✅ Global withdrawal ${newStatus ? 'ENABLED' : 'DISABLED'}`);
+                alert(`✅ Global Withdrawal ${newStatus ? 'ENABLED' : 'DISABLED'} successfully!`);
+            }).catch((error) => {
+                console.error('Error updating global withdrawal:', error);
+                alert('Error updating global withdrawal');
+            });
+        }
+
+        // Toggle Individual User Withdrawal
+        function toggleWithdrawal(userId, currentStatus) {
+            const newStatus = !currentStatus;
+            
+            db.collection('members').doc(userId).update({
+                canWithdraw: newStatus
+            }).then(() => {
+                console.log(`✅ Withdrawal ${newStatus ? 'ENABLED' : 'DISABLED'} for user: ${userId}`);
+                alert(`✅ Withdrawal ${newStatus ? 'ENABLED' : 'DISABLED'} for user successfully!`);
+                loadUsers(); // Refresh list
+            }).catch((error) => {
+                console.error('Error updating user withdrawal:', error);
+                alert('Error updating user withdrawal');
+            });
+        }
+
+        // Load Global Status
+        function loadGlobalStatus() {
+            db.collection('system_settings').doc('controls').get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        globalWithdrawalEnabled = doc.data().globalWithdrawalEnabled || false;
+                        updateGlobalStatusUI(globalWithdrawalEnabled);
+                    } else {
+                        // Create default controls document
+                        db.collection('system_settings').doc('controls').set({
+                            globalWithdrawalEnabled: false,
+                            created: new Date().toISOString(),
+                            createdBy: 'system'
+                        }).then(() => {
+                            globalWithdrawalEnabled = false;
+                            updateGlobalStatusUI(false);
+                        });
+                    }
+                }).catch((error) => {
+                    console.error('Error loading global status:', error);
+                });
+        }
+
+        // Update Global Status UI
+        function updateGlobalStatusUI(isEnabled) {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            const toggleBtn = document.getElementById('globalToggle');
+            const toggleText = document.getElementById('toggleText');
+            
+            if (isEnabled) {
+                statusIndicator.className = 'status-indicator active';
+                statusText.textContent = 'ACTIVE';
+                toggleBtn.className = 'global-toggle active';
+                toggleText.textContent = 'Disable';
+                toggleBtn.innerHTML = '<i class="fas fa-power-off"></i><span id="toggleText" data-translate>Disable</span>';
+            } else {
+                statusIndicator.className = 'status-indicator locked';
+                statusText.textContent = 'LOCKED';
+                toggleBtn.className = 'global-toggle';
+                toggleText.textContent = 'Enable';
+                toggleBtn.innerHTML = '<i class="fas fa-power-off"></i><span id="toggleText" data-translate>Enable</span>';
+            }
+        }
+
+        // Grant Elite Access
+        function grantEliteAccess(userId, currentStatus) {
+            const newStatus = !currentStatus;
+            
+            const updateData = {
+                isApproved: newStatus
+            };
+            
+            if (newStatus === true) {
+                updateData.approved_at = firebase.firestore.FieldValue.serverTimestamp();
+            }
+            
+            db.collection('members').doc(userId).update(updateData).then(() => {
+                console.log(`✅ Elite access ${newStatus ? 'granted' : 'revoked'} for user: ${userId}`);
+                alert(`✅ Elite Access ${newStatus ? 'GRANTED' : 'REVOKED'} successfully!`);
+                loadUsers(); // Refresh list
+            }).catch((error) => {
+                console.error('Error updating elite access:', error);
+                alert('Error updating elite access');
+            });
+        }
+
+        // Check authentication status on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load global status
+            loadGlobalStatus();
+            
+            // Auto-refresh users every 30 seconds
+            setInterval(() => {
+                if (isAuthenticated) {
+                    loadUsers();
+                }
+            }, 30000);
+            
+            // Real-time listener for immediate updates using onSnapshot
+            const unsubscribe = db.collection('members').onSnapshot((snapshot) => {
+                console.log("🔄 Real-time update detected!");
+                console.log("📊 Snapshot size:", snapshot.size);
+                console.log("📊 Document changes:", snapshot.docChanges().length);
+                
+                if (isAuthenticated) {
+                    // Update UI directly from snapshot for real-time updates
+                    const usersGrid = document.getElementById('usersGrid');
+                    usersGrid.innerHTML = '';
+                    
+                    // Show debug info
+                    const debugInfo = document.createElement('div');
+                    debugInfo.style.cssText = 'background: rgba(255,215,0,0.1); border: 1px solid #FFD700; padding: 10px; margin: 10px 0; border-radius: 5px; color: #FFD700; font-family: monospace; font-size: 12px;';
+                    debugInfo.innerHTML = `
+                        <strong>� REAL-TIME UPDATE:</strong><br>
+                        Documents Found: ${snapshot.size}<br>
+                        Changes: ${snapshot.docChanges().length}<br>
+                        Timestamp: ${new Date().toISOString()}
+                    `;
+                    usersGrid.appendChild(debugInfo);
+                    
+                    if (snapshot.empty) {
+                        usersGrid.innerHTML += '<div style="text-align: center; color: #ff0044; padding: 20px;">No member applications found.</div>';
+                        return;
+                    }
+                    
+                    snapshot.forEach((doc) => {
+                        const userData = doc.data();
+                        const userId = doc.id;
+                        console.log("👤 Real-time user data:", userData);
+                        
+                        const userCard = document.createElement('div');
+                        userCard.className = 'user-card';
+                        userCard.innerHTML = `
+                            <div class="user-info">
+                                <div>
+                                    <strong>${userData.full_name || 'N/A'}</strong><br>
+                                    📧 ${userData.email || 'N/A'}<br>
+                                    📱 ${userData.phone || 'N/A'}<br>
+                                    🌍 ${userData.country || 'N/A'}<br>
+                                    📅 ${userData.applicationDate || 'N/A'}<br>
+                                    <span class="status ${userData.isApproved ? 'approved' : 'pending'}" data-translate>
+                                        ${userData.isApproved ? '✅ APPROVED' : '⏳ PENDING'}
+                                    </span>
+                                </div>
+                                <div class="user-actions">
+                                    <button onclick="grantEliteAccess('${userId}', ${userData.isApproved})" 
+                                            class="btn ${userData.isApproved ? 'btn-danger' : 'btn-success'}" data-translate>
+                                        ${userData.isApproved ? 'REVOKE ACCESS' : 'GRANT ELITE ACCESS'}
+                                    </button>
+                                    <button class="withdrawal-toggle ${userData.canWithdraw ? 'enabled' : ''}" 
+                                            onclick="toggleWithdrawal('${userId}', ${userData.canWithdraw})" data-translate>
+                                        <i class="fas fa-${userData.canWithdraw ? 'unlock' : 'lock'}"></i>
+                                        ${userData.canWithdraw ? 'WITHDRAWAL ENABLED' : 'WITHDRAWAL DISABLED'}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="user-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label" data-translate>Referrals:</span>
+                                    <span class="stat-value" id="referralCount_${userId}" data-translate>0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label" data-translate>Payment Proofs:</span>
+                                    <span class="stat-value" id="paymentProofs_${userId}" data-translate>0</span>
+                                </div>
+                            </div>
+                        `;
+                        usersGrid.appendChild(userCard);
+                        
+                        // Load stats for this user
+                        loadUserStats(userId);
+                    });
+                }
+            }, (error) => {
+                console.error("❌ Real-time listener error:", error);
+            });
+            
+            // Add immediate refresh on page load
+            if (isAuthenticated) {
+                setTimeout(() => {
+                    console.log("🔄 Initial refresh triggered");
+                    loadUsers();
+                }, 1000);
+            }
+            
+            // Add manual refresh button and debug display
+            setTimeout(() => {
+                const refreshBtn = document.createElement('button');
+                refreshBtn.innerHTML = '🔄 REFRESH USERS';
+                refreshBtn.style.cssText = `
+                    position: fixed; 
+                    top: 10px; 
+                    left: 10px; 
+                    background: #FFD700; 
+                    color: #000; 
+                    border: none; 
+                    padding: 10px 15px; 
+                    border-radius: 5px; 
+                    cursor: pointer; 
+                    z-index: 9999; 
+                    font-weight: bold;
+                    font-size: 12px;
+                `;
+                refreshBtn.onclick = () => {
+                    console.log("🔄 Manual refresh triggered");
+                    loadUsers();
+                };
+                document.body.appendChild(refreshBtn);
+                
+                // Add Firebase debug display
+                const debugDiv = document.createElement('div');
+                debugDiv.style.cssText = `
+                    position: fixed; 
+                    bottom: 10px; 
+                    right: 10px; 
+                    background: rgba(0,0,0,0.8); 
+                    color: #00ff88; 
+                    padding: 10px; 
+                    border-radius: 5px; 
+                    font-size: 10px;
+                    z-index: 9998;
+                    max-width: 300px;
+                `;
+                debugDiv.innerHTML = `
+                    <div><strong>🔍 ADMIN DEBUG:</strong></div>
+                    <div>Auth: ${isAuthenticated ? '✅' : '❌'}</div>
+                    <div>Project: ${firebaseConfig.projectId}</div>
+                    <div>Collection: members</div>
+                `;
+                document.body.appendChild(debugDiv);
+            }, 2000);
+        });
+    </script>
+    <script src="global-audio.js"></script>
+</body>
+</html>
+
+
+
+

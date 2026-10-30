@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Privacy Policies | Illuminati</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+            --gold-color: #FFD700;
+            --gold-hover: #FFA500;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
+            --shadow-color: rgba(0, 0, 0, 0.8);
+            --privacy-blue: #0066cc;
+            --data-green: #00C851;
+            --security-purple: #8B008B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: var(--gold-color);
+            border: 2px solid var(--gold-color);
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .back-btn:hover {
+            background: var(--gold-color);
+            color: var(--bg-color);
+            transform: scale(1.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .privacy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .privacy-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .privacy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--shadow-color);
+            border-color: var(--gold-color);
+        }
+
+        .privacy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--privacy-blue), var(--data-green));
+            opacity: 0.7;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .policy-list {
+            list-style: none;
+        }
+
+        .policy-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--privacy-blue);
+        }
+
+        .policy-icon {
+            font-size: 1.3rem;
+            margin-right: 12px;
+            color: var(--privacy-blue);
+            flex-shrink: 0;
+        }
+
+        .policy-text {
+            flex: 1;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .policy-text strong {
+            color: var(--gold-color);
+            font-weight: 600;
+        }
+
+        .data-section {
+            background: linear-gradient(135deg, rgba(0, 200, 129, 0.1), rgba(0, 200, 129, 0.05));
+            border: 2px solid var(--data-green);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--data-green);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .data-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .data-item:hover {
+            transform: scale(1.05);
+            border-color: var(--gold-color);
+        }
+
+        .data-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .data-title {
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .data-desc {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .security-section {
+            background: linear-gradient(135deg, rgba(139, 0, 139, 0.1), rgba(139, 0, 139, 0.05));
+            border: 2px solid var(--security-purple);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .security-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .security-item:hover {
+            transform: scale(1.05);
+            border-color: var(--gold-color);
+        }
+
+        .compliance-banner {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+            border: 2px solid var(--gold-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .compliance-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .compliance-text {
+            color: #e0e0e0;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .compliance-text strong {
+            color: var(--gold-color);
+        }
+
+        @media (max-width: 768px) {
+            .privacy-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+                letter-spacing: 3px;
+            }
+
+            .data-grid, .security-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .data-grid, .security-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">
+            <span data-translate>← Back to Home</span>
+        </a>
+
+        <div class="header">
+            <h1 data-translate>Privacy Policies</h1>
+            <p data-translate>Comprehensive data protection and privacy protocols for Elite members</p>
+        </div>
+
+        <div class="privacy-grid">
+            <div class="privacy-card">
+                <h2 class="card-title" data-translate>Data Collection</h2>
+                <ul class="policy-list">
+                    <li class="policy-item">
+                        <div class="policy-icon">📊</div>
+                        <div class="policy-text">
+                            <strong data-translate>Personal Information</strong>: <span data-translate>Name, contact details, and identification documents</span>
+                        </div>
+                    </li>
+                    <li class="policy-item">
+                        <div class="policy-icon">💰</div>
+                        <div class="policy-text">
+                            <strong data-translate>Financial Data</strong>: <span data-translate>Account balances, transaction history, and payment methods</span>
+                        </div>
+                    </li>
+                    <li class="policy-item">
+                        <div class="policy-icon">🌐</div>
+                        <div class="policy-text">
+                            <strong data-translate>Usage Analytics</strong>: <span data-translate>Platform access patterns and engagement metrics</span>
+                        </div>
+                    </li>
+                    <li class="policy-item">
+                        <div class="policy-icon">🔐</div>
+                        <div class="policy-text">
+                            <strong data-translate>Security Logs</strong>: <span data-translate>Authentication attempts and access records</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="privacy-card">
+                <h2 class="card-title" data-translate>Data Usage</h2>
+                <ul class="policy-list">
+                    <li class="policy-item">
+                        <div class="policy-icon">🎯</div>
+                        <div class="policy-text">
+                            <strong data-translate>Service Delivery</strong>: <span data-translate>Providing Elite account features and benefits</span>
+                        </div>
+                    </li>
+                    <li class="policy-item">
+                        <div class="policy-icon">📈</div>
+                        <div class="policy-text">
+                            <strong data-translate>Performance Analytics</strong>: <span data-translate>System optimization and user experience improvement</span>
+                        </div>
+                    </li>
+                    <li class="policy-item">
+                        <div class="policy-icon">🛡️</div>
+                        <div class="policy-text">
+                            <strong data-translate>Security Monitoring</strong>: <span data-translate>Fraud detection and threat prevention</span>
+                        </div>
+                    </li>
+                    <li class="policy-item">
+                        <div class="policy-icon">📊</div>
+                        <div class="policy-text">
+                            <strong data-translate>Compliance Reporting</strong>: <span data-translate>Regulatory requirements and audit trails</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="privacy-card">
+                <h2 class="card-title" data-translate>User Rights</h2>
+                <ul class="policy-list">
+                    <li class="policy-item">
+                        <div class="policy-icon">👁️</div>
+                        <div class="policy-text">
+                            <strong data-translate>Data Access</strong>: <span data-translate>Review and download personal information on request</span>
+                        </div>
+                    </li>
+                    <li class="policy-item">
+                        <div class="policy-icon">✏️</div>
+                        <div class="policy-text">
+                            <strong data-translate>Data Correction</strong>: <span data-translate>Update or correct inaccurate personal information</span>
+                        </div>
+                    </li>
+                    <li class="policy-item">
+                        <div class="policy-icon">🗑️</div>
+                        <div class="policy-text">
+                            <strong data-translate>Data Deletion</strong>: <span data-translate>Request removal of personal data when permitted</span>
+                        </div>
+                    </li>
+                    <li class="policy-item">
+                        <div class="policy-icon">🚫</div>
+                        <div class="policy-text">
+                            <strong data-translate>Marketing Opt-Out</strong>: <span data-translate>Control promotional communications preferences</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <h2 class="section-title" data-translate>Data Protection Measures</h2>
+            <div class="data-grid">
+                <div class="data-item">
+                    <div class="data-icon">🔐</div>
+                    <div class="data-title" data-translate>Encryption</div>
+                    <div class="data-desc" data-translate>End-to-end encryption for all sensitive data transmission and storage</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-icon">🛡️</div>
+                    <div class="data-title" data-translate>Access Controls</div>
+                    <div class="data-desc" data-translate>Multi-factor authentication and role-based access permissions</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-icon">🔒</div>
+                    <div class="data-title" data-translate>Secure Storage</div>
+                    <div class="data-desc" data-translate>Isolated data centers with physical and digital security</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-icon">📊</div>
+                    <div class="data-title" data-translate>Audit Trails</div>
+                    <div class="data-desc" data-translate>Comprehensive logging of all data access and modifications</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="security-section">
+            <h2 class="section-title" data-translate>Security Protocols</h2>
+            <div class="security-grid">
+                <div class="security-item">
+                    <div class="data-icon">🔍</div>
+                    <div class="data-title" data-translate>Monitoring</div>
+                    <div class="data-desc" data-translate>24/7 security monitoring and threat detection systems</div>
+                </div>
+                <div class="security-item">
+                    <div class="data-icon">🚨</div>
+                    <div class="data-title" data-translate>Incident Response</div>
+                    <div class="data-desc" data-translate>Rapid response protocols for security breaches</div>
+                </div>
+                <div class="security-item">
+                    <div class="data-icon">🔧</div>
+                    <div class="data-title" data-translate>Regular Updates</div>
+                    <div class="data-desc" data-translate>Continuous security patches and system improvements</div>
+                </div>
+                <div class="security-item">
+                    <div class="data-icon">📋</div>
+                    <div class="data-title" data-translate>Compliance Reviews</div>
+                    <div class="data-desc" data-translate>Regular security audits and compliance assessments</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="compliance-banner">
+            <h2 class="compliance-title" data-translate>Privacy Commitment</h2>
+            <p class="compliance-text" data-translate>
+                We are <strong data-translate>committed to protecting Elite member privacy</strong> through advanced security measures, 
+                <span data-translate>transparent data practices, and strict compliance with international privacy regulations.</span> 
+                Your personal and financial information is <strong data-translate>secured with military-grade encryption</strong> 
+                <span data-translate>and handled with the utmost confidentiality. We continuously update our privacy practices</span> 
+                to ensure <strong data-translate>maximum protection</strong> of your sensitive data.</span>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Add entrance animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.privacy-card, .data-section, .security-section, .compliance-banner');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(50px)';
+                setTimeout(() => {
+                    element.style.transition = 'all 0.8s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+

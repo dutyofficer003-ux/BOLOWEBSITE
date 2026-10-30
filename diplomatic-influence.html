@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Diplomatic Oversight | Illuminati</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+            --gold-color: #FFD700;
+            --gold-hover: #FFA500;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
+            --shadow-color: rgba(0, 0, 0, 0.8);
+            --diplomatic-blue: #0066cc;
+            --elite-purple: #8B008B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: var(--gold-color);
+            border: 2px solid var(--gold-color);
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .back-btn:hover {
+            background: var(--gold-color);
+            color: var(--bg-color);
+            transform: scale(1.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .sovereignty-banner {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1), rgba(139, 0, 139, 0.05));
+            border: 2px solid var(--diplomatic-blue);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .sovereignty-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--diplomatic-blue);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .sovereignty-text {
+            color: #ffffff;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .content-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--diplomatic-blue), var(--elite-purple));
+            opacity: 0.7;
+        }
+
+        .box-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .feature-icon {
+            font-size: 1.3rem;
+            margin-right: 12px;
+            color: var(--diplomatic-blue);
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            flex: 1;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .feature-text strong {
+            color: var(--gold-color);
+            font-weight: 600;
+        }
+
+        .documentation-section {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+            border: 2px solid var(--gold-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .documentation-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .doc-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .doc-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .doc-title {
+            font-weight: 600;
+            color: var(--gold-color);
+            margin-bottom: 5px;
+        }
+
+        .doc-desc {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+
+        /* Documentation Image Slider */
+        .slider-wrapper {
+            display: flex;
+            overflow: hidden;
+            margin: 30px 0;
+            gap: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px 0;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .slider-track {
+            display: flex;
+            gap: 20px;
+            animation: scroll-left 40s linear infinite;
+            min-width: 100%;
+            flex-shrink: 0;
+            align-items: center;
+        }
+
+        .slide img {
+            height: 200px;
+            width: auto;
+            border-radius: 8px;
+            border: 2px solid var(--gold-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+            object-fit: contain;
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-100% - 20px)); }
+        }
+
+        .elite-section {
+            background: linear-gradient(135deg, rgba(139, 0, 139, 0.1), rgba(139, 0, 139, 0.05));
+            border: 2px solid var(--elite-purple);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .elite-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--elite-purple);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .elite-benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .elite-benefit {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .benefit-text {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+                letter-spacing: 3px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .content-box {
+                padding: 20px;
+            }
+
+            .doc-grid, .elite-benefits {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="Terms & Conditions.html" class="back-btn">
+            ← Back to Hub
+        </a>
+
+        <div class="header">
+            <h1 data-translate>Diplomatic Oversight</h1>
+            <p data-translate>National leverage, Visa facilitation, legal immunity protocols, and Secretary General documentation processing for elite-tier members</p>
+        </div>
+
+        <div class="sovereignty-banner">
+            <h2 class="sovereignty-title" data-translate>Sovereign Authority</h2>
+            <p class="sovereignty-text" data-translate>Elite-tier members operate under sovereign diplomatic authority with enhanced legal protections, visa facilitation, and government-level access through established international protocols.</p>
+        </div>
+
+        <div class="content-grid">
+            <div class="content-box">
+                <h2 class="box-title" data-translate>National Leverage</h2>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">🏛️</div>
+                        <div class="feature-text">
+                            <strong data-translate>Government Relations</strong>: <span data-translate>Strategic positioning within key government institutions and diplomatic corps to influence policy decisions.</span>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">🌐</div>
+                        <div class="feature-text">
+                            <strong data-translate>International Networks</strong>: <span data-translate>Established connections with foreign governments and international organizations for cross-border operations.</span>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">⚖️</div>
+                        <div class="feature-text">
+                            <strong data-translate>Legal Frameworks</strong>: <span data-translate>Operating within and above national legal systems through established diplomatic protocols and agreements.</span>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">🛡️</div>
+                        <div class="feature-text">
+                            <strong data-translate>Sovereign Immunity</strong>: <span data-translate>Legal protection for members operating under organizational authority in international jurisdictions.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="content-box">
+                <h2 class="box-title" data-translate>Operational Authority</h2>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">📋</div>
+                        <div class="feature-text">
+                            <strong data-translate>Documentation Processing</strong>: <span data-translate>All legal documents processed through Secretary General's office to prevent fraud and ensure authenticity.</span>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">🔐</div>
+                        <div class="feature-text">
+                            <strong data-translate>Verification Protocols</strong>: <span data-translate>Multi-layer verification system for all diplomatic and legal documents issued to members.</span>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">🌍</div>
+                        <div class="feature-text">
+                            <strong data-translate>Global Recognition</strong>: <span data-translate>International recognition of organizational authority through established diplomatic channels.</span>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-text">
+                            <strong data-translate>Strategic Implementation</strong>: <span data-translate>Coordinated deployment of diplomatic resources to support member objectives.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="documentation-section">
+            <h2 class="documentation-title" data-translate>Documentation & Visas</h2>
+            <p data-translate>Physical process for legal government facilitation and international travel documentation upon successful membership acceptance.</p>
+            
+            <div class="slider-wrapper">
+                <div class="slider-track">
+                    <div class="slide"><img src="images/DOCUMENTATION/DOCUMENTS.jpg" alt="Documentation"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/GLOBAL.jpg" alt="Global Operations"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/IMIGRATION.webp" alt="Immigration"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/INVESTMENT.png" alt="Investment"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/PASS.png" alt="Clearance Pass"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/PASSPORT.jpg" alt="Diplomatic Passport"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/TRACKING.png" alt="Tracking"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/VISA.jpg" alt="Visa"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/monitoring.jpg" alt="Monitoring"></div>
+                </div>
+                <!-- Duplicate track for seamless infinite scroll -->
+                <div class="slider-track">
+                    <div class="slide"><img src="images/DOCUMENTATION/DOCUMENTS.jpg" alt="Documentation"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/GLOBAL.jpg" alt="Global Operations"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/IMIGRATION.webp" alt="Immigration"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/INVESTMENT.png" alt="Investment"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/PASS.png" alt="Clearance Pass"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/PASSPORT.jpg" alt="Diplomatic Passport"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/TRACKING.png" alt="Tracking"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/VISA.jpg" alt="Visa"></div>
+                    <div class="slide"><img src="images/DOCUMENTATION/monitoring.jpg" alt="Monitoring"></div>
+                </div>
+            </div>
+            
+            <div class="doc-grid">
+                <div class="doc-item">
+                    <div class="doc-icon">🇺🇸</div>
+                    <div class="doc-title" data-translate>American Visa Facilitation</div>
+                    <div class="doc-desc" data-translate>Expedited processing and approval for U.S. entry visas through established diplomatic channels</div>
+                </div>
+                <div class="influence-card">
+                    <div class="influence-icon">🌐</div>
+                    <h2 class="influence-title" data-translate>Global Network</h2>
+                    <p class="influence-summary" data-translate>International connections, UN influence, and cross-border diplomatic channels.</p>
+                    <a href="global-network.html" target="_blank" class="enter-btn" data-translate>ENTER →</a>
+                </div>
+
+                <div class="influence-card">
+                    <div class="influence-icon">🤝</div>
+                    <h2 class="influence-title" data-translate>Trade Relations</h2>
+                    <p class="influence-summary" data-translate>Economic partnerships, trade agreements, and commercial leverage.</p>
+                    <a href="trade-relations.html" target="_blank" class="enter-btn" data-translate>ENTER →</a>
+                </div>
+
+                <div class="influence-card">
+                    <div class="influence-icon">�️</div>
+                    <h2 class="influence-title" data-translate>Crisis Management</h2>
+                    <p class="influence-summary" data-translate>Emergency protocols, conflict resolution, and member protection.</p>
+                    <a href="crisis-management.html" target="_blank" class="enter-btn" data-translate>ENTER →</a>
+                </div>
+
+                <div class="influence-card">
+                    <div class="influence-icon">🏛️</div>
+                    <h2 class="influence-title" data-translate>Member Benefits</h2>
+                    <p class="influence-summary" data-translate>Political influence, economic advantages, and Elite member privileges.</p>
+                    <a href="member-benefits.html" class="enter-btn" data-translate>ENTER →</a>
+                </div>
+
+                <div class="influence-card">
+                    <div class="influence-icon">�</div>
+                    <h2 class="influence-title" data-translate>Illuminati Events</h2>
+                    <p class="influence-summary" data-translate>Mandatory gatherings, ceremonies, and annual member conventions.</p>
+                    <a href="illuminati-events.html" class="enter-btn" data-translate>ENTER →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="elite-section">
+            <h2 class="elite-title" data-translate>Elite-Tier Legal Immunity</h2>
+            <p data-translate>Comprehensive legal protection protocols for members achieving elite-tier status within the organizational hierarchy.</p>
+            
+            <div class="elite-benefits">
+                <div class="elite-benefit">
+                    <div class="benefit-icon">⚖️</div>
+                    <div class="benefit-text" data-translate>Diplomatic Immunity</div>
+                </div>
+                <div class="elite-benefit">
+                    <div class="benefit-icon">🛡️</div>
+                    <div class="benefit-text" data-translate>Legal Protection</div>
+                </div>
+                <div class="elite-benefit">
+                    <div class="benefit-icon">🌍</div>
+                    <div class="benefit-text" data-translate>Sovereign Status</div>
+                </div>
+                <div class="elite-benefit">
+                    <div class="benefit-icon">📋</div>
+                    <div class="benefit-text" data-translate>Document Priority</div>
+                </div>
+                <div class="elite-benefit">
+                    <div class="benefit-icon">🏛️</div>
+                    <div class="benefit-text" data-translate>Government Access</div>
+                </div>
+                <div class="elite-benefit">
+                    <div class="benefit-icon">✈️</div>
+                    <div class="benefit-text" data-translate>Borderless Travel</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add cinematic entrance animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.sovereignty-banner, .content-box, .documentation-section, .elite-section');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(50px)';
+                setTimeout(() => {
+                    section.style.transition = 'all 0.8s ease';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, index * 300);
+            });
+        });
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+

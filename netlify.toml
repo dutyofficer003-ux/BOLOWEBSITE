@@ -1,0 +1,15 @@
+[build]
+  functions = "netlify/functions"
+  command = "npm install --prefix netlify/functions"
+
+[[redirects]]
+  from = "/api/chat"
+  to = "/.netlify/functions/chat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/news/*"
+  to = "https://newsapi.org/v2/:splat"
+  status = 200
+  force = true

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Account Progression | Illuminati</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+            --gold-color: #FFD700;
+            --gold-hover: #FFA500;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
+            --shadow-color: rgba(0, 0, 0, 0.8);
+            --success-color: #00ff88;
+            --progress-blue: #0066cc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: var(--gold-color);
+            border: 2px solid var(--gold-color);
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .back-btn:hover {
+            background: var(--gold-color);
+            color: var(--bg-color);
+            transform: scale(1.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .progression-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .progression-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progression-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--progress-blue), var(--gold-color));
+            opacity: 0.7;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .balance-display {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1), rgba(0, 102, 204, 0.05));
+            border: 2px solid var(--progress-blue);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .balance-amount {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--gold-color);
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .balance-label {
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .progress-visual {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--progress-blue), var(--success-color));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .timeline-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border-left: 3px solid var(--success-color);
+        }
+
+        .timeline-date {
+            color: var(--success-color);
+            font-weight: 600;
+            margin-right: 20px;
+            min-width: 100px;
+            font-size: 0.9rem;
+        }
+
+        .timeline-content {
+            flex: 1;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .timeline-content strong {
+            color: var(--gold-color);
+            font-weight: 600;
+        }
+
+        .growth-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .metric-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 10px;
+        }
+
+        .metric-label {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .auto-increase-banner {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05));
+            border: 2px solid var(--success-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .auto-increase-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--success-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .auto-increase-text {
+            color: #e0e0e0;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .progression-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+                letter-spacing: 3px;
+            }
+
+            .balance-amount {
+                font-size: 2.5rem;
+            }
+
+            .growth-metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .balance-amount {
+                font-size: 2rem;
+            }
+
+            .growth-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="Terms & Conditions.html" class="back-btn">
+            ← Back to Hub
+        </a>
+
+        <div class="header">
+            <h1 data-translate>Account Progression</h1>
+            <p data-translate>Watch your Elite account balance grow slowly and automatically through the Architect's Provision system</p>
+        </div>
+
+        <div class="progression-grid">
+            <div class="progression-card">
+                <h2 class="card-title" data-translate>Current Balance</h2>
+                <div class="balance-display">
+                    <div class="balance-label" data-translate>Elite Account Balance</div>
+                    <div class="balance-amount" id="currentBalance">$47,850</div>
+                    <div class="progress-visual">
+                        <div class="progress-fill" id="progressFill" style="width: 95.7%"></div>
+                    </div>
+                    <div class="balance-label" data-translate>Monthly Load Progress: 95.7%</div>
+                </div>
+            </div>
+
+            <div class="progression-card">
+                <h2 class="card-title" data-translate>Growth Metrics</h2>
+                <div class="growth-metrics">
+                    <div class="metric-item">
+                        <div class="metric-value" id="monthlyGrowth">+12.5%</div>
+                        <div class="metric-label" data-translate>Monthly Growth</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value" id="totalGrowth">+285.4%</div>
+                        <div class="metric-label" data-translate>Total Growth</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value" id="daysActive">142</div>
+                        <div class="metric-label" data-translate>Days Active</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value" id="nextMilestone">$50,000</div>
+                        <div class="metric-label" data-translate>Next Milestone</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-section">
+            <h2 class="timeline-title" data-translate>Automatic Increase Timeline</h2>
+            <div class="timeline-item">
+                <div class="timeline-date" data-translate>Month 1</div>
+                <div class="timeline-content">
+                    <strong data-translate>Initial Balance:</strong> <span data-translate>$0 - Account activation and first Architect's Provision</span>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date" data-translate>Month 2</div>
+                <div class="timeline-content">
+                    <strong data-translate>Balance:</strong> <span data-translate>$50,000 - Second monthly load with compound growth</span>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date" data-translate>Month 3</div>
+                <div class="timeline-content">
+                    <strong data-translate>Balance:</strong> <span data-translate>$56,250 - Third load with 12.5% growth multiplier</span>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date" data-translate>Month 4</div>
+                <div class="timeline-content">
+                    <strong data-translate>Balance:</strong> <span data-translate>$63,281 - Fourth load with continued compound growth</span>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date" data-translate>Month 5</div>
+                <div class="timeline-content">
+                    <strong data-translate>Balance:</strong> <span data-translate>$71,191 - Fifth load approaching withdrawal threshold</span>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date" data-translate>Current</div>
+                <div class="timeline-content">
+                    <strong data-translate>Balance:</strong> <span data-translate>$47,850 - After operational expenses and strategic investments</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="auto-increase-banner">
+            <h2 class="auto-increase-title" data-translate>Automatic Increase System</h2>
+            <p class="auto-increase-text" data-translate>
+                Your Elite account balance increases automatically through the Architect's Provision system. 
+                Each month, $50,000 USD is loaded into your account, and compound growth 
+                is applied based on your tier and performance. The system monitors your account 
+                24/7 and adjusts growth rates according to your contribution to the organization's 
+                objectives and compliance with Elite protocols.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // UNIVERSAL ACCELERATED ELITE DASHBOARD GROWTH ENGINE (500K)
+        const TARGET_BALANCE = 500000.00;
+        const TICK_INTERVAL = 1500; // ms, locked per requirements
+
+        // --- Replace with real session values when available ---
+        const USER_DATABASE_RECORD = {
+            isNewUser: false, // true = starts at $0.00 | false = applicant baseline ($50k)
+            simStartDate: '2026-03-10T12:00:00Z' // ISO string of account creation/simulation start
+        };
+
+        const MS_PER_DAY = 1000 * 60 * 60 * 24;
+        const PHASE_DAYS = 60; // 3 phases, 60 days each -> 180 days total
+
+        // Phase weights allocate the remaining amount (after baseline) non-linearly
+        const PHASE_WEIGHTS = [0.10, 0.25, 0.65];
+
+        const baselineStart = USER_DATABASE_RECORD.isNewUser ? 0 : 50000; // baseline for existing applicants
+
+        // Compute per-phase totals and daily rates so the deterministic timeline hits TARGET_BALANCE at day 180
+        const totalNeeded = Math.max(0, TARGET_BALANCE - baselineStart);
+        const phaseTotals = PHASE_WEIGHTS.map(w => totalNeeded * w);
+        const phaseDailyRates = phaseTotals.map(t => t / PHASE_DAYS); // per-day deterministic rate for each phase
+
+        const startDate = new Date(USER_DATABASE_RECORD.simStartDate);
+
+        let currentBalance = 0.00;
+
+        function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+        // Calculate deterministic balance at an arbitrary fractional day (daysFloat)
+        function calculateBalanceAtDays(daysFloat) {
+            const days = clamp(daysFloat, 0, PHASE_DAYS * PHASE_WEIGHTS.length);
+            let balance = baselineStart;
+
+            for (let i = 0; i < PHASE_WEIGHTS.length; i++) {
+                const phaseStart = i * PHASE_DAYS;
+                const phaseEnd = (i + 1) * PHASE_DAYS;
+
+                if (days >= phaseEnd) {
+                    balance += phaseTotals[i];
+                } else if (days > phaseStart) {
+                    const partial = days - phaseStart;
+                    balance += phaseDailyRates[i] * partial;
+                    break;
+                } else {
+                    break;
+                }
+            }
+
+            return Math.min(balance, TARGET_BALANCE);
+        }
+
+        // Get the deterministic daily rate for the current day index
+        function getPhaseDailyRate(dayIndex) {
+            const idx = clamp(Math.floor((dayIndex - 1) / PHASE_DAYS), 0, PHASE_WEIGHTS.length - 1);
+            return phaseDailyRates[idx];
+        }
+
+        // Slightly randomized per-tick increment based on phase daily rate, keeps cents moving smoothly
+        function getAcceleratedIncrement(dayIndex) {
+            const daily = getPhaseDailyRate(dayIndex);
+            const ticksPerDay = MS_PER_DAY / TICK_INTERVAL;
+            const basePerTick = daily / ticksPerDay;
+            // add small jitter but keep deterministic expectation anchored
+            const jitter = (Math.random() * 0.4 + 0.8); // 0.8 - 1.2
+            const centsNoise = (Math.random() - 0.5) * 0.02; // up to +/- $0.01 noise
+            return Math.max(0.001, basePerTick * jitter + centsNoise);
+        }
+
+        // Load and sync progress: database timeline wins, localStorage only used as a refresh shield
+        function loadAndSyncProgress() {
+            const now = new Date();
+            const daysFloat = (now - startDate) / MS_PER_DAY;
+            const expected = calculateBalanceAtDays(daysFloat);
+
+            const browserSessionSaved = localStorage.getItem('active_sync_balance');
+            if (browserSessionSaved) {
+                const parsedSaved = parseFloat(browserSessionSaved);
+                if (!isNaN(parsedSaved) && parsedSaved >= expected) {
+                    currentBalance = Math.min(parsedSaved, TARGET_BALANCE);
+                    return;
+                }
+            }
+
+            currentBalance = expected;
+        }
+
+        function formatCurrency(v) {
+            return '$' + v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function updateUI() {
+            const balanceEl = document.getElementById('currentBalance');
+            const fillEl = document.getElementById('progressFill');
+            const monthlyEl = document.getElementById('monthlyGrowth');
+            const totalEl = document.getElementById('totalGrowth');
+            const daysEl = document.getElementById('daysActive');
+            const nextEl = document.getElementById('nextMilestone');
+
+            if (balanceEl) balanceEl.textContent = formatCurrency(currentBalance);
+            if (fillEl) {
+                const pct = clamp((currentBalance / TARGET_BALANCE) * 100, 0, 100);
+                fillEl.style.width = pct.toFixed(3) + '%';
+            }
+
+            // Monthly growth: compare to deterministic balance 30 days ago
+            const now = new Date();
+            const daysFloat = (now - startDate) / MS_PER_DAY;
+            const past30 = calculateBalanceAtDays(Math.max(0, daysFloat - 30));
+            if (monthlyEl) {
+                const mg = past30 > 0 ? ((currentBalance / past30 - 1) * 100) : ((currentBalance / TARGET_BALANCE) * 100);
+                monthlyEl.textContent = (mg >= 0 ? '+' : '') + mg.toFixed(1) + '%';
+            }
+
+            if (totalEl) {
+                if (baselineStart > 0) {
+                    const tg = ((currentBalance - baselineStart) / baselineStart) * 100;
+                    totalEl.textContent = (tg >= 0 ? '+' : '') + tg.toFixed(1) + '%';
+                } else {
+                    // For new users show percent progress toward 500K
+                    const pg = (currentBalance / TARGET_BALANCE) * 100;
+                    totalEl.textContent = (pg >= 0 ? '' : '') + pg.toFixed(1) + '%';
+                }
+            }
+
+            if (daysEl) daysEl.textContent = Math.max(0, Math.floor(daysFloat));
+
+            if (nextEl) {
+                const milestoneStep = 50000; // arbitrary milestone display
+                const next = Math.min(TARGET_BALANCE, Math.ceil(currentBalance / milestoneStep) * milestoneStep);
+                nextEl.textContent = formatCurrency(next === 0 ? milestoneStep : next);
+            }
+        }
+
+        function startUniversalGrowthEngine() {
+            loadAndSyncProgress();
+
+            if (window.growthTimer) clearInterval(window.growthTimer);
+
+            window.growthTimer = setInterval(() => {
+                const now = new Date();
+                const daysFloat = (now - startDate) / MS_PER_DAY;
+                const loopDays = Math.min(Math.max(1, Math.floor(daysFloat) + 1), PHASE_DAYS * PHASE_WEIGHTS.length);
+
+                // Deterministic target at this exact moment (fractional days included)
+                const targetNow = calculateBalanceAtDays(daysFloat);
+
+                if (currentBalance < targetNow) {
+                    const inc = getAcceleratedIncrement(loopDays);
+                    currentBalance = Math.min(targetNow, currentBalance + inc);
+                } else if (currentBalance > targetNow) {
+                    // Do not force downward adjustments if browser had a higher cached value.
+                    // But if we're past the 180-day window, clamp to final target.
+                    if (daysFloat >= PHASE_DAYS * PHASE_WEIGHTS.length) {
+                        currentBalance = TARGET_BALANCE;
+                    }
+                }
+
+                // Hard stop if target reached
+                if (currentBalance >= TARGET_BALANCE) {
+                    currentBalance = TARGET_BALANCE;
+                    clearInterval(window.growthTimer);
+                }
+
+                // Persist a shielded value to reduce layout jumps on refresh
+                localStorage.setItem('active_sync_balance', currentBalance.toFixed(2));
+
+                updateUI();
+            }, TICK_INTERVAL);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            startUniversalGrowthEngine();
+
+            // Entrance animation kept as before
+            const elements = document.querySelectorAll('.progression-card, .timeline-section, .auto-increase-banner');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(50px)';
+                setTimeout(() => {
+                    element.style.transition = 'all 0.8s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 300);
+            });
+        });
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+

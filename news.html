@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Global Intelligence Briefing | Illuminati</title>
+    <style>
+#glitch-video {
+    position: fixed;   /* This makes it stay on top of the whole screen */
+    top: 0;
+    left: 0;
+    width: 100vw;      /* Full viewport width */
+    height: 100vh;     /* Full viewport height */
+    object-fit: cover; /* This prevents the video from looking 'stretched' */
+    z-index: 99999;    /* This puts it above all your text and images */
+    opacity: 0;        /* Keep it invisible until the glitch triggers */
+    pointer-events: none; /* Allows you to click buttons 'through' the video */
+    filter: contrast(180%) brightness(1.2); /* Optional: Makes it look more like a digital error */
+}
+    /* Styles the main translation button */
+        /* Google Translate styling moved to global.css for consistency */
+        /* This forces the inner text that Google hides in a span to be Gold */
+.goog-te-gadget span {
+    color: #ffd700 !important;
+}
+
+/* This makes sure the "Select Language" label is also Gold */
+.goog-te-gadget {
+    color: #ffd700 !important;
+}
+        .global-footer {
+            width: 100%;
+            text-align: center;
+            padding: 50px 20px;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            margin-top: 40px;
+            color: #a0a0a0;
+            font-size: 12px;
+            clear: both;
+        }
+
+        .footer-line {
+            width: 85%;
+            border: 0;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            margin: 0 auto 20px auto;
+        }
+
+        .global-footer p {
+            margin: 8px 0;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+       
+
+        /* This part handles the overall page background */
+        body {
+            background-color: #0a0a14;
+            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* This is your actual "Page" with the gold border */
+        .news-container {
+            width: 100%;
+            max-width: 1000px; /* Squeezes the width to match Membership page */
+            margin: 40px 0; /* Space at top and bottom */
+            padding: 40px;
+            background-color: rgba(5, 5, 10, 0.7); /* Semi-transparent dark background */
+            backdrop-filter: blur(5px); /* Adds subtle blur for readability */
+            
+            /* THE BORDER GOES HERE */
+            border: 1px solid rgba(212, 175, 55, 0.3); /* Subtle gold border */
+            box-shadow: 0 0 20px rgba(0,0,0,0.3); /* Reduced shadow for transparency */
+            
+            box-sizing: border-box;
+            min-height: 80vh; /* Ensures the box is tall even with little text */
+        }
+
+        /* Basic content styling */
+        h1 { color: #FFD700; text-align: center; margin-bottom: 30px; }
+        .intel-report { line-height: 1.6; text-align: justify; }
+        .highlight { color: #FFD700; font-weight: bold; }
+       #bg-video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    transform: translate(-50%, -50%); /* Centers the video */
+    
+    /* Enhanced visibility while maintaining dark theme */
+    opacity: 0.25; /* Increased from 0.1 to 0.25 for better visibility */
+    filter: brightness(1.3) contrast(1.1) saturate(1.2) grayscale(100%) brightness(0.8); /* Enhanced clarity and moody effect */
+    mix-blend-mode: screen; /* Blends better with dark background */
+    pointer-events: none;
+    transition: transform 0.2s ease-out; /* Smooths the mouse movement */
+}
+   .archive-section {
+    border: 1px solid rgba(212, 175, 55, 0.5); /* More visible gold border */
+    padding: 20px;
+    margin: 40px auto; /* Adds space between the boxes */
+    max-width: 900px;
+    background: rgba(0, 0, 0, 0.6); /* More transparent background */
+    backdrop-filter: blur(3px); /* Subtle blur for readability */
+    color: white;
+}
+
+.archive-section h2 {
+    color: #d4af37; /* Gold headings */
+    text-transform: uppercase;
+}
+
+/* Intelligence Feed Styling */
+.intelligence-feed {
+    margin-top: 30px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Custom scrollbar for dark theme */
+.intelligence-feed::-webkit-scrollbar {
+    width: 8px;
+}
+
+.intelligence-feed::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.intelligence-feed::-webkit-scrollbar-thumb {
+    background: #FFD700;
+    border-radius: 4px;
+}
+
+.intelligence-feed::-webkit-scrollbar-thumb:hover {
+    background: #FFA500;
+}
+
+.loading-status {
+    text-align: center;
+    padding: 50px;
+    color: #FFD700;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 215, 0, 0.3);
+    border-radius: 50%;
+    border-top-color: #FFD700;
+    animation: spin 1s ease-in-out infinite;
+    display: inline-block;
+    margin: 0 auto 20px auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.intelligence-card {
+    background: rgba(0, 0, 0, 0.8);
+    border-left: 4px solid #FFD700;
+    margin: 30px 0;
+    padding: 0;
+    border-radius: 0;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.intelligence-card:hover {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    transform: translateX(5px);
+}
+
+.intelligence-image {
+    width: 100%;
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 8px;
+}
+
+.intelligence-content {
+    padding: 25px;
+}
+
+.intelligence-title {
+    color: #FFD700;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.intelligence-source {
+    color: #87CEEB;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.intelligence-description {
+    color: #ffffff;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.intelligence-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.intelligence-date {
+    color: #a0a0a0;
+    font-size: 0.8rem;
+}
+
+.btn-intel {
+    background-color: #007bff !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.8rem;
+}
+
+.btn-intel:hover {
+    background-color: #0056b3 !important;
+    transform: scale(1.05);
+}
+
+.btn-video {
+    background-color: #FFD700 !important;
+    color: #000000 !important;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.8rem;
+    margin-left: 10px;
+}
+
+.btn-video:hover {
+    background-color: #FFA500 !important;
+    transform: scale(1.05);
+}
+
+.error-message {
+    text-align: center;
+    padding: 30px;
+    color: #ff6b6b;
+    background: rgba(255, 0, 0, 0.1);
+    border-left: 4px solid #ff6b6b;
+    margin: 20px 0;
+}
+
+/* Slim Header to prevent shading the news */
+.header-container { 
+    height: 60px !important; 
+    padding: 10px 0 !important;
+}
+
+/* Force images to fill the space and remove grey backgrounds */
+.news-card img {
+    width: 100% !important;
+    height: 220px !important; /* Adjust height as needed */
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
+    border-bottom: 2px solid #ffd700; /* Matching your gold theme */
+}
+
+/* Mobile Optimization */
+@media screen and (max-width: 768px) {
+    .intelligence-card {
+        margin: 20px 0;
+        border-left-width: 3px;
+    }
+    
+    .intelligence-image {
+        height: 200px !important;
+    }
+    
+    .intelligence-content {
+        padding: 15px;
+    }
+    
+    .intelligence-title {
+        font-size: 1.1rem;
+        line-height: 1.3;
+    }
+    
+    .intelligence-description {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    .btn-intel, .btn-video {
+        font-size: 0.7rem;
+        padding: 8px 15px;
+        margin: 2px;
+    }
+    
+    .intelligence-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .intelligence-footer div {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .news-container {
+        padding: 20px 15px;
+        margin: 20px 10px;
+    }
+    
+    .intelligence-card {
+        margin: 15px 0;
+    }
+    
+    .intelligence-image {
+        height: 150px !important;
+    }
+    
+    .intelligence-content {
+        padding: 12px;
+    }
+    
+    .intelligence-title {
+        font-size: 1rem;
+    }
+    
+    .btn-intel, .btn-video {
+        font-size: 0.65rem;
+        padding: 6px 12px;
+    }
+}
+   /* THE SCANNER */
+.scanner-line {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to bottom, transparent, #d4af37, transparent); /* Your Gold color */
+    box-shadow: 0 0 15px #d4af37;
+    z-index: 99999;
+    pointer-events: none; /* Allows you to click things 'under' the line */
+    animation: scanMove 8s linear infinite; /* Slow, creepy movement */
+}
+
+@keyframes scanMove {
+    0% { transform: translateY(-10vh); }
+    100% { transform: translateY(110vh); }
+}
+
+.world-glitch-active {
+    animation: shake 0.15s infinite;
+    filter: saturate(2) hue-rotate(280deg) brightness(1.4) contrast(1.8) drop-shadow(0 0 15px #6600ff); /* Intense purple/blue agonizing effect */
+    overflow: hidden; /* Prevents scrollbars during the shake */
+}
+
+@keyframes shake {
+    0% { transform: translate(0,0) rotate(0deg); }
+    10% { transform: translate(-8px, 8px) rotate(2deg) scaleX(0.98); }
+    20% { transform: translate(8px, -8px) rotate(-2deg) scaleX(1.02); }
+    30% { transform: translate(-6px, 6px) rotate(1deg) scaleY(0.98); }
+    40% { transform: translate(6px, -6px) rotate(-1deg) scaleY(1.02); }
+    50% { transform: translate(-10px, 5px) rotate(2deg); }
+    60% { transform: translate(10px, -5px) rotate(-2deg); }
+    70% { transform: translate(-7px, -7px) rotate(1deg); }
+    80% { transform: translate(7px, 7px) rotate(-1deg); }
+    90% { transform: translate(-5px, 5px) rotate(0deg); }
+    100% { transform: translate(0,0) rotate(0deg); }
+}
+   </style>
+    <link rel="stylesheet" href="global.css">
+    <style>
+        @media screen and (max-width: 950px) {
+            body {
+                padding: 0 !important;
+                margin: 0 !important;
+                overflow-x: hidden;
+            }
+            .news-container, .news-item {
+                max-width: 100% !important;
+                width: 100% !important;
+                padding: 20px 10px !important;
+                margin: 0 auto 20px auto !important;
+            }
+            .news-item p {
+                font-size: 1rem !important;
+                line-height: 1.8 !important;
+                margin: 0 0 1em 0 !important;
+                text-align: left !important;
+            }
+            h1, h2, h3 {
+                font-size: 1.5rem !important;
+                letter-spacing: 2px !important;
+            }
+            .news-image {
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            div[style*="border"]:not(button) {
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 auto !important;
+                padding: 10px 16px !important;
+                box-sizing: border-box !important;
+            }
+            
+            /* Mobile video optimizations */
+            #bg-video {
+                opacity: 0.35 !important; /* Higher opacity for mobile */
+                filter: brightness(1.5) contrast(1.3) saturate(1.4) !important; /* Enhanced for smaller screens */
+            }
+            
+            /* Mobile transparency optimizations */
+            .news-container {
+                background-color: rgba(5, 5, 10, 0.6) !important; /* More transparent on mobile */
+                backdrop-filter: blur(3px) !important;
+            }
+            
+            .archive-section {
+                background: rgba(0, 0, 0, 0.5) !important; /* More transparent on mobile */
+                backdrop-filter: blur(2px) !important;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="global.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="news-page">
+    <!-- Put this at the very top of your <body> -->
+<video muted id="glitch-video">
+    <source src="images/opp.mp4" type="video/mp4">
+</video>
+    
+   <!-- The 'muted' and 'autoplay' tags are REQUIRED for the video to play automatically -->
+<video autoplay muted loop id="bg-video">
+    <source src="images/BNVFJ.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+</video>
+  <div style="position: fixed; top: 15px; left: 15px; z-index: 999;">
+    <a href="index.html" style="text-decoration: none; color: #FFD700; font-weight: bold; font-size: 0.75rem;">
+        &#8592; Back
+    </a>
+</div>
+
+   <div class="news-container">
+    
+    <h1 data-translate>LIVE OVERSIGHT STATUS: ACTIVE</h1>
+    
+    <!-- Dynamic Intelligence Feed Container -->
+    <div id="intelligence-feed" class="intelligence-feed">
+        <div class="loading-status">
+            <div class="spinner"></div>
+            <p data-translate>DECRYPTING GLOBAL INTELLIGENCE...</p>
+        </div>
+    </div>
+</div>
+    <footer class="global-footer" style="text-align: center; padding: 50px 20px; border-top: 1px solid rgba(212, 175, 55, 0.1); margin-top: 40px; color: #a0a0a0; font-size: 12px; width: 100%;">
+        <hr class="footer-line" style="width: 85%; border: 0; border-top: 1px solid rgba(212, 175, 55, 0.1); margin: 0 auto 20px auto;"> 
+        <p style="margin: 8px 0; text-align: justify;" data-translate>© 2026 Illuminati New World Order. All rights reserved.</p>
+        <p style="margin: 8px 0; text-align: justify;" data-translate>Official HQ: Undisclosed Location</p>
+    </footer>
+   </div>
+<!-- THE SCANNER LINE -->
+<div class="scanner-line"></div>
+
+
+     <script type="text/javascript" src="translation-utils.js"></script>
+     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>
+    // Step 1: Global rotation tracker for the session
+let sessionRotation = parseInt(localStorage.getItem('intelRotation') || '0');
+localStorage.setItem('intelRotation', (sessionRotation + 1) % 4);
+
+    const intelFiles = {
+        // User's Exact Keys and Prefixes
+        'cia': { prefix: 'CIA', count: 4 },
+        'imf': { prefix: 'IMF', count: 4 },
+        'fbi': { prefix: 'FBI', count: 4 },
+        'fifa': { prefix: 'FIFA', count: 4 },
+        'uefa': { prefix: 'UEFA', count: 4 },
+        'vatican': { prefix: 'VATICAN', count: 4 },
+        'nasa': { prefix: 'NASA', count: 4 },
+        'nato': { prefix: 'NATOS', count: 4 },
+        'white house': { prefix: 'WHOUSE', count: 4 },
+        'freemasonry': { prefix: 'MASONS', count: 4 },
+        'rosicrucian': { prefix: 'ROSICRUCIAN', count: 4 },
+        'oto': { prefix: 'OTO', count: 4 },
+        'interpol': { prefix: 'INTPO', count: 4 },
+        'hollywood': { prefix: 'HOLLY', count: 4 },
+        'african union': { prefix: 'AF', count: 4 },
+        'asean': { prefix: 'Asia', count: 4 },
+        'un ': { prefix: 'UNS', count: 4 },
+        'war': { prefix: 'War', count: 4 },
+        'pentagon': { prefix: 'PENTAGON', count: 4 },
+        
+        // Countries (2 images) - Political News
+        'brazil': { prefix: 'BRAZIL', count: 2 },
+        'argentina': { prefix: 'ARGENTINA', count: 2 },
+        'nicaragua': { prefix: 'NICARAGUA', count: 2 },
+        'ecuador': { prefix: 'ECUADOR', count: 2 },
+        'mexico': { prefix: 'MEXICO', count: 2 }
+    };
+
+    // Track used organization images to prevent duplicates - reset on page reload
+    const usedOrganizationImages = new Set();
+
+    function getStrictFilePath(article, offset) {
+        // Use entity field directly from JSON data
+        let entityName = article.entity || 'War';
+        
+        console.log(`🎯 Using entity field: "${entityName}"`);
+        
+        // Define entity limits based on directive
+        const entityLimits = {
+            // Nations (Limit 2)
+            'ARGENTINA': 2, 'BRAZIL': 2, 'MEXICO': 2, 'NICARAGUA': 2, 'ECUADOR': 2,
+            // Organizations (Limit 4)
+            'NASA': 4, 'CIA': 4, 'FBI': 4, 'VATICAN': 4, 'IMF': 4, 'UNS': 4, 
+            'WHOUSE': 4, 'MASONS': 4, 'INTPO': 4, 'NATOS': 4, 'ROSICRUCIAN': 4, 
+            'OTO': 4, 'HOLLY': 4, 'UEFA': 4, 'AF': 4, 'Asia': 4,
+            // Default
+            'War': 4
+        };
+        
+        // Map entity names to actual folder names
+        const entityFolderMap = {
+            'MASONS': 'MASON',  // MASONS -> MASON folder
+            'WHOUSE': 'WHOUSE', // WHOUSE -> WHOUSE folder
+            'NATOS': 'NATOS',   // NATOS -> NATOS folder
+            'UNS': 'UNS',       // UNS -> UNS folder
+            'INTPO': 'INTPO',   // INTPO -> INTPO folder
+            'ROSICRUCIAN': 'ROSICRUCIAN', // ROSICRUCIAN -> ROSICRUCIAN folder
+            'OTO': 'OTO',       // OTO -> OTO folder
+            'HOLLY': 'HOLLY',   // HOLLY -> HOLLY folder
+            'UEFA': 'UEFA',     // UEFA -> UEFA folder
+            'AF': 'AF',         // AF -> AF folder
+            'Asia': 'ASIA',     // Asia -> ASIA folder (case fix)
+            'ECUADOR': 'EQUADOR' // ECUADOR -> EQUADOR folder (case fix)
+        };
+        
+        // Get the actual folder name
+        const folderName = entityFolderMap[entityName] || entityName;
+        
+        // Get the limit for this entity, default to War if not found
+        const imageLimit = entityLimits[entityName] || entityLimits['War'];
+        
+        // Logic to pick the next available image in the folder
+        const imageIndex = (sessionRotation + offset) % imageLimit;
+        const number = imageIndex === 0 ? '' : imageIndex;
+        
+        // Handle BRAZIL special case (it's in War/BRAZIL/)
+        if (entityName === 'BRAZIL') {
+            const imagePath = `images/War/BRAZIL/BRAZIL${number}.jpg`;
+            console.log(`🖼️ Image path (special case): ${imagePath} for entity: "${entityName}" (Index: ${imageIndex}/${imageLimit})`);
+            return imagePath;
+        }
+        
+        // Handle NASA special case (mixed file extensions)
+        if (entityName === 'NASA') {
+            // NASA has mixed extensions: NASA.jpg, NASA1.png, NASA2.png, NASA3.jpg
+            const nasaExtensions = ['', '.jpg', '.png', '.jpg'];
+            const extension = nasaExtensions[imageIndex] || '.jpg';
+            const imagePath = `images/${folderName}/${folderName}${number}${extension}`;
+            console.log(`🖼️ Image path (NASA special case): ${imagePath} for entity: "${entityName}" -> folder: "${folderName}" (Index: ${imageIndex}/${imageLimit})`);
+            return imagePath;
+        }
+        
+        // Handle WHOUSE special case (mixed file extensions)
+        if (entityName === 'WHOUSE') {
+            // WHOUSE has mixed extensions: WHOUSE.jpeg, WHOUSE1.jpg, WHOUSE2.jpg, WHOUSE3.jpg
+            const whouseExtensions = ['.jpeg', '.jpg', '.jpg', '.jpg'];
+            const extension = whouseExtensions[imageIndex] || '.jpg';
+            const imagePath = `images/${folderName}/${folderName}${number}${extension}`;
+            console.log(`🖼️ Image path (WHOUSE special case): ${imagePath} for entity: "${entityName}" -> folder: "${folderName}" (Index: ${imageIndex}/${imageLimit})`);
+            return imagePath;
+        }
+        
+        // Handle FBI special case (mixed file extensions)
+        if (entityName === 'FBI') {
+            // FBI has mixed extensions: FBI.jpeg, FBI1.jpeg, FBI2.jpg, FBI3.jpg
+            const fbiExtensions = ['.jpeg', '.jpeg', '.jpg', '.jpg'];
+            const extension = fbiExtensions[imageIndex] || '.jpg';
+            const imagePath = `images/${folderName}/${folderName}${number}${extension}`;
+            console.log(`🖼️ Image path (FBI special case): ${imagePath} for entity: "${entityName}" -> folder: "${folderName}" (Index: ${imageIndex}/${imageLimit})`);
+            return imagePath;
+        }
+        
+        // Handle IMF special case (mixed file extensions)
+        if (entityName === 'IMF') {
+            // IMF has mixed extensions: IMF.jpg, IMF1.webp, IMF2.jpg, IMF3.jpg
+            const imfExtensions = ['.jpg', '.webp', '.jpg', '.jpg'];
+            const extension = imfExtensions[imageIndex] || '.jpg';
+            const imagePath = `images/${folderName}/${folderName}${number}${extension}`;
+            console.log(`🖼️ Image path (IMF special case): ${imagePath} for entity: "${entityName}" -> folder: "${folderName}" (Index: ${imageIndex}/${imageLimit})`);
+            return imagePath;
+        }
+        
+        // Handle UNS special case (mixed file extensions)
+        if (entityName === 'UNS') {
+            // UNS has mixed extensions: UNS.jpg, UNS1.jpg, UNS2.jpg, UNS3.jpeg
+            const unsExtensions = ['.jpg', '.jpg', '.jpg', '.jpeg'];
+            const extension = unsExtensions[imageIndex] || '.jpg';
+            const imagePath = `images/${folderName}/${folderName}${number}${extension}`;
+            console.log(`🖼️ Image path (UNS special case): ${imagePath} for entity: "${entityName}" -> folder: "${folderName}" (Index: ${imageIndex}/${imageLimit})`);
+            return imagePath;
+        }
+        
+        // Use strict subfolder mapping: images/[FOLDER]/[FOLDER][NUM].jpg
+        const imagePath = `images/${folderName}/${folderName}${number}.jpg`;
+        console.log(`🖼️ Image path (subfolder): ${imagePath} for entity: "${entityName}" -> folder: "${folderName}" (Index: ${imageIndex}/${imageLimit})`);
+        return imagePath;
+    }
+
+    function handleImageError(img, title) {
+        console.log(`❌ Image failed to load: ${img.src} for "${title.substring(0, 30)}..."`);
+        
+        // Strict directive: Default to images/War/War.jpg if entity doesn't match folder
+        img.src = 'images/War/War.jpg';
+        console.log(`🔄 Using strict War fallback: images/War/War.jpg`);
+        
+        // If War fallback also fails, show placeholder
+        img.onerror = function() {
+            img.style.display = 'none';
+            if (img.parentElement) {
+                img.parentElement.style.background = 'linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)';
+                img.parentElement.innerHTML += '<div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:#FFD700; font-size:2rem;">🔍</div>';
+            }
+        };
+    }
+
+    function handleAccessIntel(event, newsUrl, fallbackUrl) {
+        event.preventDefault();
+        
+        console.log(`🔗 ACCESS INTEL clicked - trying news URL: ${newsUrl}`);
+        
+        // Try to open the news URL first
+        window.open(newsUrl, '_blank');
+        
+        // Check if the news URL exists (basic check)
+        fetch(newsUrl, { method: 'HEAD', mode: 'no-cors' })
+            .then(response => {
+                // If we get here, the URL exists (or CORS blocked it but it's likely valid)
+                console.log(`✅ News URL accessible: ${newsUrl}`);
+            })
+            .catch(error => {
+                // If news URL fails, fall back to main website
+                console.log(`⚠️ News URL failed, using fallback: ${fallbackUrl}`);
+                window.open(fallbackUrl, '_blank');
+            });
+    }
+
+    function renderIntelligenceFeed(articles) {
+        const feed = document.getElementById('intelligence-feed');
+        feed.innerHTML = '';
+        
+        const usedTitles = new Set();
+        let displayedCount = 0;
+
+        for (const item of articles) {
+            if (displayedCount >= 8) break; // STOP AT 8
+            if (usedTitles.has(item.title)) continue; // SKIP DUPLICATES
+
+            usedTitles.add(item.title);
+            
+            const card = document.createElement('div');
+            card.className = 'intelligence-card';
+            card.style.cssText = `
+                margin: 20px 0;
+                border-left: 4px solid #FFD700;
+                background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(30,30,30,0.9) 100%);
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                transition: all 0.3s ease;
+            `;
+            
+            // This forces your local image to appear immediately
+            const localPath = getStrictFilePath(item, displayedCount);
+            
+            card.innerHTML = `
+                <div style="position:relative; height:250px; background:#1a1a1a;">
+                    <img src="${localPath}" style="width:100%; height:250px; object-fit:cover;" data-article-index="${displayedCount}" onerror="handleImageError(this, '${item.title.replace(/'/g, '\\\'')}')">
+                </div>
+                <div style="padding:20px;">
+                    <h3 style="color:#FFD700; margin-bottom:10px;" data-translate>${item.title}</h3>
+                    <p style="color:#ffffff; margin-bottom:15px;" data-translate>${item.description || 'Monitoring Intelligence Feed...'}</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="color:#a0a0a0; font-size:0.8rem;" data-translate>${new Date(item.publishedAt || Date.now()).toLocaleDateString()}</span>
+                        <a href="#" onclick="handleAccessIntel(event, '${item.url || '#'}', '${item.fallbackUrl || item.url || '#'}')" target="_blank" style="background:#FFD700; color:#000; padding:8px 15px; text-decoration:none; border-radius:5px; font-weight:bold;">ACCESS INTEL</a>
+                    </div>
+                </div>
+            `;
+            
+            feed.appendChild(card);
+            displayedCount++;
+        }
+    }
+
+    // Local Intelligence Database System - No External API Calls
+
+    // Video Glitch Effect System
+    let glitchInterval;
+    let glitchTimeout;
+    
+    function triggerGlitch() {
+        const video = document.getElementById('glitch-video');
+        const body = document.body;
+        
+        // Clear any existing timeouts
+        clearTimeout(glitchTimeout);
+        clearInterval(glitchInterval);
+        
+        // Set up movie-style realistic glitch intervals
+        glitchInterval = setInterval(() => {
+            // Longer, more dramatic glitch duration like in movies
+            const glitchDuration = Math.random() * 1500 + 800; // 800ms to 2.3 seconds
+            
+            // Start dramatic glitch
+            video.style.opacity = '0.7'; // More visible and dramatic
+            video.play();
+            body.classList.add('world-glitch-active');
+            
+            // Add visual tearing effect during glitch
+            const tearCount = Math.floor(Math.random() * 4) + 2; // 2-5 tears
+            for (let i = 0; i < tearCount; i++) {
+                setTimeout(() => {
+                    // Random visual tear
+                    body.style.transform = `translateX(${Math.random() * 20 - 10}px) skewX(${Math.random() * 10 - 5}deg)`;
+                    
+                    // Reset tear
+                    setTimeout(() => {
+                        body.style.transform = '';
+                    }, Math.random() * 200 + 50);
+                }, Math.random() * glitchDuration);
+            }
+            
+            // Stop dramatic glitch
+            setTimeout(() => {
+                video.style.opacity = '0';
+                video.pause();
+                body.classList.remove('world-glitch-active');
+                body.style.transform = ''; // Ensure clean reset
+            }, glitchDuration);
+            
+        }, Math.random() * 12000 + 8000); // 8-20 seconds between glitches (less frequent)
+    }
+    
+    // Initialize the Local Intelligence Database System
+    document.addEventListener('DOMContentLoaded', async () => {
+        console.log('🚀 Loading Local Intelligence Database...');
+        
+        // Start video glitch effect after page loads
+        setTimeout(() => {
+            triggerGlitch();
+        }, 2000);
+        
+        // Also trigger glitch on any click for dramatic effect
+        document.addEventListener('click', () => {
+            if (Math.random() > 0.7) { // 30% chance on any click
+                triggerGlitch();
+            }
+        });
+        
+        try {
+            // Fetch from local intelligence.json file
+            const response = await fetch('intelligence.json');
+            if (!response.ok) {
+                throw new Error('Failed to load intelligence database');
+            }
+            
+            const intelligenceData = await response.json();
+            console.log(`✅ Loaded ${intelligenceData.length} intelligence reports from local database`);
+            
+            // Display 8 random articles from the local database
+            const shuffledArticles = intelligenceData.sort(() => Math.random() - 0.5);
+            const selectedArticles = shuffledArticles.slice(0, 8);
+            
+            renderIntelligenceFeed(selectedArticles);
+            
+        } catch (error) {
+            console.error('❌ Failed to load local intelligence database:', error);
+            
+            // Fallback to basic articles if JSON fails to load
+            const fallbackArticles = [
+                {
+                    title: "Intelligence System Offline",
+                    description: "Local intelligence database unavailable. System initializing...",
+                    entity: "War",
+                    url: "#",
+                    publishedAt: new Date().toISOString()
+                }
+            ];
+            
+            renderIntelligenceFeed(fallbackArticles);
+        }
+    });
+</script>
+<script>
+// Closes the translator if you tap anywhere else on the screen
+document.addEventListener('click', function(e) {
+    const translateBtn = document.querySelector('#google_translate_element');
+    const menu = document.querySelector('.goog-te-menu-frame');
+    
+    if (menu && translateBtn && !translateBtn.contains(e.target)) {
+        menu.style.display = 'none';
+    }
+});
+</script>
+     <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>◆</span>
+    </div>
+        <span>?</span>
+    </div>
+
+</html>
+</html>
+
+
+
+
+

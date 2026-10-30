@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Access Denied | Elite Account</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="auth-client.js"></script>
+    <style>
+        :root {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --gold-color: #FFD700;
+            --danger-red: #ff0000;
+            --danger-red-hover: #cc0000;
+            --card-bg: #1a0000;
+            --border-color: #ff0000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #000000 0%, #1a0000 100%);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .access-denied-container {
+            text-align: center;
+            padding: 20px;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .warning-icon {
+            font-size: 5rem;
+            color: var(--danger-red);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .access-denied-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--danger-red);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255, 0, 0, 0.6); }
+            to { text-shadow: 0 0 30px rgba(255, 0, 0, 0.9), 0 0 40px rgba(255, 0, 0, 0.6); }
+        }
+
+        .clearance-level {
+            font-size: 1.2rem;
+            color: var(--gold-color);
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid var(--gold-color);
+            padding: 12px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .explanation-box {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid var(--danger-red);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .explanation-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--danger-red), var(--gold-color));
+            animation: slide 3s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .explanation-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .explanation-text {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .requirement-list {
+            list-style: none;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid var(--danger-red);
+        }
+
+        .requirement-icon {
+            font-size: 1.3rem;
+            margin-right: 15px;
+            color: var(--gold-color);
+            flex-shrink: 0;
+        }
+
+        .requirement-text {
+            flex: 1;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .requirement-text strong {
+            color: var(--gold-color);
+            font-weight: 600;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: var(--gold-color);
+            border: 2px solid var(--gold-color);
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+
+        .back-btn:hover {
+            background: var(--gold-color);
+            color: var(--bg-color);
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Email Verification Styles */
+        .verification-section {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid var(--gold-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .verification-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .verification-text {
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .email-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .email-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .email-input:focus {
+            border-color: var(--gold-color);
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        .verify-btn {
+            background: var(--gold-color);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 8px;
+            padding: 15px 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .verify-btn:hover {
+            background: var(--gold-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .verify-btn:disabled {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .verification-result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .verification-result.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .verification-result.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+        }
+
+        .verification-result.warning {
+            background: rgba(243, 186, 47, 0.1);
+            border: 1px solid var(--gold-color);
+            color: var(--gold-color);
+        }
+
+        .security-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--danger-red);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* JWT Authentication Styles */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .divider span {
+            background: var(--card-bg);
+            padding: 0 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .email-access-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .verify-btn.secondary {
+            background: transparent;
+            border: 2px solid var(--gold-color);
+            color: var(--gold-color);
+        }
+
+        .verify-btn.secondary:hover {
+            background: var(--gold-color);
+            color: var(--bg-color);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .access-denied-container {
+                padding: 15px;
+                width: 100%;
+                max-width: none;
+            }
+
+            .access-denied-title {
+                font-size: 1.8rem;
+                letter-spacing: 1px;
+            }
+
+            .warning-icon {
+                font-size: 3rem;
+                margin-bottom: 15px;
+            }
+
+            .clearance-level {
+                font-size: 1rem;
+                padding: 10px 15px;
+                margin-bottom: 20px;
+            }
+
+            .explanation-box {
+                padding: 20px;
+                margin-top: 20px;
+            }
+
+            .explanation-title {
+                font-size: 1.4rem;
+            }
+
+            .explanation-text {
+                font-size: 1rem;
+            }
+
+            .requirement-item {
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+
+            .requirement-text {
+                font-size: 0.9rem;
+            }
+
+            .security-badge {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 20px;
+                display: inline-block;
+                font-size: 0.8rem;
+                padding: 8px 15px;
+            }
+
+            .back-btn {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+                margin-top: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .access-denied-container {
+                padding: 10px;
+                width: 100%;
+                max-width: none;
+            }
+
+            .access-denied-title {
+                font-size: 1.5rem;
+                letter-spacing: 1px;
+            }
+
+            .warning-icon {
+                font-size: 2.5rem;
+            }
+
+            .clearance-level {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .explanation-box {
+                padding: 15px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .explanation-title {
+                font-size: 1.2rem;
+            }
+
+            .explanation-text {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+
+            .requirement-item {
+                flex-direction: column;
+                text-align: center;
+                padding: 10px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .requirement-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .back-btn {
+                width: 100%;
+                max-width: 200px;
+                margin: 30px auto 0;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div class="security-badge" data-translate>SECURITY FIREWALL ACTIVE</div>
+    
+    <div class="access-denied-container" id="loadingContent">
+        <div class="warning-icon">⏳</div>
+        <h2 class="denied-title" data-translate>Verifying Credentials...</h2>
+        <p class="denied-text" data-translate>Checking your approval status with the Architect...</p>
+    </div>
+
+    <div class="access-denied-container hidden" id="accessDeniedContent">
+        <div class="warning-icon">⚠️</div>
+        <h1 class="access-denied-title" data-translate>ACCESS DENIED</h1>
+        <div class="clearance-level" data-translate>CLEARANCE LEVEL INSUFFICIENT</div>
+
+        <!-- JWT Authentication Section -->
+        <div class="verification-section">
+            <h3 class="verification-title" data-translate>Elite Account Authentication</h3>
+            <p class="verification-text" data-translate>Enter your credentials to access your Elite Account</p>
+            
+            <!-- Direct Login Form -->
+            <div class="login-form">
+                <input type="text" id="fullNameInput" class="email-input" placeholder="Enter your full name" data-translate>
+                <input type="email" id="emailInput" class="email-input" placeholder="Enter your email address" data-translate>
+                <button onclick="loginWithJWT()" class="verify-btn" data-translate>
+                    <i class="fas fa-sign-in-alt"></i> Access Elite Account
+                </button>
+            </div>
+            
+            <!-- Email Access Link -->
+            <div class="divider">
+                <span data-translate>OR</span>
+            </div>
+            
+            <div class="email-access-section">
+                <p class="verification-text" data-translate>Switching devices? Request an access link sent to your email</p>
+                <div class="email-form">
+                    <input type="email" id="linkEmailInput" class="email-input" placeholder="Enter your email address" data-translate>
+                    <button onclick="sendAccessLink()" class="verify-btn secondary" data-translate>
+                        <i class="fas fa-envelope"></i> Send Access Link
+                    </button>
+                </div>
+            </div>
+            
+            <div id="verificationResult" class="verification-result"></div>
+        </div>
+
+        <div class="explanation-box">
+            <h2 class="explanation-title" data-translate>Elite Account Security Protocol</h2>
+            <p class="explanation-text" data-translate>
+                The Elite Account is only unlocked after the convention with the Secretary General (Masters) is finalized. This ensures maximum security and verification of all members before granting access to the private dashboard.
+            </p>
+            
+            <ul class="requirement-list">
+                <li class="requirement-item">
+                    <div class="requirement-icon">👤</div>
+                    <div class="requirement-text">
+                        <strong data-translate>Secretary General Convention</strong>: <span data-translate>Physical or digital meeting with the Masters is mandatory for account activation.</span>
+                    </div>
+                </li>
+                <li class="requirement-item">
+                    <div class="requirement-icon">🔐</div>
+                    <div class="requirement-text">
+                        <strong data-translate>Identity Verification</strong>: <span data-translate>Complete verification process must be completed through official channels.</span>
+                    </div>
+                </li>
+                <li class="requirement-item">
+                    <div class="requirement-icon">📋</div>
+                    <div class="requirement-text">
+                        <strong data-translate>Membership Finalization</strong>: <span data-translate>All membership protocols must be completed before Elite Account access is granted.</span>
+                    </div>
+                </li>
+                <li class="requirement-item">
+                    <div class="requirement-icon">⏱️</div>
+                    <div class="requirement-text">
+                        <strong data-translate>Processing Time</strong>: <span data-translate>Account activation may take 24-72 hours after convention completion.</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <a href="index.html" class="back-btn" data-translate>
+            ← Return to Portal
+        </a>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO174C8QbyOodW1e5aQ5PW2pWJ01tO7jE",
+            authDomain: "illuminati---oversight.firebaseapp.com",
+            projectId: "illuminati---oversight",
+            storageBucket: "illuminati---oversight.firebasestorage.app",
+            messagingSenderId: "307854810652",
+            appId: "1:307854810652:web:196f634b4f0ebf4be949d9"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        function normalizeCredential(value) {
+            return String(value || '').trim().toLowerCase();
+        }
+
+        function memberStoredName(data) {
+            return normalizeCredential(data.full_name || data.fullName || data.name || '');
+        }
+
+        function memberStoredEmailNorm(doc, data) {
+            return normalizeCredential(data.email || doc.id || '');
+        }
+
+        function memberIsApproved(data) {
+            if (!data) return false;
+            // Ensure user is NOT pending before treating as approved
+            const isPending = data.status === 'pending' || data.membershipStatus === 'pending' || data.applicationStatus === 'pending';
+            if (isPending) return false;
+            if (data.status === 'approved') return true;
+            if (data.isApproved === true || data.isApproved === 'true') return true;
+            return false;
+        }
+
+        function credentialsMatchDoc(doc, fullNameNorm, emailNorm) {
+            if (!doc.exists) return false;
+            const data = doc.data();
+            return memberStoredName(data) === fullNameNorm && memberStoredEmailNorm(doc, data) === emailNorm;
+        }
+
+        /** Resolve a members document where both normalized full name and email match. */
+        async function findMemberByNameAndEmail(fullNameNorm, emailNorm, emailTrimmed) {
+            const docIds = [...new Set([emailNorm, emailTrimmed].filter(Boolean))];
+            for (const id of docIds) {
+                const doc = await db.collection('members').doc(id).get();
+                if (credentialsMatchDoc(doc, fullNameNorm, emailNorm)) return doc;
+            }
+            const queries = await Promise.all([
+                db.collection('members').where('email', '==', emailTrimmed).limit(25).get(),
+                db.collection('members').where('email', '==', emailNorm).limit(25).get()
+            ]);
+            const seen = new Set();
+            for (const snap of queries) {
+                for (const doc of snap.docs) {
+                    if (seen.has(doc.id)) continue;
+                    seen.add(doc.id);
+                    if (credentialsMatchDoc(doc, fullNameNorm, emailNorm)) return doc;
+                }
+            }
+            return null;
+        }
+
+        // Get user credentials from persistent memory
+        function getUserCredentials() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get('email') || localStorage.getItem('submittedEmail') || localStorage.getItem('userEmail');
+            const userId = urlParams.get('userId') || localStorage.getItem('userId');
+            console.log("🔍 Checking credentials for email:", email);
+            return { email, userId };
+        }
+
+        // Cross-device login: verify full name + email against Firestore members
+        async function loginWithJWT() {
+            const fullNameNorm = normalizeCredential(document.getElementById('fullNameInput').value);
+            const emailNorm = normalizeCredential(document.getElementById('emailInput').value);
+            const emailTrimmed = document.getElementById('emailInput').value.trim();
+            const resultDiv = document.getElementById('verificationResult');
+            const loginBtn = document.querySelector('.verify-btn');
+
+            if (!fullNameNorm || !emailNorm) {
+                showVerificationResult('Please enter your full name and email address', 'error');
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+            resultDiv.style.display = 'none';
+
+            try {
+                const memberDoc = await findMemberByNameAndEmail(fullNameNorm, emailNorm, emailTrimmed);
+
+                if (!memberDoc) {
+                    alert('Invalid Name or Email. Please check your submission details.');
+                    return;
+                }
+
+                const userData = memberDoc.data();
+                if (!memberIsApproved(userData)) {
+                    alert('Account pending. Please wait for admin approval.');
+                    return;
+                }
+
+                const persistEmail = (userData.email && userData.email.trim()) || memberDoc.id;
+                localStorage.setItem('userEmail', persistEmail);
+                localStorage.setItem('gate_email', persistEmail);
+
+                showVerificationResult('✅ Access granted! Redirecting to Elite Dashboard...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'elite-dashboard.html';
+                }, 1200);
+            } catch (error) {
+                console.error('Login error:', error);
+                showVerificationResult('❌ Verification failed. Please try again.', 'error');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Access Elite Account';
+            }
+        }
+
+        // Send access link function
+        async function sendAccessLink() {
+            const emailNorm = normalizeCredential(document.getElementById('linkEmailInput').value);
+            const resultDiv = document.getElementById('verificationResult');
+            const linkBtn = document.querySelector('.verify-btn.secondary');
+
+            if (!emailNorm) {
+                showVerificationResult('Please enter your email address', 'error');
+                return;
+            }
+
+            linkBtn.disabled = true;
+            linkBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            resultDiv.style.display = 'none';
+
+            console.log('📧 Sending access link to:', emailNorm);
+
+            try {
+                const result = await window.eliteAuth.sendAccessLink(emailNorm);
+                
+                if (result.success) {
+                    showVerificationResult('✅ Access link sent! Check your email and click the link to access your account.', 'success');
+                    document.getElementById('linkEmailInput').value = '';
+                } else {
+                    showVerificationResult(`❌ Failed to send access link: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('Send link error:', error);
+                showVerificationResult('❌ Failed to send access link. Please try again.', 'error');
+            } finally {
+                // Re-enable button
+                linkBtn.disabled = false;
+                linkBtn.innerHTML = '<i class="fas fa-envelope"></i> Send Access Link';
+            }
+        }
+
+        // Legacy email verification function (kept for compatibility)
+        async function verifyEmail() {
+            const emailTrimmed = document.getElementById('emailInput').value.trim();
+            const emailNorm = normalizeCredential(emailTrimmed);
+            const resultDiv = document.getElementById('verificationResult');
+            const verifyBtn = document.querySelector('.verify-btn');
+
+            if (!emailNorm) {
+                showVerificationResult('Please enter your email address', 'error');
+                return;
+            }
+
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+            resultDiv.style.display = 'none';
+
+            console.log('🔍 Verifying email:', emailNorm);
+
+            try {
+                let doc = await db.collection('members').doc(emailNorm).get();
+                if (!doc.exists) {
+                    doc = await db.collection('members').doc(emailTrimmed).get();
+                }
+
+                if (doc.exists) {
+                    const userData = doc.data();
+                    console.log('✅ User data found:', userData);
+
+                    if (memberIsApproved(userData)) {
+                        const fullName = userData.full_name || userData.fullName || 'Elite Member';
+                        const result = await window.eliteAuth.login(emailTrimmed, fullName);
+
+                        if (result.success) {
+                            const persistEmail = (userData.email && userData.email.trim()) || doc.id;
+                            localStorage.setItem('userEmail', persistEmail);
+                            localStorage.setItem('gate_email', persistEmail);
+                            showVerificationResult('✅ Access granted! Redirecting to Elite Dashboard...', 'success');
+
+                            setTimeout(() => {
+                                window.location.href = 'elite-dashboard.html';
+                            }, 2000);
+                        } else {
+                            showVerificationResult(`❌ Authentication failed: ${result.error}`, 'error');
+                        }
+                    } else {
+                        showVerificationResult('❌ Your membership is pending approval. Please wait for the Secretary General to review your application.', 'error');
+                    }
+                } else {
+                    showVerificationResult('❌ Email not found in our records. Please ensure you have completed the membership application.', 'error');
+                }
+            } catch (error) {
+                console.error('Email verification error:', error);
+                showVerificationResult('❌ Verification failed. Please try again.', 'error');
+            } finally {
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = '<i class="fas fa-shield-alt"></i> Verify Email';
+            }
+        }
+
+        // Show verification result
+        function showVerificationResult(message, type) {
+            const resultDiv = document.getElementById('verificationResult');
+            resultDiv.textContent = message;
+            resultDiv.className = `verification-result ${type}`;
+            resultDiv.style.display = 'block';
+        }
+
+        // Check user approval status (auto-redirect if already logged in with valid session)
+        function checkUserApproval() {
+            const savedEmail = localStorage.getItem('userEmail') || localStorage.getItem('gate_email') || localStorage.getItem('submittedEmail');
+
+            if (!savedEmail) {
+                console.log('❌ No saved email found, showing access denied');
+                showAccessDenied();
+                return;
+            }
+
+            console.log('🔍 Auto-checking approval for saved email:', savedEmail);
+
+            db.collection('members').doc(savedEmail).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        const userData = doc.data();
+
+                        if (memberIsApproved(userData)) {
+                            console.log('🎉 User still approved! Redirecting to elite dashboard...');
+                            localStorage.setItem('userEmail', savedEmail);
+                            localStorage.setItem('gate_email', savedEmail);
+                            window.location.href = 'elite-dashboard.html';
+                        } else {
+                            console.log('🔒 User approval pending or revoked, showing access denied');
+                            showAccessDenied();
+                        }
+                    } else {
+                        console.log('❌ Saved email not found in database');
+                        showAccessDenied();
+                    }
+                })
+                .catch((error) => {
+                    console.error('❌ Error checking user approval:', error);
+                    showAccessDenied();
+                });
+        }
+
+        // Show access denied screen
+        function showAccessDenied() {
+            document.getElementById('accessDeniedContent').style.display = 'block';
+            document.getElementById('loadingContent').style.display = 'none';
+            
+            // Add security alert effect
+            const body = document.body;
+            setInterval(() => {
+                body.style.background = 'linear-gradient(135deg, #1a0000 0%, #000000 100%)';
+                setTimeout(() => {
+                    body.style.background = 'linear-gradient(135deg, #000000 0%, #1a0000 100%)';
+                }, 500);
+            }, 3000);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.eliteAuth && window.eliteAuth.isAuthenticated()) {
+                const u = typeof window.eliteAuth.getCurrentUser === 'function' ? window.eliteAuth.getCurrentUser() : null;
+                if (u && u.email) {
+                    const e = String(u.email).trim();
+                    localStorage.setItem('userEmail', e);
+                    localStorage.setItem('gate_email', e);
+                }
+                console.log('🎉 JWT authentication found - redirecting to elite dashboard');
+                window.location.href = 'elite-dashboard.html';
+                return;
+            }
+
+            document.getElementById('accessDeniedContent').style.display = 'block';
+            document.getElementById('loadingContent').style.display = 'none';
+
+            checkUserApproval();
+        });
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+

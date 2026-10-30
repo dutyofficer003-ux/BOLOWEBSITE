@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Withdrawal Eligibility | Illuminati</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+            --gold-color: #FFD700;
+            --gold-hover: #FFA500;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
+            --shadow-color: rgba(0, 0, 0, 0.8);
+            --success-color: #00ff88;
+            --warning-color: #ff6b6b;
+            --countdown-red: #ff0000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: var(--gold-color);
+            border: 2px solid var(--gold-color);
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .back-btn:hover {
+            background: var(--gold-color);
+            color: var(--bg-color);
+            transform: scale(1.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .eligibility-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .eligibility-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .eligibility-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold-color), var(--gold-hover));
+            opacity: 0.7;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .countdown-display {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(255, 0, 0, 0.05));
+            border: 2px solid var(--countdown-red);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .countdown-title {
+            font-size: 1.2rem;
+            color: var(--countdown-red);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .countdown-timer {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--countdown-red);
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+        }
+
+        .countdown-label {
+            color: #e0e0e0;
+            font-size: 1rem;
+        }
+
+        .requirements-list {
+            list-style: none;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .requirement-icon {
+            font-size: 1.3rem;
+            margin-right: 12px;
+            color: var(--gold-color);
+            flex-shrink: 0;
+        }
+
+        .requirement-text {
+            flex: 1;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .requirement-text strong {
+            color: var(--gold-color);
+            font-weight: 600;
+        }
+
+        .milestone-tracker {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .milestone-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .milestone-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .milestone-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .milestone-status {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .status-completed {
+            color: var(--success-color);
+        }
+
+        .status-pending {
+            color: var(--warning-color);
+        }
+
+        .status-locked {
+            color: #a0a0a0;
+        }
+
+        .milestone-text {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+        }
+
+        .withdrawal-banner {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05));
+            border: 2px solid var(--success-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .withdrawal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--success-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .withdrawal-text {
+            color: #e0e0e0;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .eligibility-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+                letter-spacing: 3px;
+            }
+
+            .countdown-timer {
+                font-size: 2.5rem;
+            }
+
+            .milestone-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .countdown-timer {
+                font-size: 2rem;
+            }
+
+            .milestone-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="Terms & Conditions.html" class="back-btn">
+            ← Back to Hub
+        </a>
+
+        <div class="header">
+            <h1 data-translate>Withdrawal Eligibility</h1>
+            <p data-translate>Track your 6-month progression and withdrawal eligibility status</p>
+        </div>
+
+        <div class="eligibility-grid">
+            <div class="eligibility-card">
+                <h2 class="card-title" data-translate>6-Month Timeline</h2>
+                <div class="countdown-display">
+                    <div class="countdown-title" data-translate>Time Until Withdrawal</div>
+                    <div class="countdown-timer" id="countdownTimer">47D 12H 35M</div>
+                    <div class="countdown-label" data-translate>Remaining to complete 6-month requirement</div>
+                </div>
+            </div>
+
+            <div class="eligibility-card">
+                <h2 class="card-title" data-translate>Eligibility Requirements</h2>
+                <ul class="requirements-list">
+                    <li class="requirement-item">
+                        <div class="requirement-icon">📅</div>
+                        <div class="requirement-text">
+                            <strong data-translate>6-Month Minimum</strong>: <span data-translate>Must maintain active Elite status for minimum 6 months before first withdrawal eligibility</span>
+                        </div>
+                    </li>
+                    <li class="requirement-item">
+                        <div class="requirement-icon">💰</div>
+                        <div class="requirement-text">
+                            <strong data-translate>$500,000 Balance</strong>: <span data-translate>Account balance must reach minimum threshold before withdrawal authorization</span>
+                        </div>
+                    </li>
+                    <li class="requirement-item">
+                        <div class="requirement-icon">✅</div>
+                        <div class="requirement-text">
+                            <strong data-translate>Compliance Check</strong>: <span data-translate>All Elite protocols and security measures must be maintained</span>
+                        </div>
+                    </li>
+                    <li class="requirement-item">
+                        <div class="requirement-icon">🔐</div>
+                        <div class="requirement-text">
+                            <strong data-translate>Identity Verification</strong>: <span data-translate>Secretary General convention must be completed and verified</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="milestone-tracker">
+            <h2 class="milestone-title" data-translate>Progress Milestones</h2>
+            <div class="milestone-grid">
+                <div class="milestone-item">
+                    <div class="milestone-status status-completed" data-translate>✓ COMPLETED</div>
+                    <div class="milestone-text" data-translate>Month 1: Account Activation</div>
+                </div>
+                <div class="milestone-item">
+                    <div class="milestone-status status-completed" data-translate>✓ COMPLETED</div>
+                    <div class="milestone-text" data-translate>Month 2: First Load Received</div>
+                </div>
+                <div class="milestone-item">
+                    <div class="milestone-status status-completed" data-translate>✓ COMPLETED</div>
+                    <div class="milestone-text" data-translate>Month 3: Growth Multiplier Applied</div>
+                </div>
+                <div class="milestone-item">
+                    <div class="milestone-status status-completed" data-translate>✓ COMPLETED</div>
+                    <div class="milestone-text" data-translate>Month 4: Strategic Investment Phase</div>
+                </div>
+                <div class="milestone-item">
+                    <div class="milestone-status status-completed" data-translate>✓ COMPLETED</div>
+                    <div class="milestone-text" data-translate>Month 5: Balance Growth Acceleration</div>
+                </div>
+                <div class="milestone-item">
+                    <div class="milestone-status status-pending" data-translate>⏳ IN PROGRESS</div>
+                    <div class="milestone-text" data-translate>Month 6: Withdrawal Eligibility</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="withdrawal-banner">
+            <h2 class="withdrawal-title" data-translate>Withdrawal Authorization</h2>
+            <p class="withdrawal-text" data-translate>
+                Once you complete the 6-month requirement and reach the $500,000 balance threshold, 
+                your withdrawal authorization will be automatically processed. The system will verify your 
+                compliance and security status before granting withdrawal access. You will receive notification 
+                when your withdrawal eligibility is activated.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Countdown timer functionality
+        const targetDate = new Date('2024-06-18'); // 6 months from start date
+        
+        function updateCountdown() {
+            const now = new Date();
+            const difference = targetDate - now;
+            
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                
+                document.getElementById('countdownTimer').textContent = `${days}D ${hours}H ${minutes}M`;
+            } else {
+                document.getElementById('countdownTimer').textContent = 'ELIGIBLE';
+                document.getElementById('countdownTimer').style.color = 'var(--success-color)';
+            }
+        }
+        
+        // Update countdown every minute
+        setInterval(updateCountdown, 60000);
+        updateCountdown(); // Initial call
+        
+        // Add entrance animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.eligibility-card, .milestone-tracker, .withdrawal-banner');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(50px)';
+                setTimeout(() => {
+                    element.style.transition = 'all 0.8s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 300);
+            });
+        });
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+

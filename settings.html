@@ -1,0 +1,2991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Settings | Illuminati</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="auth-client.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <style>
+        /* Hidden Google Translate Element */
+        #google_translate_element {
+            display: none;
+        }
+        .goog-te-banner-frame.skiptranslate, .goog-te-gadget-icon {
+            display: none !important;
+        }
+        body {
+            top: 0px !important;
+        }
+        .skiptranslate iframe {
+            display: none !important;
+        }
+
+        /* 2FA Toggle Switch Styling */
+        .toggle-switch {
+            width: 50px;
+            height: 26px;
+            background: #475569;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-switch.active {
+            background: var(--gold-color);
+        }
+        .toggle-slider {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .toggle-switch.active .toggle-slider {
+            left: 27px;
+        }
+
+
+        /* Language Grid Styles */
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .lang-item {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .lang-item:hover {
+            border-color: var(--gold-color);
+            background: rgba(243, 186, 47, 0.1);
+            transform: translateY(-3px);
+        }
+        .lang-flag {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .lang-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        /* Custom Modal for Email/Password */
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+        .custom-modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .modal-title-custom {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* 2FA Toggle Style */
+        .tfa-container {
+            padding: 20px;
+            text-align: center;
+        }
+        .tfa-toggle-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+        }
+        .tfa-status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+        .tfa-status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .dot-on { background: var(--success-color); box-shadow: 0 0 10px var(--success-color); }
+        .dot-off { background: var(--error-color); box-shadow: 0 0 10px var(--error-color); }
+
+        :root {
+            --bg-primary: #0F172A;
+            --bg-secondary: #1E293B;
+            --bg-tertiary: #334155;
+            --text-primary: #F8FAFC;
+            --text-secondary: #CBD5E1;
+            --gold-color: #F3BA2F;
+            --gold-hover: #FCD34D;
+            --success-color: #10B981;
+            --error-color: #EF4444;
+            --border-color: #475569;
+            --shadow-color: rgba(0, 0, 0, 0.8);
+        }
+
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 100vh;
+        }
+
+        .settings-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 100px;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        /* Header */
+        .settings-header {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .settings-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Settings Sections */
+        .settings-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .settings-item-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .settings-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(243, 186, 47, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-color);
+            font-size: 16px;
+        }
+
+        .settings-info {
+            flex: 1;
+        }
+
+        .settings-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .settings-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .settings-chevron {
+            color: var(--text-secondary);
+            font-size: 14px;
+            transition: transform 0.2s ease;
+        }
+
+        .settings-item:hover .settings-chevron {
+            transform: translateX(4px);
+        }
+
+        /* Status Indicators */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.verified {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .status-badge.pending {
+            background: rgba(243, 186, 47, 0.1);
+            color: var(--gold-color);
+            border: 1px solid var(--gold-color);
+        }
+
+        .status-badge.disabled {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--gold-color);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: var(--text-primary);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .nav-item:hover {
+            color: var(--gold-color);
+            background: rgba(243, 186, 47, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--gold-color);
+        }
+
+        .nav-icon {
+            font-size: 1.25rem;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Additional Styles for Sub-pages */
+        .back-button {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(243, 186, 47, 0.1);
+            color: var(--gold-color);
+        }
+
+        .settings-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .settings-content h3 {
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .settings-content p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .primary-button {
+            background: var(--gold-color);
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .primary-button:hover {
+            background: var(--gold-hover);
+        }
+
+        .danger-button {
+            background: var(--error-color);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .danger-button:hover {
+            background: #dc2626;
+        }
+
+        .qr-code {
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+        }
+
+        .qr-placeholder i {
+            font-size: 3rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .backup-codes {
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .codes-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .codes-grid code {
+            background: var(--bg-secondary);
+            padding: 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: var(--gold-color);
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--bg-tertiary);
+        }
+
+        .upload-area:hover {
+            border-color: var(--gold-color);
+            background: rgba(243, 186, 47, 0.1);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .upload-preview {
+            margin: 20px 0;
+        }
+
+        .file-preview {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .remove-btn {
+            background: var(--error-color);
+            color: #fff;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .status-message {
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .status-message.pending {
+            background: rgba(243, 186, 47, 0.1);
+            border: 1px solid var(--gold-color);
+            color: var(--gold-color);
+        }
+
+        .status-message.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .status-message i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .legal-content {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .legal-content h4 {
+            color: var(--text-primary);
+            margin: 20px 0 10px 0;
+        }
+
+        .legal-content p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .payment-method-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .payment-method-item i {
+            font-size: 1.25rem;
+            color: var(--gold-color);
+        }
+
+        .payment-method-item div {
+            flex: 1;
+        }
+
+        .payment-method-item small {
+            color: var(--text-secondary);
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        /* Bank and Mobile Money Form Wrappers */
+        #bank-account-wrapper,
+        #mobile-money-wrapper {
+            overflow-y: auto;
+            max-height: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--gold-color);
+            box-shadow: 0 0 0 2px rgba(243, 186, 47, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .form-group select option {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .currency-options {
+            margin: 20px 0;
+        }
+
+        .currency-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .currency-item:hover {
+            border-color: var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        .currency-item.selected {
+            border-color: var(--gold-color);
+            background: rgba(243, 186, 47, 0.1);
+        }
+
+        .currency-flag {
+            font-size: 2rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .currency-info {
+            flex: 1;
+        }
+
+        .currency-name {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .currency-check {
+            color: var(--gold-color);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .currency-item.selected .currency-check {
+            opacity: 1;
+        }
+
+        .supported-banks {
+            margin: 20px 0;
+        }
+
+        .bank-category {
+            margin-bottom: 20px;
+        }
+
+        .bank-category h4 {
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .bank-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .bank-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .bank-item:hover {
+            background: var(--bg-secondary);
+            border-color: var(--gold-color);
+        }
+
+        .bank-item i {
+            color: var(--gold-color);
+            font-size: 1rem;
+        }
+
+        .bank-item span {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .settings-container {
+                padding: 15px;
+                padding-bottom: 140px;
+                overflow-y: auto;
+            }
+
+            .settings-header {
+                padding: 16px;
+            }
+
+            .settings-title {
+                font-size: 1.25rem;
+            }
+
+            .settings-item {
+                padding: 12px 16px;
+            }
+
+            .settings-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 14px;
+            }
+
+            .settings-label {
+                font-size: 0.875rem;
+            }
+
+            .settings-description {
+                font-size: 0.75rem;
+            }
+
+            .qr-placeholder {
+                width: 150px;
+                height: 150px;
+            }
+
+            .codes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .upload-area {
+                padding: 30px 20px;
+            }
+
+            /* Mobile-specific form scrolling fixes */
+            .form-container {
+                padding-bottom: 40px;
+                overflow-y: auto;
+            }
+
+            #bank-account-wrapper,
+            #mobile-money-wrapper {
+                padding-bottom: 40px;
+                margin-bottom: 20px;
+            }
+
+            #bank_setting-action-btn,
+            #momo_setting-action-btn {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- Permanent Translation Container -->
+    <div id="google_translate_element"></div>
+    <div class="settings-container">
+        <!-- Header -->
+        <div class="settings-header">
+            <h1 class="settings-title" data-translate>Settings</h1>
+        </div>
+
+        <!-- Security Section -->
+        <div class="settings-section">
+            <div class="settings-item" onclick="handleSecuritySettings()">
+                <div class="settings-item-content">
+                    <div class="settings-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="settings-info">
+                        <div class="settings-label" data-translate>Security</div>
+                        <div class="settings-description" data-translate>Password change, Two-Factor Authentication</div>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right settings-chevron"></i>
+            </div>
+            
+            <div class="settings-item" onclick="handle2FASettings()">
+                <div class="settings-item-content">
+                    <div class="settings-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="settings-info">
+                        <div class="settings-label" data-translate>Two-Factor Authentication</div>
+                        <div class="settings-description" data-translate>Add an extra layer of security</div>
+                    </div>
+                </div>
+                <div class="status-badge pending" id="2FAStatus">
+                    <i class="fas fa-clock"></i> <span data-translate>Disabled</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verification Section -->
+        <div class="settings-section">
+            <div class="settings-item" onclick="handleKYCSettings()">
+                <div class="settings-item-content">
+                    <div class="settings-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="settings-info">
+                        <div class="settings-label" data-translate>KYC Verification</div>
+                        <div class="settings-description" data-translate>Identity verification status</div>
+                    </div>
+                </div>
+                <div class="status-badge pending" id="kycStatus">
+                    <i class="fas fa-clock"></i> <span data-translate>Pending</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Methods Section -->
+        <div class="settings-section">
+            <div class="settings-item" onclick="handlePaymentMethods()">
+                <div class="settings-item-content">
+                    <div class="settings-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="settings-info">
+                        <div class="settings-label" data-translate>Payment Methods</div>
+                        <div class="settings-description" data-translate>Manage MTN, M-Pesa, Bank accounts</div>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right settings-chevron"></i>
+            </div>
+        </div>
+
+        <!-- Preferences Section -->
+        <div class="settings-section">
+            <div class="settings-item" onclick="handleLanguageSettings()">
+                <div class="settings-item-content">
+                    <div class="settings-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div class="settings-info">
+                        <div class="settings-label" data-translate>Language</div>
+                        <div class="settings-description" data-translate>English</div>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right settings-chevron"></i>
+            </div>
+            
+            <div class="settings-item" onclick="handleCurrencySettings()">
+                <div class="settings-item-content">
+                    <div class="settings-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="settings-info">
+                        <div class="settings-label" data-translate>Currency</div>
+                        <div class="settings-description" id="currencyDisplay">USD</div>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right settings-chevron"></i>
+            </div>
+        </div>
+
+        <!-- Legal Section -->
+        <div class="settings-section">
+            <div class="settings-item" onclick="handlePrivacyPolicy()">
+                <div class="settings-item-content">
+                    <div class="settings-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="settings-info">
+                        <div class="settings-label" data-translate>Privacy Policy</div>
+                        <div class="settings-description" data-translate>View our privacy policy</div>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right settings-chevron"></i>
+            </div>
+            
+            <div class="settings-item" onclick="handleTerms()">
+                <div class="settings-item-content">
+                    <div class="settings-icon">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <div class="settings-info">
+                        <div class="settings-label" data-translate>Terms of Enlightenment</div>
+                        <div class="settings-description" data-translate>View terms and conditions</div>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right settings-chevron"></i>
+            </div>
+            
+            <div class="settings-item" onclick="handleLogout()">
+                <div class="settings-item-content">
+                    <div class="settings-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--error-color);">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div class="settings-info">
+                        <div class="settings-label" style="color: var(--error-color);" data-translate>Logout</div>
+                        <div class="settings-description" data-translate>Sign out of your account</div>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right settings-chevron" style="color: var(--error-color);"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label" data-translate>Home</span>
+        </a>
+        <a href="elite-dashboard.html" class="nav-item">
+            <i class="fas fa-wallet nav-icon"></i>
+            <span class="nav-label" data-translate>Wallet</span>
+        </a>
+        <a href="settings.html" class="nav-item active">
+            <i class="fas fa-cog nav-icon"></i>
+            <span class="nav-label" data-translate>Settings</span>
+        </a>
+    
+    <a href="/alladin.html" class="alladin-nav-item" style="color: #ffd700; font-weight: bold; text-shadow: 0 0 8px rgba(212,175,55,0.6);">ALLADIN AI</a></nav>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO174C8QbyOodW1e5aQ5PW2pWJ01tO7jE",
+            authDomain: "illuminati---oversight.firebaseapp.com",
+            projectId: "illuminati---oversight",
+            storageBucket: "illuminati---oversight.firebasestorage.app",
+            messagingSenderId: "307854810652",
+            appId: "1:307854810652:web:196f634b4f0ebf4be949d9"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Current user data
+        let currentUser = null;
+        let userEmail = null;
+
+        // --- UNIFIED GATEWAY & SETTINGS SYNC ENGINE ---
+        let activeGatewayListener = null;
+
+        // Initialize the real-time listener
+        function initUniversalPaymentListener() {
+            if (!userEmail) {
+                console.warn("Universal Payment Sync: No user session found.");
+                return;
+            }
+            
+            // Stop any existing listener first
+            if (activeGatewayListener) {
+                activeGatewayListener();
+            }
+            
+            console.log("Universal Payment Sync: Subscribing to real-time status for member:", userEmail);
+            
+            activeGatewayListener = db.collection('members').doc(userEmail).onSnapshot((doc) => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    currentUser = userData; // Keep local currentUser synced
+                    const activeGateway = userData.activeGateway || "";
+                    const isLinked = !!activeGateway;
+                    
+                    console.log(`Universal Sync Update - Active Gateway: ${activeGateway || 'NONE'} (Linked: ${isLinked})`);
+                    
+                    // 1. Sync Wallet Status Badge UI (ONLINE / OFFLINE)
+                    syncWalletStatusUI(isLinked ? 'ONLINE' : 'OFFLINE');
+                    
+                    // 2. Sync settings.html payment form elements
+                    if (typeof syncSettingsPaymentForms === 'function') {
+                        syncSettingsPaymentForms(isLinked, activeGateway, userData);
+                    }
+                } else {
+                    console.warn("Universal Payment Sync: Member document not found in Firestore.");
+                    syncWalletStatusUI('OFFLINE');
+                }
+            }, (error) => {
+                console.error("Universal Payment Sync: Firestore listener error:", error);
+            });
+        }
+
+        // Link gateway controller
+        // Update global payment status UI to ONLINE/OFFLINE
+        function updateGlobalPaymentStatusUI(isOnline, gateway) {
+            // Update status in memory
+            const statusLabel = document.querySelector('[style*="WALLET STATUS"]');
+            
+            // Find and update the wallet status header across all pages
+            const allHeaders = document.querySelectorAll('h1, .settings-title, .payout-title');
+            allHeaders.forEach(header => {
+                let parent = header.closest('section') || header.closest('div[class*="container"]');
+                if (parent) {
+                    let statusDiv = parent.querySelector('[style*="WALLET"]');
+                    if (!statusDiv) {
+                        statusDiv = document.createElement('div');
+                        statusDiv.style.cssText = `
+                            display:flex;align-items:center;gap:10px;padding:12px 16px;
+                            background:${isOnline ? 'linear-gradient(135deg,rgba(16,185,129,0.12),rgba(16,185,129,0.04))' : 'rgba(100,116,139,0.1)'};
+                            border:${isOnline ? '2px solid var(--success-color)' : '1px solid var(--border-color)'};
+                            border-radius:12px;margin-bottom:18px;
+                        `;
+                        if (parent) parent.insertBefore(statusDiv, parent.firstChild);
+                    }
+                    statusDiv.innerHTML = `
+                        <span style="width:10px;height:10px;border-radius:50%;background:${isOnline ? 'var(--success-color)' : '#64748b'};flex-shrink:0;${isOnline ? 'box-shadow:0 0 8px var(--success-color);animation:pulse 1.5s infinite;' : ''}" data-translate></span>
+                        <div>
+                            <div style="font-weight:700;color:${isOnline ? 'var(--success-color)' : 'var(--text-secondary)'};font-size:0.78rem;text-transform:uppercase;letter-spacing:1px;">WALLET STATUS: ${isOnline ? 'ONLINE' : 'OFFLINE'}</div>
+                            ${isOnline ? `<div style="color:var(--text-primary);font-size:0.88rem;margin-top:2px;">Gateway: ${(gateway || 'UNKNOWN').toUpperCase()}</div>` : ''}
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        // Lock all payment channel buttons/inputs across the site
+        function lockAllPaymentChannels(activeGateway) {
+            // Lock bank account section if not the active gateway
+            const bankAccountWrapper = document.getElementById('bank-account-wrapper');
+            const mobileMoneyWrapper = document.getElementById('mobile-money-wrapper');
+            
+            if (bankAccountWrapper && activeGateway !== 'bank_transfer') {
+                const inputs = bankAccountWrapper.querySelectorAll('input, select, button');
+                inputs.forEach(input => {
+                    if (input.type !== 'hidden' && !input.id.includes('action-btn')) {
+                        input.disabled = true;
+                        input.style.opacity = '0.5';
+                    }
+                });
+            }
+            
+            // Lock mobile money section if not the active gateway
+            if (mobileMoneyWrapper) {
+                const mobileProviders = ['mtn', 'mpesa', 'airtel', 'glo', 'etisalat'];
+                if (!mobileProviders.includes(activeGateway)) {
+                    const inputs = mobileMoneyWrapper.querySelectorAll('input, select, button');
+                    inputs.forEach(input => {
+                        if (input.type !== 'hidden' && !input.id.includes('action-btn')) {
+                            input.disabled = true;
+                            input.style.opacity = '0.5';
+                        }
+                    });
+                }
+            }
+            
+            // Lock all gateway link buttons on payout-channels.html if accessible
+            const allLinkButtons = document.querySelectorAll('.link-btn');
+            allLinkButtons.forEach(btn => {
+                if (!btn.id || !btn.id.includes(activeGateway)) {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                }
+            });
+            
+            console.log(`Universal Payment Lock: All channels locked except [${activeGateway}]`);
+        }
+
+        // Unlock all payment channel buttons/inputs (called on unlink)
+        function unlockAllPaymentChannels() {
+            const bankAccountWrapper = document.getElementById('bank-account-wrapper');
+            const mobileMoneyWrapper = document.getElementById('mobile-money-wrapper');
+            
+            if (bankAccountWrapper) {
+                const inputs = bankAccountWrapper.querySelectorAll('input, select, button');
+                inputs.forEach(input => {
+                    if (input.type !== 'hidden') {
+                        input.disabled = false;
+                        input.style.opacity = '1';
+                    }
+                });
+            }
+            
+            if (mobileMoneyWrapper) {
+                const inputs = mobileMoneyWrapper.querySelectorAll('input, select, button');
+                inputs.forEach(input => {
+                    if (input.type !== 'hidden') {
+                        input.disabled = false;
+                        input.style.opacity = '1';
+                    }
+                });
+            }
+            
+            // Unlock all gateway link buttons
+            const allLinkButtons = document.querySelectorAll('.link-btn');
+            allLinkButtons.forEach(btn => {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            });
+            
+            console.log("Universal Payment Lock: All channels unlocked");
+        }
+
+        async function processGatewayLink(gatewayName, dynamicDetails) {
+            if (!userEmail) {
+                alert("Session expired. Please log in again.");
+                window.location.replace("account-gate.html");
+                return;
+            }
+            
+            console.log(`Universal Sync: Attempting to link gateway [${gatewayName}]`, dynamicDetails);
+            
+            try {
+                // Update user document in members collection
+                await db.collection('members').doc(userEmail).update({
+                    activeGateway: gatewayName,
+                    activeGatewayDetails: dynamicDetails,
+                    gatewayLinkedAt: new Date().toISOString()
+                });
+                
+                // Update local currentUser immediately
+                if (currentUser) {
+                    currentUser.activeGateway = gatewayName;
+                    currentUser.activeGatewayDetails = dynamicDetails;
+                }
+                
+                // Update global UI status to ONLINE with green indicator
+                updateGlobalPaymentStatusUI(true, gatewayName);
+                
+                // Lock all other payment channel buttons/inputs across the site
+                lockAllPaymentChannels(gatewayName);
+                
+                showNotification(`${gatewayName.toUpperCase()} Bound to Ledger Successfully`);
+                
+            } catch (error) {
+                console.error(`Universal Sync: Failed to link gateway [${gatewayName}]`, error);
+                alert(`Failed to link ${gatewayName.toUpperCase()}. Please try again.`);
+            }
+        }
+
+        // Unlink gateway controller
+        async function processGatewayUnlink() {
+            if (!userEmail) return;
+            
+            if (!confirm("Are you sure you want to unlink the active payout gateway? This will release the active ledger binding.")) {
+                return;
+            }
+            
+            console.log("Universal Sync: Unlinking active payout gateway...");
+            
+            try {
+                // Reset activeGateway, details, and clear data fields
+                await db.collection('members').doc(userEmail).update({
+                    activeGateway: "",
+                    activeGatewayDetails: null,
+                    gatewayUnlinkedAt: new Date().toISOString()
+                });
+                
+                // Immediately update local currentUser so re-renders see fresh state
+                if (currentUser) {
+                    currentUser.activeGateway = "";
+                    currentUser.activeGatewayDetails = null;
+                }
+                
+                // Update global UI status to OFFLINE
+                updateGlobalPaymentStatusUI(false, null);
+                
+                // Unlock all payment channels
+                unlockAllPaymentChannels();
+                
+                showNotification("Ledger Binding Released. System Clean.");
+                
+                // Re-render whatever payment subpage is currently visible
+                const mainContent = document.querySelector('.settings-container');
+                if (mainContent) {
+                    const titleEl = mainContent.querySelector('.settings-title');
+                    const title = titleEl ? titleEl.textContent.trim() : '';
+                    if (title === 'Payment Methods') {
+                        showPaymentMethodsPage(mainContent);
+                    } else if (title === 'Bank Account') {
+                        showAddBankAccountPage(mainContent);
+                    } else if (title === 'Mobile Money') {
+                        showAddMobileMoneyPage(mainContent);
+                    }
+                }
+                
+            } catch (error) {
+                console.error("Universal Sync: Failed to unlink gateway:", error);
+                alert("Failed to unlink payout gateway. Please try again.");
+            }
+        }
+
+        // Wallet online/offline live status switcher
+        function syncWalletStatusUI(status) {
+            const settingsHeader = document.querySelector('.settings-container .settings-header');
+            if (!settingsHeader) return;
+            
+            let statusBadge = settingsHeader.querySelector('.wallet-status-badge');
+            if (!statusBadge) {
+                statusBadge = document.createElement('div');
+                statusBadge.className = 'wallet-status-badge';
+                statusBadge.style.cssText = `
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    margin-top: 10px;
+                    padding: 6px 14px;
+                    background: rgba(15, 23, 42, 0.6);
+                    border: 1px solid var(--border-color);
+                    border-radius: 20px;
+                    font-size: 0.825rem;
+                    font-weight: 700;
+                    letter-spacing: 1px;
+                    text-transform: uppercase;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                    transition: all 0.3s ease;
+                `;
+                settingsHeader.appendChild(statusBadge);
+            }
+            
+            if (status === 'ONLINE') {
+                statusBadge.innerHTML = `
+                    <span class="status-dot" style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--success-color); display: inline-block; box-shadow: 0 0 10px var(--success-color); animation: pulse 1.5s infinite;" data-translate></span>
+                    <span style="color: var(--success-color);" data-translate>WALLET STATUS: ONLINE</span>
+                `;
+                statusBadge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+            } else {
+                statusBadge.innerHTML = `
+                    <span class="status-dot" style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--error-color); display: inline-block; box-shadow: 0 0 10px var(--error-color);" data-translate></span>
+                    <span style="color: var(--text-secondary);" data-translate>WALLET STATUS: OFFLINE</span>
+                `;
+                statusBadge.style.borderColor = 'var(--border-color)';
+            }
+
+            // Also search for and update any WALLET STATUS text containers in the current view
+            const allWalletStatusElements = document.querySelectorAll('*');
+            allWalletStatusElements.forEach(el => {
+                if (el.textContent && el.textContent.includes('WALLET STATUS:')) {
+                    const statusDot = el.querySelector('.status-dot, span[style*="border-radius"]');
+                    if (statusDot && status === 'ONLINE') {
+                        statusDot.style.backgroundColor = 'var(--success-color)';
+                        statusDot.style.boxShadow = '0 0 10px var(--success-color)';
+                        if (statusDot.style.animation === '') {
+                            statusDot.style.animation = 'pulse 1.5s infinite';
+                        }
+                    } else if (statusDot && status === 'OFFLINE') {
+                        statusDot.style.backgroundColor = 'var(--error-color)';
+                        statusDot.style.boxShadow = '0 0 10px var(--error-color)';
+                        statusDot.style.animation = '';
+                    }
+                }
+            });
+        }
+
+        // Syncs custom inputs inside the Settings menu
+        function syncSettingsPaymentForms(isLinked, activeGateway, userData) {
+            const container = document.querySelector('.settings-container');
+            if (!container) return;
+            
+            // 1. Check if we are on the main Payment Methods subpage
+            const mainTitle = container.querySelector('.settings-title');
+            if (mainTitle && mainTitle.textContent === 'Payment Methods') {
+                const settingsItems = container.querySelectorAll('.settings-item');
+                
+                settingsItems.forEach(item => {
+                    const onclickAttr = item.getAttribute('onclick') || "";
+                    let isBankItem = onclickAttr.includes('add-bank-account');
+                    let isMobileItem = onclickAttr.includes('add-mobile-money');
+                    
+                    if (!isBankItem && !isMobileItem) return;
+                    
+                    let badge = item.querySelector('.status-badge') || item.querySelector('.settings-chevron');
+                    if (isLinked) {
+                        let isCurrentActive = false;
+                        if (isBankItem && activeGateway === 'bank_transfer') isCurrentActive = true;
+                        if (isMobileItem && ['mtn', 'mpesa', 'airtel', 'glo', 'etisalat'].includes(activeGateway)) isCurrentActive = true;
+                        
+                        if (isCurrentActive) {
+                            item.style.opacity = "1";
+                            item.style.pointerEvents = "auto";
+                            if (badge) {
+                                if (!badge.classList.contains('status-badge')) {
+                                    const newBadge = document.createElement('div');
+                                    newBadge.className = 'status-badge success';
+                                    badge.replaceWith(newBadge);
+                                    badge = newBadge;
+                                }
+                                badge.className = 'status-badge success';
+                                badge.innerHTML = '<i class="fas fa-link"></i> ACTIVE';
+                            }
+                        } else {
+                            item.style.opacity = "0.4";
+                            item.style.pointerEvents = "none";
+                            if (badge) {
+                                if (!badge.classList.contains('status-badge')) {
+                                    const newBadge = document.createElement('div');
+                                    newBadge.className = 'status-badge pending';
+                                    badge.replaceWith(newBadge);
+                                    badge = newBadge;
+                                }
+                                badge.className = 'status-badge pending';
+                                badge.innerHTML = '<i class="fas fa-lock"></i> LOCKED';
+                            }
+                        }
+                    } else {
+                        // Reset
+                        item.style.opacity = "1";
+                        item.style.pointerEvents = "auto";
+                        if (badge && badge.classList.contains('status-badge')) {
+                            const chevron = document.createElement('i');
+                            chevron.className = 'fas fa-plus settings-chevron';
+                            badge.replaceWith(chevron);
+                        }
+                    }
+                });
+                
+                // Render saved payment methods dynamically
+                const savedContainer = document.getElementById('savedPaymentMethods');
+                if (savedContainer) {
+                    if (isLinked) {
+                        let iconClass = 'fa-credit-card';
+                        if (activeGateway === 'bank_transfer') iconClass = 'fa-university';
+                        else if (['mtn', 'mpesa', 'airtel', 'glo', 'etisalat'].includes(activeGateway)) iconClass = 'fa-mobile-alt';
+                        else iconClass = 'fa-wallet';
+                        
+                        savedContainer.innerHTML = `
+                            <div class="payment-method-item" style="border: 2px solid var(--gold-color); background: rgba(250, 204, 21, 0.05); margin-top: 15px; padding: 12px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <i class="fas ${iconClass}" style="font-size: 1.5rem; color: var(--gold-color);"></i>
+                                    <div>
+                                        <div style="font-weight: 700; text-transform: uppercase; color: var(--gold-color);">${activeGateway.replace('_', ' ')}</div>
+                                        <div style="font-size: 0.9rem; color: var(--text-primary); margin-top: 4px;">${userData.activeGatewayDetails || "Gateway Active"}</div>
+                                    </div>
+                                </div>
+                                <button onclick="processGatewayUnlink()" class="remove-btn" style="background: var(--error-color); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s;" data-translate>
+                                    <i class="fas fa-trash"></i> Unlink
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        savedContainer.innerHTML = `
+                            <p style="color: var(--text-secondary); text-align: center; padding: 20px 0;" data-translate>
+                                <i class="fas fa-info-circle" style="margin-right: 6px;"></i> No active payout gateway bound to the global ledger.
+                            </p>
+                        `;
+                    }
+                }
+            }
+            
+            // 2. Check if we are on the Bank Account Form
+            const bankForm = document.getElementById('bankAccountForm');
+            if (bankForm) {
+                const button = bankForm.querySelector('button[type="submit"]');
+                const inputs = bankForm.querySelectorAll('input, select');
+                
+                if (isLinked) {
+                    if (activeGateway === 'bank_transfer') {
+                        // Pre-fill and lock form
+                        inputs.forEach(input => {
+                            input.disabled = true;
+                            if (input.id === 'bankName') {
+                                input.innerHTML = `<option value="${userData.activeGatewayDetails || 'Bank'}">${userData.activeGatewayDetails || 'Bank'}</option>`;
+                            } else if (input.id === 'accountNumber') {
+                                input.value = userData.activeGatewayDetails || "****";
+                            }
+                        });
+                        
+                        if (button) {
+                            button.style.background = 'var(--error-color)';
+                            button.style.borderColor = 'var(--error-color)';
+                            button.innerHTML = '<i class="fas fa-unlink"></i> UNLINK BANK ACCOUNT';
+                            button.onclick = (e) => {
+                                e.preventDefault();
+                                processGatewayUnlink();
+                            };
+                        }
+                    } else {
+                        // If another gateway is linked, disable all inputs and lock button
+                        inputs.forEach(input => {
+                            input.disabled = true;
+                            input.style.opacity = '0.5';
+                        });
+                        
+                        if (button) {
+                            button.disabled = true;
+                            button.style.opacity = '0.4';
+                            button.style.cursor = 'not-allowed';
+                            button.innerHTML = 'LOCKED (Active Gateway Running)';
+                        }
+                    }
+                } else {
+                    // System unlinked - restore bank form to editable
+                    inputs.forEach(input => {
+                        input.disabled = false;
+                        input.style.opacity = '1';
+                    });
+                    if (button) {
+                        button.disabled = false;
+                        button.style.background = '';
+                        button.style.borderColor = '';
+                        button.style.opacity = '1';
+                        button.style.cursor = 'pointer';
+                        button.innerHTML = 'Save Bank Account';
+                        button.onclick = null;
+                    }
+                }
+            }
+            
+            // 3. Check if we are on the Mobile Money Form
+            const mobileForm = document.getElementById('mobileMoneyForm');
+            if (mobileForm) {
+                const button = mobileForm.querySelector('button[type="submit"]');
+                const inputs = mobileForm.querySelectorAll('input, select');
+                
+                if (isLinked) {
+                    if (['mtn', 'mpesa', 'airtel', 'glo', 'etisalat'].includes(activeGateway)) {
+                        // Pre-fill and lock form
+                        inputs.forEach(input => {
+                            input.disabled = true;
+                            if (input.id === 'mobileProvider') {
+                                input.innerHTML = `<option value="${activeGateway}">${activeGateway.toUpperCase()}</option>`;
+                            } else if (input.id === 'mobileNumber') {
+                                input.value = userData.activeGatewayDetails || "";
+                            }
+                        });
+                        
+                        if (button) {
+                            button.style.background = 'var(--error-color)';
+                            button.style.borderColor = 'var(--error-color)';
+                            button.innerHTML = `<i class="fas fa-unlink"></i> UNLINK ${activeGateway.toUpperCase()}`;
+                            button.onclick = (e) => {
+                                e.preventDefault();
+                                processGatewayUnlink();
+                            };
+                        }
+                    } else {
+                        // If another gateway is linked, disable all inputs and lock button
+                        inputs.forEach(input => {
+                            input.disabled = true;
+                            input.style.opacity = '0.5';
+                        });
+                        
+                        if (button) {
+                            button.disabled = true;
+                            button.style.opacity = '0.4';
+                            button.style.cursor = 'not-allowed';
+                            button.innerHTML = 'LOCKED (Active Gateway Running)';
+                        }
+                    }
+                } else {
+                    // Restore mobile form
+                    inputs.forEach(input => {
+                        input.disabled = false;
+                        input.style.opacity = '1';
+                    });
+                    if (button) {
+                        button.disabled = false;
+                        button.style.background = '';
+                        button.style.borderColor = '';
+                        button.style.opacity = '1';
+                        button.style.cursor = 'pointer';
+                        button.innerHTML = 'Save Mobile Money Account';
+                        button.onclick = null;
+                    }
+                }
+            }
+
+            // 4. Global gate check: Disable all inputs in manual settings sub-form containers when gateway is active
+            const bankAccountWrapper = document.getElementById('bank-account-wrapper');
+            const mobileMoneyWrapper = document.getElementById('mobile-money-wrapper');
+            
+            if (isLinked) {
+                // Disable all inputs in bank account wrapper if not the active gateway
+                if (bankAccountWrapper && activeGateway !== 'bank_transfer') {
+                    const allInputs = bankAccountWrapper.querySelectorAll('input, select');
+                    allInputs.forEach(input => {
+                        input.disabled = true;
+                        input.style.opacity = '0.5';
+                    });
+                    
+                    const actionBtn = bankAccountWrapper.querySelector('#bank_setting-action-btn');
+                    if (actionBtn) {
+                        actionBtn.disabled = true;
+                        actionBtn.style.opacity = '0.4';
+                        actionBtn.style.cursor = 'not-allowed';
+                        actionBtn.innerHTML = 'LOCKED (Active Gateway Running)';
+                    }
+                }
+                
+                // Disable all inputs in mobile money wrapper if not the active gateway
+                if (mobileMoneyWrapper && !['mtn', 'mpesa', 'airtel', 'glo', 'etisalat'].includes(activeGateway)) {
+                    const allInputs = mobileMoneyWrapper.querySelectorAll('input, select');
+                    allInputs.forEach(input => {
+                        input.disabled = true;
+                        input.style.opacity = '0.5';
+                    });
+                    
+                    const actionBtn = mobileMoneyWrapper.querySelector('#momo_setting-action-btn');
+                    if (actionBtn) {
+                        actionBtn.disabled = true;
+                        actionBtn.style.opacity = '0.4';
+                        actionBtn.style.cursor = 'not-allowed';
+                        actionBtn.innerHTML = 'LOCKED (Active Gateway Running)';
+                    }
+                }
+            } else {
+                // Re-enable all inputs when no gateway is active
+                if (bankAccountWrapper) {
+                    const allInputs = bankAccountWrapper.querySelectorAll('input, select');
+                    allInputs.forEach(input => {
+                        input.disabled = false;
+                        input.style.opacity = '1';
+                    });
+                    
+                    const actionBtn = bankAccountWrapper.querySelector('#bank_setting-action-btn');
+                    if (actionBtn) {
+                        actionBtn.disabled = false;
+                        actionBtn.style.opacity = '1';
+                        actionBtn.style.cursor = 'pointer';
+                        actionBtn.innerHTML = '<i class="fas fa-university"></i> Link System Bank Account';
+                    }
+                }
+                
+                if (mobileMoneyWrapper) {
+                    const allInputs = mobileMoneyWrapper.querySelectorAll('input, select');
+                    allInputs.forEach(input => {
+                        input.disabled = false;
+                        input.style.opacity = '1';
+                    });
+                    
+                    const actionBtn = mobileMoneyWrapper.querySelector('#momo_setting-action-btn');
+                    if (actionBtn) {
+                        actionBtn.disabled = false;
+                        actionBtn.style.opacity = '1';
+                        actionBtn.style.cursor = 'pointer';
+                        actionBtn.innerHTML = '<i class="fas fa-mobile-alt"></i> Link Mobile Money Account';
+                    }
+                }
+            }
+        }
+
+        // Payload extractor for Settings manual input fields
+        function gatherCustomFormPayload(formKey) {
+            if (formKey === 'bank') {
+                const bankRegion = document.getElementById('bankRegion').value;
+                const bankName = document.getElementById('bankName').value;
+                const holderName = document.getElementById('accountHolderName').value;
+                const accNum = document.getElementById('accountNumber').value;
+                return `${bankName} (${bankRegion.toUpperCase()}) - ${accNum} [${holderName}]`;
+            } else if (formKey === 'mobile') {
+                const provider = document.getElementById('mobileProvider').value;
+                const num = document.getElementById('mobileNumber').value;
+                const holderName = document.getElementById('accountHolderName').value;
+                return `${provider.toUpperCase()}: ${num} [${holderName}]`;
+            }
+            return "";
+        }
+
+        // Initialize settings page
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initializeSettings();
+            initUniversalPaymentListener();
+            loadUserSettings();
+            applyDarkModePreference();
+        });
+
+        // Initialize settings
+        async function initializeSettings() {
+            userEmail = localStorage.getItem('userEmail') || localStorage.getItem('gate_email');
+            if (userEmail) {
+                try {
+                    const userDoc = await db.collection('members').doc(userEmail).get();
+                    if (userDoc.exists) {
+                        currentUser = userDoc.data();
+                        updateStatusBadges();
+                    }
+                } catch (error) {
+                    console.error('Error loading user data:', error);
+                }
+            }
+        }
+
+        
+        // Update status badges based on user data
+        function updateStatusBadges() {
+            if (!currentUser) return;
+
+            // Update 2FA status
+            const twoFAStatus = document.getElementById('2FAStatus');
+            if (currentUser.twoFactorEnabled) {
+                twoFAStatus.className = 'status-badge success';
+                twoFAStatus.innerHTML = '<i class="fas fa-check"></i> Enabled';
+            } else {
+                twoFAStatus.className = 'status-badge pending';
+                twoFAStatus.innerHTML = '<i class="fas fa-clock"></i> Disabled';
+            }
+
+            // Update KYC status
+            const kycStatus = document.getElementById('kycStatus');
+            if (currentUser.kycStatus === 'verified') {
+                kycStatus.className = 'status-badge success';
+                kycStatus.innerHTML = '<i class="fas fa-check"></i> Verified';
+            } else if (currentUser.kycStatus === 'under_review') {
+                kycStatus.className = 'status-badge pending';
+                kycStatus.innerHTML = '<i class="fas fa-clock"></i> Under Review';
+            } else {
+                kycStatus.className = 'status-badge pending';
+                kycStatus.innerHTML = '<i class="fas fa-clock"></i> Pending';
+            }
+        }
+
+        // Security settings handler
+        function handleSecuritySettings() {
+            showSubPage('security');
+        }
+
+        // 2FA settings handler
+        function handle2FASettings() {
+            if (currentUser?.twoFactorEnabled) {
+                showSubPage('2fa-manage');
+            } else {
+                showSubPage('2fa-setup');
+            }
+        }
+
+        // KYC settings handler
+        function handleKYCSettings() {
+            if (currentUser?.kycStatus === 'verified') {
+                showSubPage('kyc-verified');
+            } else if (currentUser?.kycStatus === 'under_review') {
+                showSubPage('kyc-review');
+            } else {
+                showSubPage('kyc-upload');
+            }
+        }
+
+        // Payment methods handler
+        function handlePaymentMethods() {
+            showSubPage('payment-methods');
+        }
+
+        // Language settings handler
+        function handleLanguageSettings() {
+            showSubPage('language');
+        }
+
+        // Currency settings handler
+        function handleCurrencySettings() {
+            showSubPage('currency');
+        }
+
+        // Privacy policy handler
+        function handlePrivacyPolicy() {
+            showSubPage('privacy-policy');
+        }
+
+        // Terms handler
+        function handleTerms() {
+            showSubPage('terms-of-enlightenment');
+        }
+
+        // Show sub-page
+        function showSubPage(pageType) {
+            const mainContent = document.querySelector('.settings-container');
+            
+            switch(pageType) {
+                case 'security':
+                    showSecurityPage(mainContent);
+                    break;
+                case '2fa-setup':
+                    show2FASetupPage(mainContent);
+                    break;
+                case '2fa-manage':
+                    show2FAManagePage(mainContent);
+                    break;
+                case 'kyc-upload':
+                    showKYCUploadPage(mainContent);
+                    break;
+                case 'kyc-review':
+                    showKYCReviewPage(mainContent);
+                    break;
+                case 'kyc-verified':
+                    showKYCVerifiedPage(mainContent);
+                    break;
+                case 'payment-methods':
+                    showPaymentMethodsPage(mainContent);
+                    break;
+                case 'add-bank-account':
+                    showAddBankAccountPage(mainContent);
+                    break;
+                case 'add-mobile-money':
+                    showAddMobileMoneyPage(mainContent);
+                    break;
+                case 'privacy-policy':
+                    showPrivacyPolicyPage(mainContent);
+                    break;
+                case 'terms-of-enlightenment':
+                    showTermsPage(mainContent);
+                    break;
+                case 'language':
+                    showLanguagePage(mainContent);
+                    break;
+                case 'currency':
+                    showCurrencyPage(mainContent);
+                    break;
+            }
+        }
+
+        // Show security page
+        function showSecurityPage(container) {
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="location.reload()" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>Security Hub</h1>
+                </div>
+                <div class="settings-section">
+                    <div class="settings-item" onclick="showEmailChangeModal()">
+                        <div class="settings-item-content">
+                            <div class="settings-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="settings-info">
+                                <div class="settings-label">Change Email</div>
+                                <div class="settings-description">Update your registered elite email address</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right settings-chevron"></i>
+                    </div>
+                    <div class="settings-item" onclick="showPasswordChangeModal()">
+                        <div class="settings-item-content">
+                            <div class="settings-icon">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <div class="settings-info">
+                                <div class="settings-label">Change Password</div>
+                }
+            }
+                        <button onclick="enable2FA()" class="primary-button" data-translate>Enable 2FA</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show KYC upload page
+        function showKYCUploadPage(container) {
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="location.reload()" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>KYC Verification</h1>
+                </div>
+                <div class="settings-section">
+                    <div class="settings-content">
+                        <h3 data-translate>Identity Verification</h3>
+                        <p data-translate>Upload your government-issued ID to verify your identity</p>
+                        <div class="upload-area" onclick="document.getElementById('kycFile').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p data-translate>Click to upload ID document</p>
+                            <small>Supported formats: JPG, PNG, PDF (Max 5MB)</small>
+                        </div>
+                        <input type="file" id="kycFile" style="display: none;" accept="image/*,.pdf" onchange="handleKYCUpload(event)">
+                        <div id="uploadPreview" class="upload-preview"></div>
+                        <button onclick="submitKYC()" class="primary-button" id="submitKYCBtn" disabled data-translate>Submit for Verification</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show payment methods page
+        function showPaymentMethodsPage(container) {
+            const activeGateway = currentUser ? (currentUser.activeGateway || '') : '';
+            const gatewayDetails = currentUser ? (currentUser.activeGatewayDetails || '') : '';
+            const isLinked = !!activeGateway;
+            const mobileProviders = ['mtn', 'mpesa', 'airtel', 'glo', 'etisalat'];
+            const bankLinked = activeGateway === 'bank_transfer';
+            const mobileLinked = mobileProviders.includes(activeGateway);
+            const providerLabels = { mtn: 'MTN Mobile Money', mpesa: 'M-Pesa', airtel: 'Airtel Money', glo: 'Glo Mobile Money', etisalat: 'Etisalat Mobile Money' };
+
+            // Top status banner
+            const statusBanner = isLinked
+                ? `<div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(16,185,129,0.04));border:2px solid var(--success-color);border-radius:12px;margin-bottom:18px;">
+                    <span style="width:10px;height:10px;border-radius:50%;background:var(--success-color);flex-shrink:0;box-shadow:0 0 8px var(--success-color);animation:pulse 1.5s infinite;" data-translate></span>
+                    <div>
+                        <div style="font-weight:700;color:var(--success-color);font-size:0.78rem;text-transform:uppercase;letter-spacing:1px;">WALLET STATUS: ONLINE</div>
+                        <div style="color:var(--text-primary);font-size:0.88rem;margin-top:2px;">${gatewayDetails}</div>
+                    </div>
+                </div>`
+                : `<div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(100,116,139,0.1);border:1px solid var(--border-color);border-radius:12px;margin-bottom:18px;">
+                    <span style="width:10px;height:10px;border-radius:50%;background:#64748b;flex-shrink:0;" data-translate></span>
+                    <div style="font-weight:600;color:var(--text-secondary);font-size:0.78rem;text-transform:uppercase;letter-spacing:1px;">WALLET STATUS: OFFLINE — No gateway linked</div>
+                </div>`;
+
+            // Build bank item indicator
+            let bankChevron, bankDesc;
+            if (bankLinked) {
+                bankChevron = `<span style="background:rgba(16,185,129,0.15);color:var(--success-color);padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:1px;border:1px solid var(--success-color);" data-translate><i class="fas fa-link"></i> ACTIVE</span>`;
+                bankDesc = gatewayDetails || 'Bank account linked';
+            } else if (isLinked) {
+                bankChevron = `<span style="background:rgba(239,68,68,0.1);color:var(--error-color);padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:1px;border:1px solid var(--error-color);pointer-events:none;" data-translate><i class="fas fa-lock"></i> LOCKED</span>`;
+                bankDesc = 'Another gateway is active';
+            } else {
+                bankChevron = `<i class="fas fa-plus settings-chevron"></i>`;
+                bankDesc = 'Add bank account for withdrawals';
+            }
+
+            // Build mobile money item indicator
+            let mobileChevron, mobileDesc;
+            if (mobileLinked) {
+                mobileChevron = `<span style="background:rgba(16,185,129,0.15);color:var(--success-color);padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:1px;border:1px solid var(--success-color);" data-translate><i class="fas fa-link"></i> ACTIVE</span>`;
+                mobileDesc = gatewayDetails || `${providerLabels[activeGateway] || activeGateway} linked`;
+            } else if (isLinked) {
+                mobileChevron = `<span style="background:rgba(239,68,68,0.1);color:var(--error-color);padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:1px;border:1px solid var(--error-color);pointer-events:none;" data-translate><i class="fas fa-lock"></i> LOCKED</span>`;
+                mobileDesc = 'Another gateway is active';
+            } else {
+                mobileChevron = `<i class="fas fa-plus settings-chevron"></i>`;
+                mobileDesc = 'MTN, M-Pesa, Airtel Money';
+            }
+
+            // Saved methods section
+            let savedMethodsHtml = '';
+            if (isLinked) {
+                let iconClass = 'fa-credit-card';
+                if (bankLinked) iconClass = 'fa-university';
+                else if (mobileLinked) iconClass = 'fa-mobile-alt';
+                const label = bankLinked ? 'Bank Transfer' : (providerLabels[activeGateway] || activeGateway.toUpperCase().replace('_', ' '));
+                savedMethodsHtml = `
+                    <div style="border:2px solid var(--gold-color);background:rgba(250,204,21,0.04);border-radius:12px;padding:16px;display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+                        <div style="display:flex;align-items:center;gap:14px;">
+                            <i class="fas ${iconClass}" style="font-size:1.6rem;color:var(--gold-color);"></i>
+                            <div>
+                                <div style="font-weight:700;text-transform:uppercase;color:var(--gold-color);letter-spacing:1px;font-size:0.8rem;">${label}</div>
+                                <div style="color:var(--text-primary);font-size:0.9rem;margin-top:4px;">${gatewayDetails}</div>
+                            </div>
+                        </div>
+                        <button onclick="processGatewayUnlink()" style="background:var(--error-color);color:white;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;display:flex;align-items:center;gap:6px;transition:all 0.2s;" data-translate>
+                            <i class="fas fa-unlink"></i> Unlink
+                        </button>
+                    </div>`;
+            } else {
+                savedMethodsHtml = `<p style="color:var(--text-secondary);text-align:center;padding:20px 0;font-size:0.9rem;" data-translate><i class="fas fa-info-circle" style="margin-right:6px;"></i>No active payout gateway. Link one above to activate your wallet.</p>`;
+            }
+
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="location.reload()" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>Payment Methods</h1>
+                </div>
+                <div class="settings-section">
+                    ${statusBanner}
+                    <div class="settings-item" onclick="${isLinked && !bankLinked ? '' : "showSubPage('add-bank-account')"}" style="${isLinked && !bankLinked ? 'pointer-events:none;opacity:0.5;' : 'cursor:pointer;'}">
+                        <div class="settings-item-content">
+                            <div class="settings-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="settings-info">
+                                <div class="settings-label">Bank Account</div>
+                                <div class="settings-description">${bankDesc}</div>
+                            </div>
+                        </div>
+                        ${bankChevron}
+                    </div>
+                    <div class="settings-item" onclick="${isLinked && !mobileLinked ? '' : "showSubPage('add-mobile-money')"}" style="${isLinked && !mobileLinked ? 'pointer-events:none;opacity:0.5;' : 'cursor:pointer;'}">
+                        <div class="settings-item-content">
+                            <div class="settings-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="settings-info">
+                                <div class="settings-label">Mobile Money</div>
+                                <div class="settings-description">${mobileDesc}</div>
+                            </div>
+                        </div>
+                        ${mobileChevron}
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3 data-translate>Active Payout Gateway</h3>
+                    <div id="savedPaymentMethods">
+                        ${savedMethodsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show privacy policy page
+        function showPrivacyPolicyPage(container) {
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="location.reload()" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>Privacy Policy</h1>
+                </div>
+                <div class="settings-section">
+                    <div class="settings-content">
+                        <h3 data-translate>Privacy Policy</h3>
+                        <div class="legal-content">
+                            <h4 data-translate>Information We Collect</h4>
+                            <p data-translate>We collect information you provide directly to us, such as when you create an account, use our services, or contact us for support.</p>
+                            
+                            <h4 data-translate>How We Use Your Information</h4>
+                            <p data-translate>We use the information we collect to provide, maintain, and improve our services, process transactions, and communicate with you.</p>
+                            
+                            <h4 data-translate>Information Security</h4>
+                            <p data-translate>We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+                            
+                            <h4 data-translate>Your Rights</h4>
+                            <p data-translate>You have the right to access, update, or delete your personal information. You can do this through your account settings or by contacting us directly.</p>
+                            
+                            <h4 data-translate>Contact Us</h4>
+                            <p data-translate>If you have any questions about this Privacy Policy, please contact us at privacy@illuminati.com</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show terms of enlightenment page
+        function showTermsPage(container) {
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="location.reload()" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>Terms of Enlightenment</h1>
+                </div>
+                <div class="settings-section">
+                    <div class="settings-content">
+                        <h3 data-translate>Terms of Enlightenment</h3>
+                        <div class="legal-content">
+                            <h4 data-translate>The Sacred Covenant</h4>
+                            <p data-translate>By joining the Illuminati New World Order, you enter into a sacred covenant of knowledge, power, and enlightenment. These terms govern your journey within our elite organization.</p>
+                            
+                            <h4 data-translate>Principles of Membership</h4>
+                            <p data-translate>As an initiated member, you commit to upholding the principles of wisdom, truth, and the advancement of human consciousness. Your actions shall reflect the highest standards of integrity and service to humanity.</p>
+                            
+                            <h4 data-translate>Knowledge and Responsibility</h4>
+                            <p data-translate>The esoteric knowledge bestowed upon you comes with great responsibility. You shall use this wisdom for the betterment of mankind and never for personal gain at the expense of others.</p>
+                            
+                            <h4 data-translate>Financial Obligations</h4>
+                            <p data-translate>Membership requires adherence to our financial protocols. All transactions shall be conducted with transparency and in accordance with divine principles of abundance and prosperity.</p>
+                            
+                            <h4 data-translate>Confidentiality</h4>
+                            <p data-translate>The secrets of our order are sacred. You shall maintain absolute confidentiality regarding all rituals, teachings, and internal matters of the Illuminati.</p>
+                            
+                            <h4 data-translate>Eternal Covenant</h4>
+                            <p data-translate>This agreement transcends mortal boundaries. Your commitment to the Illuminati is eternal, as is our commitment to your spiritual and material evolution.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show currency page
+        function showCurrencyPage(container) {
+            const currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
+            
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="location.reload()" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>Currency</h1>
+                </div>
+                <div class="settings-section">
+                    <div class="settings-content">
+                        <h3 data-translate>Select Your Preferred Currency</h3>
+                        <p data-translate>Choose the currency you want to use for all transactions and balances.</p>
+                        <div class="currency-options">
+                            <div class="currency-item ${currentCurrency === 'USD' ? 'selected' : ''}" onclick="selectCurrency('USD')">
+                                <div class="currency-flag">🇺🇸</div>
+                                <div class="currency-info">
+                                    <div class="currency-name">USD - US Dollar</div>
+                                    <small>United States Dollar</small>
+                                </div>
+                                <i class="fas fa-check currency-check"></i>
+                            </div>
+                            <div class="currency-item ${currentCurrency === 'EUR' ? 'selected' : ''}" onclick="selectCurrency('EUR')">
+                                <div class="currency-flag">🇪🇺</div>
+                                <div class="currency-info">
+                                    <div class="currency-name">EUR - Euro</div>
+                                    <small>European Union Euro</small>
+                                </div>
+                                <i class="fas fa-check currency-check"></i>
+                            </div>
+                            <div class="currency-item ${currentCurrency === 'GBP' ? 'selected' : ''}" onclick="selectCurrency('GBP')">
+                                <div class="currency-flag">🇬🇧</div>
+                                <div class="currency-info">
+                                    <div class="currency-name">GBP - British Pound</div>
+                                    <small>United Kingdom Pound</small>
+                                </div>
+                                <i class="fas fa-check currency-check"></i>
+                            </div>
+                            <div class="currency-item ${currentCurrency === 'KES' ? 'selected' : ''}" onclick="selectCurrency('KES')">
+                                <div class="currency-flag">🇰🇪</div>
+                                <div class="currency-info">
+                                    <div class="currency-name">KES - Kenyan Shilling</div>
+                                    <small>Kenya Shilling</small>
+                                </div>
+                                <i class="fas fa-check currency-check"></i>
+                            </div>
+                            <div class="currency-item ${currentCurrency === 'NGN' ? 'selected' : ''}" onclick="selectCurrency('NGN')">
+                                <div class="currency-flag">🇳🇬</div>
+                                <div class="currency-info">
+                                    <div class="currency-name">NGN - Nigerian Naira</div>
+                                    <small>Nigeria Naira</small>
+                                </div>
+                                <i class="fas fa-check currency-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Select currency
+        function selectCurrency(currency) {
+            localStorage.setItem('selectedCurrency', currency);
+            
+            // Update display
+            document.querySelectorAll('.currency-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // Update main settings display
+            const currencyDisplay = document.querySelector('.settings-item:nth-child(2) .settings-description');
+            if (currencyDisplay) {
+                const currencyNames = {
+                    'USD': 'USD',
+                    'EUR': 'EUR',
+                    'GBP': 'GBP',
+                    'KES': 'KES',
+                    'NGN': 'NGN'
+                };
+                currencyDisplay.textContent = currencyNames[currency] || 'USD';
+            }
+        }
+
+        // Handle KYC file upload
+        function handleKYCUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('uploadPreview');
+                    preview.innerHTML = `
+                        <div class="file-preview">
+                            <i class="fas fa-file"></i>
+                            <span data-translate>${file.name}</span>
+                            <button onclick="removeKYCFile()" class="remove-btn" data-translate>
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                    document.getElementById('submitKYCBtn').disabled = false;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Remove KYC file
+        function removeKYCFile() {
+            document.getElementById('kycFile').value = '';
+            document.getElementById('uploadPreview').innerHTML = '';
+            document.getElementById('submitKYCBtn').disabled = true;
+        }
+
+        // Submit KYC for verification
+        async function submitKYC() {
+            if (!userEmail) return;
+            
+            try {
+                await db.collection('members').doc(userEmail).update({
+                    kycStatus: 'under_review',
+                    kycSubmittedAt: new Date().toISOString()
+                });
+                
+                currentUser.kycStatus = 'under_review';
+                showKYCReviewPage(document.querySelector('.settings-container'));
+            } catch (error) {
+                console.error('Error submitting KYC:', error);
+                alert('Error submitting KYC. Please try again.');
+            }
+        }
+
+        // Show KYC review page
+        function showKYCReviewPage(container) {
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="location.reload()" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>KYC Under Review</h1>
+                </div>
+                <div class="settings-section">
+                    <div class="settings-content">
+                        <div class="status-message pending">
+                            <i class="fas fa-clock"></i>
+                            <h3 data-translate>Verification in Progress</h3>
+                            <p data-translate>Your identity verification is currently under review by our security team. This process typically takes 24-48 hours.</p>
+                            <p data-translate>You will be notified once the verification is complete.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show KYC verified page
+        function showKYCVerifiedPage(container) {
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="location.reload()" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>KYC Verified</h1>
+                </div>
+                <div class="settings-section">
+                    <div class="settings-content">
+                        <div class="status-message success">
+                            <i class="fas fa-check-circle"></i>
+                            <h3 data-translate>Identity Verified</h3>
+                            <p data-translate>Your identity has been successfully verified. You now have full access to all platform features.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show 2FA manage page
+        function show2FAManagePage(container) {
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="location.reload()" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>Security Hub</h1>
+                </div>
+                <div class="settings-section">
+                    <div class="tfa-container">
+                        <h3 data-translate>Two-Factor Authentication</h3>
+                        <p data-translate>Your elite account is currently protected by biological-grade secondary encryption.</p>
+                        
+                        <div class="tfa-toggle-box" onclick="disable2FA()">
+                            <div class="tfa-status-indicator">
+                                <div class="tfa-status-dot dot-on"></div>
+                                <span style="color: var(--success-color)" data-translate>2FA Status: ON</span>
+                            </div>
+                            <div class="toggle-switch active">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success">
+                            <i class="fas fa-check-circle"></i>
+                            <p data-translate>Encryption Active. All withdrawal attempts now require multi-layered verification.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show 2FA setup page
+        function show2FASetupPage(container) {
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="location.reload()" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>Security Hub</h1>
+                </div>
+                <div class="settings-section">
+                    <div class="tfa-container">
+                        <h3 data-translate>Two-Factor Authentication</h3>
+                        <p data-translate>Protect your elite account with an extra layer of security. When enabled, you will need to provide a verification code.</p>
+                        
+                        <div class="tfa-toggle-box" onclick="enable2FA()">
+                            <div class="tfa-status-indicator">
+                                <div class="tfa-status-dot dot-off"></div>
+                                <span style="color: var(--error-color)" data-translate>2FA Status: OFF</span>
+                            </div>
+                            <div class="toggle-switch">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-message pending">
+                            <i class="fas fa-shield-alt"></i>
+                            <p data-translate>Enable 2FA to secure your $500,000 maturation progress and prevent unauthorized withdrawals.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show 2FA manage page
+        function show2FAManagePage(container) {
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="location.reload()" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>Security Hub</h1>
+                </div>
+                <div class="settings-section">
+                    <div class="tfa-container">
+                        <h3 data-translate>Two-Factor Authentication</h3>
+                        <p data-translate>Your elite account is currently protected by biological-grade secondary encryption.</p>
+                        
+                        <div class="tfa-toggle-box">
+                            <div class="tfa-status-indicator">
+                                <div class="tfa-status-dot dot-on"></div>
+                                <span style="color: var(--success-color)" data-translate>2FA Status: ON</span>
+                            </div>
+                            <div class="toggle-switch active" onclick="disable2FA()">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success">
+                            <i class="fas fa-check-circle"></i>
+                            <p data-translate>Encryption Active. All withdrawal attempts now require multi-layered verification.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Disable 2FA
+        async function disable2FA() {
+            if (!userEmail) return;
+            
+            if (confirm('CRITICAL SECURITY WARNING: Disabling 2FA will leave your $500,000 maturation balance vulnerable. Are you sure you wish to proceed?')) {
+                try {
+                    await db.collection('members').doc(userEmail).update({
+                        twoFactorEnabled: false,
+                        twoFactorDisabledAt: new Date().toISOString()
+                    });
+                    
+                    currentUser.twoFactorEnabled = false;
+                    show2FASetupPage(document.querySelector('.settings-container'));
+                    showNotification('Security Level Downgraded: 2FA Disabled');
+                } catch (error) {
+                    console.error('Error disabling 2FA:', error);
+                    alert('Error disabling 2FA. Please try again.');
+                }
+            }
+        }
+
+        // Load saved payment methods
+        async function loadSavedPaymentMethods() {
+            if (!currentUser?.payout_gateways) return;
+            
+            const container = document.getElementById('savedPaymentMethods');
+            const methods = currentUser.payout_gateways;
+            
+            let html = '';
+            if (methods.bank_accounts && methods.bank_accounts.length > 0) {
+                html += '<h4 data-translate>Bank Accounts</h4>';
+                methods.bank_accounts.forEach(account => {
+                    html += `
+                        <div class="payment-method-item">
+                            <i class="fas fa-university"></i>
+                            <div>
+                                <div>${account.bank_name}</div>
+                                <small>****${account.account_number.slice(-4)}</small>
+                            </div>
+                            <button onclick="removePaymentMethod('bank', '${account.id}')" class="remove-btn" data-translate>
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+            
+            if (methods.mobile_money && methods.mobile_money.length > 0) {
+                html += '<h4 data-translate>Mobile Money</h4>';
+                methods.mobile_money.forEach(mobile => {
+                    html += `
+                        <div class="payment-method-item">
+                            <i class="fas fa-mobile-alt"></i>
+                            <div>
+                                <div>${mobile.provider} - ${mobile.phone_number}</div>
+                                <small>${mobile.name}</small>
+                            </div>
+                            <button onclick="removePaymentMethod('mobile', '${mobile.id}')" class="remove-btn" data-translate>
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+            
+            container.innerHTML = html || '<p data-translate>No payment methods added yet</p>';
+        }
+
+        // Show add bank account page
+        function showAddBankAccountPage(container) {
+            // Read live gateway state before rendering
+            const activeGateway = currentUser ? (currentUser.activeGateway || '') : '';
+            const gatewayDetails = currentUser ? (currentUser.activeGatewayDetails || '') : '';
+            const isBankLinked = activeGateway === 'bank_transfer';
+            const isOtherLinked = !!activeGateway && !isBankLinked;
+
+            // Build status banner HTML
+            let bannerHtml = '';
+            if (isBankLinked) {
+                bannerHtml = `
+                    <div id="bank-gateway-banner" style="
+                        background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(16,185,129,0.05));
+                        border: 2px solid var(--success-color);
+                        border-radius: 12px;
+                        padding: 14px 18px;
+                        margin-bottom: 20px;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                    ">
+                        <span style="width:10px;height:10px;border-radius:50%;background:var(--success-color);display:inline-block;box-shadow:0 0 8px var(--success-color);animation:pulse 1.5s infinite;" data-translate></span>
+                        <div>
+                            <div style="font-weight:700;color:var(--success-color);text-transform:uppercase;letter-spacing:1px;font-size:0.8rem;">BANK ACCOUNT LINKED — WALLET ONLINE</div>
+                            <div style="color:var(--text-primary);font-size:0.9rem;margin-top:3px;">${gatewayDetails}</div>
+                        </div>
+                    </div>`;
+            } else if (isOtherLinked) {
+                bannerHtml = `
+                    <div id="bank-gateway-banner" style="
+                        background: rgba(239,68,68,0.08);
+                        border: 2px solid var(--error-color);
+                        border-radius: 12px;
+                        padding: 14px 18px;
+                        margin-bottom: 20px;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                    ">
+                        <i class="fas fa-lock" style="color:var(--error-color);font-size:1.2rem;"></i>
+                        <div>
+                            <div style="font-weight:700;color:var(--error-color);text-transform:uppercase;letter-spacing:1px;font-size:0.8rem;">GATEWAY LOCKED</div>
+                            <div style="color:var(--text-secondary);font-size:0.85rem;margin-top:3px;">Another gateway is active: <strong style="color:var(--text-primary);">${activeGateway.toUpperCase().replace('_',' ')}</strong>. Unlink it first from Payout Channels.</div>
+                        </div>
+                    </div>`;
+            }
+
+            // Build submit button HTML
+            let submitBtnHtml = '';
+            if (isBankLinked) {
+                submitBtnHtml = `<button type="button" id="bank_setting-action-btn" onclick="processGatewayUnlink()" class="primary-button" style="background: crimson; border-color: crimson;" data-translate><i class="fas fa-unlink"></i> UNLINK CHANNEL</button>`;
+            } else {
+                submitBtnHtml = `<button type="submit" id="bank_setting-action-btn" class="primary-button" ${isOtherLinked ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''} data-translate><i class="fas fa-university"></i> Link System Bank Account</button>`;
+            }
+
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="showSubPage('payment-methods')" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>Bank Account</h1>
+                </div>
+                <div class="settings-section">
+                    <div class="form-container">
+                        ${bannerHtml}
+                        <div id="bank-account-wrapper" style="border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; background: rgba(255,255,255,0.02);">
+                            <form id="bankAccountForm" onsubmit="saveBankAccount(event)">
+                                <div class="input-group-field" style="margin-bottom: 12px;">
+                                    <label data-translate style="color: #fff; display:block; font-size: 0.85rem; margin-bottom:5px;">Bank Region / Continent</label>
+                                    <select id="bank-region-select" onchange="updateBankList()" style="width:100%; padding:10px; background:#1e2732; border:1px solid #34495e; color:#fff; border-radius:5px;" ${isOtherLinked ? 'disabled' : ''}>
+                                        <option value="" disabled selected>Select Bank Region</option>
+                                        <option value="africa">Africa Banks</option>
+                                        <option value="north_america">North America Banks</option>
+                                        <option value="south_america">South America Banks</option>
+                                        <option value="europe">Europe Banks</option>
+                                        <option value="asia">Asia Banks</option>
+                                        <option value="australia">Australia Banks</option>
+                                        <option value="international">International Banks (Universal Backup)</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group-field" id="bank-name-wrapper" style="margin-bottom: 12px; display: none;">
+                                    <label data-translate style="color: #fff; display:block; font-size: 0.85rem; margin-bottom:5px;">Select Financial Institution</label>
+                                    <select id="bank-name-select" style="width:100%; padding:10px; background:#1e2732; border:1px solid #34495e; color:#fff; border-radius:5px;" ${isOtherLinked || isBankLinked ? 'disabled' : ''}></select>
+                                </div>
+
+                                <div class="input-group-field" id="custom-bank-wrapper" style="margin-bottom: 12px; display: none;">
+                                    <label data-translate style="color: #fff; display:block; font-size: 0.85rem; margin-bottom:5px;">Enter Bank Name Manually</label>
+                                    <input type="text" id="custom-bank-input" placeholder="Type your bank name here" style="width:100%; padding:10px; background:#1e2732; border:1px solid #34495e; color:#fff; border-radius:5px;" ${isOtherLinked || isBankLinked ? 'disabled' : ''} data-translate>
+                                </div>
+
+                                <div class="form-group">
+                                    <label data-translate for="accountHolderName">Account Holder Name</label>
+                                    <input type="text" id="accountHolderName" placeholder="Enter full name as it appears on bank account" required ${isOtherLinked || isBankLinked ? 'disabled' : ''} data-translate>
+                                </div>
+
+                                <div class="form-group">
+                                    <label data-translate for="accountNumber">Account Number</label>
+                                    <input type="text" id="accountNumber" placeholder="Enter bank account number" value="${isBankLinked ? gatewayDetails : ''}" required ${isOtherLinked || isBankLinked ? 'disabled' : ''} data-translate>
+                                </div>
+
+                                <div class="form-group">
+                                    <label data-translate for="routingNumber">Routing/Sort Code</label>
+                                    <input type="text" id="routingNumber" placeholder="Enter routing or sort code (if applicable)" ${isOtherLinked || isBankLinked ? 'disabled' : ''} data-translate>
+                                </div>
+
+                                <div class="form-group">
+                                    <label data-translate for="swiftCode">SWIFT Code</label>
+                                    <input type="text" id="swiftCode" placeholder="Enter SWIFT code for international transfers" ${isOtherLinked || isBankLinked ? 'disabled' : ''} data-translate>
+                                </div>
+
+                                <div class="form-group">
+                                    <label data-translate for="branchAddress">Branch Address</label>
+                                    <input type="text" id="branchAddress" placeholder="Enter bank branch address" ${isOtherLinked || isBankLinked ? 'disabled' : ''} data-translate>
+                                </div>
+
+                                <div class="form-group">
+                                    <label data-translate for="phoneNumber">Phone Number</label>
+                                    <input type="tel" id="phoneNumber" placeholder="Enter phone number linked to account" ${isOtherLinked || isBankLinked ? 'disabled' : ''} data-translate>
+                                </div>
+
+                                <div class="form-group">
+                                    <label data-translate for="settingsBankEmail">Email Address</label>
+                                    <input type="email" id="settingsBankEmail" placeholder="Enter email address for notifications" ${isOtherLinked || isBankLinked ? 'disabled' : ''} data-translate>
+                                </div>
+
+                                ${submitBtnHtml}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show add mobile money page
+        function showAddMobileMoneyPage(container) {
+            // Read live gateway state before rendering
+            const mobileProviders = ['mtn', 'mpesa', 'airtel', 'glo', 'etisalat'];
+            const activeGateway = currentUser ? (currentUser.activeGateway || '') : '';
+            const gatewayDetails = currentUser ? (currentUser.activeGatewayDetails || '') : '';
+            const isMobileLinked = mobileProviders.includes(activeGateway);
+            const isOtherLinked = !!activeGateway && !isMobileLinked;
+
+            const providerLabels = { mtn: 'MTN Mobile Money', mpesa: 'M-Pesa', airtel: 'Airtel Money', glo: 'Glo Mobile Money', etisalat: 'Etisalat Mobile Money' };
+
+            // Build status banner HTML
+            let bannerHtml = '';
+            if (isMobileLinked) {
+                bannerHtml = `
+                    <div id="mobile-gateway-banner" style="
+                        background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(16,185,129,0.05));
+                        border: 2px solid var(--success-color);
+                        border-radius: 12px;
+                        padding: 14px 18px;
+                        margin-bottom: 20px;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                    ">
+                        <span style="width:10px;height:10px;border-radius:50%;background:var(--success-color);display:inline-block;box-shadow:0 0 8px var(--success-color);animation:pulse 1.5s infinite;" data-translate></span>
+                        <div>
+                            <div style="font-weight:700;color:var(--success-color);text-transform:uppercase;letter-spacing:1px;font-size:0.8rem;">${(providerLabels[activeGateway] || activeGateway.toUpperCase())} LINKED — WALLET ONLINE</div>
+                            <div style="color:var(--text-primary);font-size:0.9rem;margin-top:3px;">${gatewayDetails}</div>
+                        </div>
+                    </div>`;
+            } else if (isOtherLinked) {
+                bannerHtml = `
+                    <div id="mobile-gateway-banner" style="
+                        background: rgba(239,68,68,0.08);
+                        border: 2px solid var(--error-color);
+                        border-radius: 12px;
+                        padding: 14px 18px;
+                        margin-bottom: 20px;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                    ">
+                        <i class="fas fa-lock" style="color:var(--error-color);font-size:1.2rem;"></i>
+                        <div>
+                            <div style="font-weight:700;color:var(--error-color);text-transform:uppercase;letter-spacing:1px;font-size:0.8rem;">GATEWAY LOCKED</div>
+                            <div style="color:var(--text-secondary);font-size:0.85rem;margin-top:3px;">Another gateway is active: <strong style="color:var(--text-primary);">${activeGateway.toUpperCase().replace('_',' ')}</strong>. Unlink it first from Payout Channels.</div>
+                        </div>
+                    </div>`;
+            }
+
+            // Build submit button HTML
+            let submitBtnHtml = '';
+            if (isMobileLinked) {
+                submitBtnHtml = `<button type="button" id="momo_setting-action-btn" onclick="processGatewayUnlink()" class="primary-button" style="background: crimson; border-color: crimson;" data-translate><i class="fas fa-unlink"></i> UNLINK CHANNEL</button>`;
+            } else {
+                submitBtnHtml = `<button type="submit" id="momo_setting-action-btn" class="primary-button" ${isOtherLinked ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''} data-translate><i class="fas fa-mobile-alt"></i> Link Mobile Money Account</button>`;
+            }
+
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="showSubPage('payment-methods')" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>Mobile Money</h1>
+                </div>
+                <div class="settings-section">
+                    <div class="form-container">
+                        ${bannerHtml}
+                        <div id="mobile-money-wrapper" style="border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; background: rgba(255,255,255,0.02); margin-bottom: 30px;">
+                            <form id="mobileMoneyForm" onsubmit="saveMobileMoney(event)">
+                                <div class="form-group" style="margin-bottom: 12px;">
+                                    <label data-translate for="setting-momo-provider" style="color: #fff; display:block; font-size: 0.85rem; margin-bottom:5px;">Select Provider</label>
+                                    <select id="setting-momo-provider" required ${isOtherLinked || isMobileLinked ? 'disabled' : ''} style="width:100%; padding:10px; background:#1e2732; border:1px solid #34495e; color:#fff; border-radius:5px;">
+                                        <option value="">Select Provider</option>
+                                        <option value="MTN MoMo">MTN Mobile Money</option>
+                                        <option value="M-Pesa">M-Pesa Ledger</option>
+                                        <option value="Orange Money">Orange Money</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom: 12px;">
+                                    <label data-translate for="setting-momo-holder" style="color: #fff; display:block; font-size: 0.85rem; margin-bottom:5px;">Registered Full Name</label>
+                                    <input type="text" id="setting-momo-holder" placeholder="Account holder's full name" required ${isOtherLinked || isMobileLinked ? 'disabled' : ''} style="width:100%; padding:10px; background:#1e2732; border:1px solid #34495e; color:#fff; border-radius:5px;" data-translate>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom: 20px;">
+                                    <label data-translate for="setting-momo-phone" style="color: #fff; display:block; font-size: 0.85rem; margin-bottom:5px;">Mobile Phone Number</label>
+                                    <input type="text" id="setting-momo-phone" placeholder="e.g. 6XXXXXXXX" required ${isOtherLinked || isMobileLinked ? 'disabled' : ''} style="width:100%; padding:10px; background:#1e2732; border:1px solid #34495e; color:#fff; border-radius:5px;" data-translate>
+                                </div>
+
+                                ${submitBtnHtml}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update bank list based on continental region
+        function updateBankList() {
+            const region = document.getElementById('bank-region-select').value;
+            const bankNameWrapper = document.getElementById('bank-name-wrapper');
+            const bankNameSelect = document.getElementById('bank-name-select');
+            const customBankWrapper = document.getElementById('custom-bank-wrapper');
+            
+            const banks = {
+                africa: ['Standard Bank', 'Attijariwafa Bank', 'National Bank of Egypt', 'Ecobank', 'United Bank for Africa (UBA)', 'Absa Bank', 'First Bank of Nigeria', 'Standard Chartered Africa', 'Nedbank', 'Equity Bank'],
+                north_america: ['JPMorgan Chase', 'Bank of America', 'Citigroup', 'Wells Fargo', 'Royal Bank of Canada (RBC)', 'TD Bank', 'Morgan Stanley', 'Goldman Sachs', 'Capital One', 'Scotiabank'],
+                south_america: ['Itaú Unibanco', 'Banco do Brasil', 'Banco Bradesco', 'Banco Santander Chile', 'Bancolombia', 'Banco de Crédito del Perú', 'Banco de la Nación Argentina', 'BBVA México', 'Caixa Econômica Federal', 'Banco BCI'],
+                europe: ['HSBC', 'BNP Paribas', 'Banco Santander', 'Deutsche Bank', 'Barclays', 'UBS', 'Crédit Agricole', 'Société Générale', 'ING Group', 'Intesa Sanpaolo'],
+                asia: ['ICBC', 'China Construction Bank', 'Mitsubishi UFJ Financial (MUFG)', 'Agricultural Bank of China', 'HSBC Asia', 'Sumitomo Mitsui', 'State Bank of India (SBI)', 'DBS Bank', 'Bank of China', 'OCBC Bank'],
+                australia: ['Commonwealth Bank (CBA)', 'Westpac', 'ANZ Bank', 'National Australia Bank (NAB)', 'Macquarie Group', 'Bendigo Bank', 'Suncorp', 'Bank Queensland', 'St.George Bank', 'AMP Bank']
+            };
+            
+            // Logic rules
+            if (region === 'international') {
+                // Hide bank-name-wrapper, show custom-bank-wrapper
+                bankNameWrapper.style.display = 'none';
+                customBankWrapper.style.display = 'block';
+            } else if (banks[region]) {
+                // Show bank-name-wrapper, hide custom-bank-wrapper
+                bankNameWrapper.style.display = 'block';
+                customBankWrapper.style.display = 'none';
+                
+                // Clear previous select options
+                bankNameSelect.innerHTML = '<option value="" disabled selected>Select Financial Institution</option>';
+                
+                // Loop through array and append each bank name as option
+                banks[region].forEach(bank => {
+                    const option = document.createElement('option');
+                    option.value = bank;
+                    option.textContent = bank;
+                    bankNameSelect.appendChild(option);
+                });
+            } else {
+                // Hide both if no valid region selected
+                bankNameWrapper.style.display = 'none';
+                customBankWrapper.style.display = 'none';
+            }
+        }
+
+        // Save bank account — links as active gateway and re-renders the form
+        async function saveBankAccount(event) {
+            event.preventDefault();
+            const bankRegion = document.getElementById('bank-region-select')?.value || '';
+            let bankName = '';
+            
+            // Data handler sync: check if region === 'international'
+            if (bankRegion === 'international') {
+                // Save the text value from #custom-bank-input
+                bankName = document.getElementById('custom-bank-input')?.value || '';
+            } else {
+                // Save the selected dropdown option from #bank-name-select
+                bankName = document.getElementById('bank-name-select')?.value || '';
+            }
+            
+            const holderName = document.getElementById('accountHolderName')?.value || '';
+            const accNum = document.getElementById('accountNumber')?.value || '';
+
+            if (!bankName || !holderName || !accNum) {
+                alert("Please fill in the Bank Name, Account Holder Name, and Account Number.");
+                return;
+            }
+
+            const payload = `${bankName} (${bankRegion.toUpperCase()}) — Acc: ${accNum} [${holderName}]`;
+
+            // Disable button to prevent double-submit
+            const btn = document.getElementById('bank_setting-action-btn');
+            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Linking...'; }
+
+            await processGatewayLink('bank_transfer', payload);
+
+            // Re-render the bank form page so the banner + unlink button appear
+            const container = document.querySelector('.settings-container');
+            if (container) showAddBankAccountPage(container);
+        }
+
+        // Save mobile money — links as active gateway and re-renders the form
+        async function saveMobileMoney(event) {
+            event.preventDefault();
+            const provider = document.getElementById('setting-momo-provider')?.value || '';
+            const holderName = document.getElementById('setting-momo-holder')?.value || '';
+            const phoneNumber = document.getElementById('setting-momo-phone')?.value || '';
+
+            if (!provider || !phoneNumber) {
+                alert("Please select a provider and enter your mobile phone number.");
+                return;
+            }
+
+            const payload = `${provider}: ${phoneNumber}${holderName ? ' [' + holderName + ']' : ''}`;
+
+            // Disable button to prevent double-submit
+            const btn = document.getElementById('momo_setting-action-btn');
+            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Linking...'; }
+
+            await processGatewayLink(provider, payload);
+
+            // Re-render the mobile form page so the banner + unlink button appear
+            const container = document.querySelector('.settings-container');
+            if (container) showAddMobileMoneyPage(container);
+        }
+
+        // Show language page
+        function showLanguagePage(container) {
+            container.innerHTML = `
+                <div class="settings-header">
+                    <button onclick="location.reload()" class="back-button" data-translate>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h1 class="settings-title" data-translate>Language</h1>
+                </div>
+                <div class="settings-section" style="padding: 20px;">
+                    <h3 data-translate>Select Dashboard Language</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px;" data-translate>Choose your preferred language for the entire dashboard interface.</p>
+                    
+                    <div class="language-grid">
+                        <div class="lang-item" onclick="changeLanguage('en')">
+                            <span class="lang-flag" data-translate>🇺🇸</span>
+                            <span class="lang-name" data-translate>English</span>
+                        </div>
+                        <div class="lang-item" onclick="changeLanguage('fr')">
+                            <span class="lang-flag" data-translate>🇫🇷</span>
+                            <span class="lang-name" data-translate>Français</span>
+                        </div>
+                        <div class="lang-item" onclick="changeLanguage('es')">
+                            <span class="lang-flag" data-translate>🇪🇸</span>
+                            <span class="lang-name" data-translate>Español</span>
+                        </div>
+                        <div class="lang-item" onclick="changeLanguage('it')">
+                            <span class="lang-flag" data-translate>🇮🇹</span>
+                            <span class="lang-name" data-translate>Italiano</span>
+                        </div>
+                        <div class="lang-item" onclick="changeLanguage('pt')">
+                            <span class="lang-flag" data-translate>🇵🇹</span>
+                            <span class="lang-name" data-translate>Português</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Google Translate Integration
+        window.googleTranslateElementInit = function() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,fr,es,it,pt',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        function changeLanguage(langCode) {
+            const select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = langCode;
+                select.dispatchEvent(new Event('change'));
+                showNotification(`Optimizing Consciousness: ${langCode.toUpperCase()}`);
+            } else {
+                showNotification('Translation Engine Initializing...');
+                // Fallback attempt to find the combo box
+                setTimeout(() => {
+                    const retrySelect = document.querySelector('.goog-te-combo');
+                    if (retrySelect) {
+                        retrySelect.value = langCode;
+                        retrySelect.dispatchEvent(new Event('change'));
+                        showNotification(`Language set to ${langCode.toUpperCase()}`);
+                    } else {
+                        console.error('Google Translate combo box not found');
+                        alert('Translation engine is still loading. Please wait a moment and try again.');
+                    }
+                }, 1000);
+            }
+        }
+
+        // Email & Password Modals
+        function showEmailChangeModal() {
+            const modal = createModal('Change Email', `
+                <div class="form-group">
+                    <label data-translate>New Email Address</label>
+                    <input type="email" id="newEmailInput" placeholder="Enter new email" data-translate>
+                </div>
+                <div class="form-group">
+                    <label data-translate>Verification Code</label>
+                    <input type="text" id="emailVerifyCode" placeholder="Enter 6-digit code" data-translate>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 15px;" data-translate>A code has been sent to your current email for security validation.</p>
+                <button class="primary-button" onclick="submitEmailChange()" style="width: 100%" data-translate>Verify & Update</button>
+            `);
+            document.body.appendChild(modal);
+            modal.style.display = 'flex';
+        }
+
+        function showPasswordChangeModal() {
+            const modal = createModal('Change Password', `
+                <div class="form-group">
+                    <label data-translate>Current Password</label>
+                    <input type="password" placeholder="••••••••" data-translate>
+                </div>
+                <div class="form-group">
+                    <label data-translate>New Password</label>
+                    <input type="password" placeholder="••••••••" data-translate>
+                </div>
+                <div class="form-group">
+                    <label data-translate>Confirm New Password</label>
+                    <input type="password" placeholder="••••••••" data-translate>
+                </div>
+                <button class="primary-button" onclick="submitPasswordChange()" style="width: 100%" data-translate>Update Password</button>
+            `);
+            document.body.appendChild(modal);
+            modal.style.display = 'flex';
+        }
+
+        function createModal(title, body) {
+            const overlay = document.createElement('div');
+            overlay.className = 'custom-modal-overlay';
+            overlay.onclick = (e) => { if(e.target === overlay) overlay.remove(); };
+            
+            overlay.innerHTML = `
+                <div class="custom-modal">
+                    <div class="modal-title-custom">${title}</div>
+                    ${body}
+                    <button class="back-button" onclick="this.closest('.custom-modal-overlay').remove()" style="margin-top: 15px; width: 100%; justify-content: center;" data-translate>Cancel</button>
+                </div>
+            `;
+            return overlay;
+        }
+
+        async function submitEmailChange() {
+            const newEmail = document.getElementById('newEmailInput').value;
+            if(!newEmail) return alert('Enter a valid email');
+            showNotification('Requesting secure change...');
+            setTimeout(() => {
+                alert('Security Protocol Error: Email change requires Board of Directors manual override during the $500,000 maturation period.');
+                document.querySelector('.custom-modal-overlay').remove();
+            }, 1500);
+        }
+
+        function submitPasswordChange() {
+            showNotification('Password updated successfully');
+            document.querySelector('.custom-modal-overlay').remove();
+        }
+
+        function showNotification(msg) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+                background: var(--gold-color); color: var(--bg-primary); padding: 10px 25px;
+                border-radius: 30px; font-weight: 700; z-index: 11000; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            `;
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        async function enable2FA() {
+            if (!userEmail) {
+                alert('Session Error: Please re-login to update security settings.');
+                return;
+            }
+            
+            const toggle = document.querySelector('.toggle-switch');
+            const statusDot = document.querySelector('.tfa-status-dot');
+            const statusText = document.querySelector('.tfa-status-indicator span');
+            
+            // Immediate UI feedback
+            if (toggle) toggle.classList.add('active');
+            if (statusDot) statusDot.className = 'tfa-status-dot dot-on';
+            if (statusText) {
+                statusText.textContent = '2FA Status: ON';
+                statusText.style.color = 'var(--success-color)';
+            }
+            
+            try {
+                await db.collection('members').doc(userEmail).update({
+                    twoFactorEnabled: true,
+                    twoFactorEnabledAt: new Date().toISOString()
+                });
+                currentUser.twoFactorEnabled = true;
+                showNotification('Security Protocol Activated');
+                setTimeout(() => show2FAManagePage(document.querySelector('.settings-container')), 500);
+            } catch (error) {
+                console.error('Error enabling 2FA:', error);
+                // Revert UI on failure
+                if (toggle) toggle.classList.remove('active');
+                if (statusDot) statusDot.className = 'tfa-status-dot dot-off';
+                if (statusText) {
+                    statusText.textContent = '2FA Status: OFF';
+                    statusText.style.color = 'var(--error-color)';
+                }
+                alert('Security Update Failed: Please check your connection.');
+            }
+        }
+
+        async function disable2FA() {
+            if (!userEmail) return;
+            
+            if (confirm('CRITICAL SECURITY WARNING: Disabling 2FA will leave your $500,000 maturation balance vulnerable. Are you sure?')) {
+                const toggle = document.querySelector('.toggle-switch');
+                const statusDot = document.querySelector('.tfa-status-dot');
+                const statusText = document.querySelector('.tfa-status-indicator span');
+                
+                // Immediate UI feedback
+                if (toggle) toggle.classList.remove('active');
+                if (statusDot) statusDot.className = 'tfa-status-dot dot-off';
+                if (statusText) {
+                    statusText.textContent = '2FA Status: OFF';
+                    statusText.style.color = 'var(--error-color)';
+                }
+
+                try {
+                    await db.collection('members').doc(userEmail).update({
+                        twoFactorEnabled: false,
+                        twoFactorDisabledAt: new Date().toISOString()
+                    });
+                    
+                    currentUser.twoFactorEnabled = false;
+                    showNotification('Security Level Downgraded');
+                    setTimeout(() => show2FASetupPage(document.querySelector('.settings-container')), 500);
+                } catch (error) {
+                    console.error('Error disabling 2FA:', error);
+                    // Revert UI on failure
+                    if (toggle) toggle.classList.add('active');
+                    if (statusDot) statusDot.className = 'tfa-status-dot dot-on';
+                    if (statusText) {
+                        statusText.textContent = '2FA Status: ON';
+                        statusText.style.color = 'var(--success-color)';
+                    }
+                    alert('Update Failed: Security protocols remained active.');
+                }
+            }
+        }
+
+        // Logout handler
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear all localStorage authentication keys EXCEPT site_access_key (clear last)
+                localStorage.removeItem('gate_email');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('approvedEmail');
+                localStorage.removeItem('permanentAccess');
+                localStorage.removeItem('elite_access_token');
+                localStorage.removeItem('elite_refresh_token');
+                localStorage.removeItem('elite_user');
+                localStorage.removeItem('user_token');
+                localStorage.removeItem('user_session');
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userData');
+                localStorage.removeItem('user_lang');
+
+                // Clear sessionStorage
+                sessionStorage.clear();
+
+                // Clear session cookies
+                document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "elite_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+                // Force redirect to login page with replace to prevent back-button navigation
+                window.location.replace('account-gate.html');
+
+                // Clear site_access_key AFTER redirect has started to prevent security.js from blocking
+                setTimeout(() => {
+                    localStorage.removeItem('site_access_key');
+                }, 100);
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserStatus();
+        });
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style id="early-anti-flash">html { display: none !important; }</style>
+    <script src="/local-router.js"></script>
+    <script src="security.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Illuminati Events | Illuminati</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+            --gold-color: #FFD700;
+            --gold-hover: #FFA500;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
+            --shadow-color: rgba(0, 0, 0, 0.8);
+            --success-color: #00ff88;
+            --event-purple: #8B008B;
+            --mandatory-red: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: var(--gold-color);
+            border: 2px solid var(--gold-color);
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .back-btn:hover {
+            background: var(--gold-color);
+            color: var(--bg-color);
+            transform: scale(1.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--gold-color);
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .event-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--shadow-color);
+            border-color: var(--gold-color);
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--event-purple), var(--gold-color));
+            opacity: 0.7;
+        }
+
+        .event-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .mandatory-badge {
+            background: var(--mandatory-red);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .event-list {
+            list-style: none;
+        }
+
+        .event-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--event-purple);
+        }
+
+        .event-icon {
+            font-size: 1.3rem;
+            margin-right: 12px;
+            color: var(--event-purple);
+            flex-shrink: 0;
+        }
+
+        .event-text {
+            flex: 1;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .event-text strong {
+            color: var(--gold-color);
+            font-weight: 600;
+        }
+
+        .calendar-section {
+            background: linear-gradient(135deg, rgba(139, 0, 139, 0.1), rgba(139, 0, 139, 0.05));
+            border: 2px solid var(--event-purple);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .calendar-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--event-purple);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .calendar-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-item:hover {
+            transform: scale(1.05);
+            border-color: var(--gold-color);
+        }
+
+        .event-date {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold-color);
+            margin-bottom: 10px;
+        }
+
+        .event-name {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .event-location {
+            color: var(--event-purple);
+            font-size: 0.8rem;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .attendance-banner {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
+            border: 2px solid var(--mandatory-red);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .attendance-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--mandatory-red);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .attendance-text {
+            color: #e0e0e0;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .attendance-text strong {
+            color: var(--gold-color);
+        }
+
+        @media (max-width: 768px) {
+            .events-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+                letter-spacing: 3px;
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .calendar-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="conduct-intel.html" class="back-btn">
+            ← Back to Conduct
+        </a>
+
+        <div class="header">
+            <h1 data-translate>Illuminati Events</h1>
+            <p data-translate>Mandatory gatherings and ceremonies for Elite members</p>
+        </div>
+
+        <div class="events-grid">
+            <div class="event-card">
+                <h2 class="event-title" data-translate>Annual Summit</h2>
+                <div class="mandatory-badge" data-translate>MANDATORY</div>
+                <ul class="event-list">
+                    <li class="event-item">
+                        <div class="event-icon">🏛️</div>
+                        <div class="event-text">
+                            <strong data-translate>Location</strong>: <span data-translate>Zurich, Switzerland - Secret venue</span>
+                        </div>
+                    </li>
+                    <li class="event-item">
+                        <div class="event-icon">📅</div>
+                        <div class="event-text">
+                            <strong data-translate>Date</strong>: <span data-translate>December 21st - Winter Solstice</span>
+                        </div>
+                    </li>
+                    <li class="event-item">
+                        <div class="event-icon">🎭</div>
+                        <div class="event-text">
+                            <strong data-translate>Purpose</strong>: <span data-translate>Strategic planning and member induction</span>
+                        </div>
+                    </li>
+                    <li class="event-item">
+                        <div class="event-icon">👤</div>
+                        <div class="event-text">
+                            <strong data-translate>Attendance</strong>: <span data-translate>All Elite members required</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="event-card">
+                <h2 class="event-title" data-translate>Equinox Ceremonies</h2>
+                <div class="mandatory-badge" data-translate>MANDATORY</div>
+                <ul class="event-list">
+                    <li class="event-item">
+                        <div class="event-icon">🌅</div>
+                        <div class="event-text">
+                            <strong data-translate>Spring Equinox</strong>: <span data-translate>March 20th - Renewal of vows</span>
+                        </div>
+                    </li>
+                    <li class="event-item">
+                        <div class="event-icon">🍂</div>
+                        <div class="event-text">
+                            <strong data-translate>Autumn Equinox</strong>: <span data-translate>September 22nd - Harvest celebration</span>
+                        </div>
+                    </li>
+                    <li class="event-item">
+                        <div class="event-icon">🌍</div>
+                        <div class="event-text">
+                            <strong data-translate>Locations</strong>: <span data-translate>Ancient sites worldwide</span>
+                        </div>
+                    </li>
+                    <li class="event-item">
+                        <div class="event-icon">🔮</div>
+                        <div class="event-text">
+                            <strong data-translate>Rituals</strong>: <span data-translate>Traditional ceremonies and initiations</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="event-card">
+                <h2 class="event-title" data-translate>Regional Gatherings</h2>
+                <div class="mandatory-badge" data-translate>MANDATORY</div>
+                <ul class="event-list">
+                    <li class="event-item">
+                        <div class="event-icon">🌐</div>
+                        <div class="event-text">
+                            <strong data-translate>Frequency</strong>: <span data-translate>Quarterly regional meetings</span>
+                        </div>
+                    </li>
+                    <li class="event-item">
+                        <div class="event-icon">🏦️</div>
+                        <div class="event-text">
+                            <strong data-translate>North America</strong>: <span data-translate>New York, Toronto, Mexico City</span>
+                        </div>
+                    </li>
+                    <li class="event-item">
+                        <div class="event-icon">🌍</div>
+                        <div class="event-text">
+                            <strong data-translate>Europe</strong>: <span data-translate>London, Paris, Berlin, Rome</span>
+                        </div>
+                    </li>
+                    <li class="event-item">
+                        <div class="event-icon">🌏</div>
+                        <div class="event-text">
+                            <strong data-translate>Asia Pacific</strong>: <span data-translate>Tokyo, Singapore, Hong Kong</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="calendar-section">
+            <h2 class="calendar-title" data-translate>2024 Event Calendar</h2>
+            <div class="calendar-grid">
+                <div class="calendar-item">
+                    <div class="event-date" data-translate>March 20</div>
+                    <div class="event-name" data-translate>Spring Equinox Ceremony</div>
+                    <div class="event-location" data-translate>Giza Plateau, Egypt</div>
+                </div>
+                <div class="calendar-item">
+                    <div class="event-date" data-translate>June 21</div>
+                    <div class="event-name" data-translate>Summer Solstice Summit</div>
+                    <div class="event-location" data-translate>Monaco</div>
+                </div>
+                <div class="calendar-item">
+                    <div class="event-date" data-translate>September 22</div>
+                    <div class="event-name" data-translate>Autumn Equinox Gathering</div>
+                    <div class="event-location" data-translate>Machu Picchu, Peru</div>
+                </div>
+                <div class="calendar-item">
+                    <div class="event-date" data-translate>December 21</div>
+                    <div class="event-name" data-translate>Winter Solstice Annual Summit</div>
+                    <div class="event-location" data-translate>Zurich, Switzerland</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="attendance-banner">
+            <h2 class="attendance-title" data-translate>Attendance Requirements</h2>
+            <p class="attendance-text" data-translate>
+                <strong>Attendance at all mandatory events is required for continued Elite membership.</strong> 
+                Failure to attend without prior approval from the Secretary General may result in 
+                <strong>suspension of privileges</strong> and <strong>review of membership status</strong>. 
+                Members must provide <strong>minimum 30 days notice</strong> for excused absences, 
+                which are granted only for <strong>critical personal or professional obligations</strong>.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Add entrance animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.event-card, .calendar-section, .attendance-banner');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(50px)';
+                setTimeout(() => {
+                    element.style.transition = 'all 0.8s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+    <script src="global-audio.js"></script>
+    <script src="alladin-engine.js"></script>
+    <!-- ALLADIN Floating Components -->
+    <div class="alladin-trigger hidden" id="alladin-badge">
+        <span>?</span>
+    </div>
+
+</html>
+
+
+
+
+
