@@ -390,6 +390,10 @@ class OTPVerification {
             const data = await response.json().catch(() => ({}));
 
             if (!response.ok) {
+                console.error('Verification email API error response:', {
+                    status: response.status,
+                    body: data
+                });
                 throw new Error(data.error || 'Failed to dispatch verification code email');
             }
 
@@ -495,6 +499,12 @@ class OTPVerification {
             const data = await response.json().catch(() => ({}));
 
             if (!response.ok || !data.success) {
+                if (!response.ok) {
+                    console.error('Verification API error response:', {
+                        status: response.status,
+                        body: data
+                    });
+                }
                 throw new Error(data.error || 'Verification failed. Incorrect or expired code.');
             }
 
