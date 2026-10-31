@@ -230,14 +230,14 @@ exports.handler = async function (event, context) {
 
     const textContent = `Illuminati Portal - ${headline}\n\n${description}\n\nYOUR 6-DIGIT VERIFICATION CODE: ${generatedCode}\n\nThis code will expire in 10 minutes.\n\nIf you did not request this code, please contact support or ignore this message.`;
 
-    const senderEmail = process.env.BREVO_SENDER_EMAIL || process.env.SENDER_EMAIL || 'illuminatiheadquarter280@gmail.com';
+    const senderEmail = process.env.BREVO_SENDER_EMAIL;
     const senderName = 'Illuminati Portal';
 
     try {
         const brevoResponse = await fetch('https://api.brevo.com/v3/smtp/email', {
             method: 'POST',
             headers: {
-                'api-key': BREVO_API_KEY,
+                'api-key': process.env.BREVO_API_KEY,
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
