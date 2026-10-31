@@ -40,7 +40,24 @@
             denied: "SECURITY ALERT: ACCESS DENIED. ADMINISTRATIVE PATHS ARE STRICTLY RESTRICTED.",
             welcomeTitle: "ALLADIN CORE AWAKENED",
             initBtn: "INITIALIZE ALLADIN",
-            placeholder: "Ask ALLADIN"
+            placeholder: "Ask ALLADIN",
+            welcomeAlladin: "Welcome, I am ALLADIN, a built-in global AI assistant for the Illuminati. Ask anything.",
+            wealthFreedom: "Looking for Financial Freedom? Your Path to Financial Freedom Starts Here.",
+            wealthRevealed: "Wealth is not given. It is revealed to those who are ready. Beyond money lies enlightenment.",
+            buildWealth: "You must become financially stable. Start building generational wealth—wealth that will speak for you long after you're gone.",
+            wealthDiscipline: "Everyone wants generational wealth. Few have the discipline. Do you have what it takes?",
+            keptPoor: "They kept you poor by keeping you from knowledge. True abundance is not given, it is learned.",
+            secrecyPower: "Secrecy is power. Knowledge is power. The more knowledge that is secret, the more powerful you perceive yourself to be.",
+            manyCalled: "Many are called, but few are chosen. Do you have what it takes to dissolve your old self?",
+            twoOptions: "You have two options: Leave and remain the same, or stay and commit to become what you were meant to be.",
+            notEasy: "Becoming part of the Illuminati is not as easy as the scammers have made it seem.",
+            nothingDevil: "We have nothing to do with the devil. Greatness demands two things: The humility to serve, and the strength to obey principles of abundance.",
+            timeWealth: "Time is the one wealth you cannot recover. Every second lost is opportunity missed.",
+            oneChoice: "One life, One choice, One moment. It is a one-way path. Start now.",
+            typingIndicator: "ALLADIN is analyzing...",
+            sendBtn: "SEND",
+            modalTitle: "ALLADIN AI TELEMETRY",
+            modalClose: "✕"
         },
         es: {
             greeting: (city, country) => `Saludos ciudadano de ${city}, ${country}. Soy ALLADIN, su guía central.`,
@@ -48,7 +65,24 @@
             denied: "ALERTA DE SEGURIDAD: ACCESO DENEGADO. LAS RUTAS ADMINISTRATIVAS ESTÁN ESTRICTAMENTE RESTRINGIDAS.",
             welcomeTitle: "NÚCLEO ALLADIN DESPERTADO",
             initBtn: "INICIALIZAR ALLADIN",
-            placeholder: "Ask ALLADIN"
+            placeholder: "Ask ALLADIN",
+            welcomeAlladin: "Bienvenido, soy ALLADIN, un asistente de IA global integrado para los Illuminati. Pregunta lo que quieras.",
+            wealthFreedom: "¿Buscas libertad financiera? Tu camino hacia la libertad financiera comienza aquí.",
+            wealthRevealed: "La riqueza no se entrega. Se revela a quienes están preparados. Más allá del dinero está la iluminación.",
+            buildWealth: "Debes alcanzar la estabilidad financiera. Comienza a construir riqueza generacional, una riqueza que hablará por ti mucho después de que te hayas ido.",
+            wealthDiscipline: "Todos quieren riqueza generacional. Pocos tienen la disciplina. ¿Tienes lo necesario?",
+            keptPoor: "Te mantuvieron en la pobreza al mantenerte alejado del conocimiento. La verdadera abundancia no se entrega, se aprende.",
+            secrecyPower: "El secreto es poder. El conocimiento es poder. Cuanto más secreto es el conocimiento, más poderoso pareces.",
+            manyCalled: "Muchos son llamados, pero pocos son elegidos. ¿Tienes lo necesario para disolver tu antiguo yo?",
+            twoOptions: "Tienes dos opciones: irte y seguir igual, o quedarte y comprometerte a convertirte en quien debes ser.",
+            notEasy: "Convertirse en parte de los Illuminati no es tan fácil como los estafadores han hecho creer.",
+            nothingDevil: "No tenemos nada que ver con el diablo. La grandeza exige humildad para servir y fuerza para obedecer los principios de la abundancia.",
+            timeWealth: "El tiempo es la única riqueza que no puedes recuperar. Cada segundo perdido es una oportunidad perdida.",
+            oneChoice: "Una vida, una elección, un momento. Es un camino sin retorno. Comienza ahora.",
+            typingIndicator: "ALLADIN está analizando...",
+            sendBtn: "ENVIAR",
+            modalTitle: "TELEMETRÍA DE IA ALLADIN",
+            modalClose: "✕"
         },
         fr: {
             greeting: (city, country) => `Salutations citoyen de ${city}, ${country}. Je suis ALLADIN, votre guide central.`,
@@ -56,7 +90,24 @@
             denied: "ALERTE DE SÉCURITÉ: ACCÈS REFUSÉ. LES VOIES ADMINISTRATIVES SONT STRICTEMENT RESTREINTES.",
             welcomeTitle: "NOYAU ALLADIN ÉVEILLÉ",
             initBtn: "INITIALISER ALLADIN",
-            placeholder: "Ask ALLADIN"
+            placeholder: "Ask ALLADIN",
+            welcomeAlladin: "Bienvenue, je suis ALLADIN, un assistant IA mondial intégré pour les Illuminati. Demandez n'importe quoi.",
+            wealthFreedom: "Vous cherchez la liberté financière ? Votre chemin vers la liberté financière commence ici.",
+            wealthRevealed: "La richesse n'est pas donnée. Elle se révèle à ceux qui sont prêts. Au-delà de l'argent se trouve l'illumination.",
+            buildWealth: "Vous devez devenir financièrement stable. Commencez à bâtir une richesse générationnelle qui parlera pour vous longtemps après votre départ.",
+            wealthDiscipline: "Tout le monde veut une richesse générationnelle. Peu ont la discipline. Êtes-vous à la hauteur ?",
+            keptPoor: "On vous a maintenu dans la pauvreté en vous privant de connaissances. La véritable abondance ne se donne pas, elle s'apprend.",
+            secrecyPower: "Le secret est le pouvoir. La connaissance est le pouvoir. Plus une connaissance est secrète, plus vous paraissez puissant.",
+            manyCalled: "Beaucoup sont appelés, mais peu sont choisis. Avez-vous ce qu'il faut pour dissoudre votre ancien moi ?",
+            twoOptions: "Vous avez deux choix : partir et rester le même, ou rester et devenir celui que vous êtes destiné à être.",
+            notEasy: "Devenir membre des Illuminati n'est pas aussi facile que les escrocs l'ont prétendu.",
+            nothingDevil: "Nous n'avons rien à voir avec le diable. La grandeur exige l'humilité de servir et la force de respecter les principes d'abondance.",
+            timeWealth: "Le temps est la seule richesse que vous ne pouvez pas récupérer. Chaque seconde perdue est une occasion perdue.",
+            oneChoice: "Une vie, un choix, un instant. C'est un chemin sans retour. Commencez maintenant.",
+            typingIndicator: "ALLADIN analyse...",
+            sendBtn: "ENVOYER",
+            modalTitle: "TÉLÉMÉTRIE IA ALLADIN",
+            modalClose: "✕"
         },
         pt: {
             greeting: (city, country) => `Saudações cidadão de ${city}, ${country}. Eu sou ALLADIN, seu guia central.`,
@@ -64,7 +115,24 @@
             denied: "ALERTA DE SEGURANÇA: ACESSO NEGADO. AS ROTAS ADMINISTRATIVAS SÃO ESTRITAMENTE RESTRITAS.",
             welcomeTitle: "NÚCLEO ALLADIN DESPERTADO",
             initBtn: "INICIALIZAR ALLADIN",
-            placeholder: "Ask ALLADIN"
+            placeholder: "Ask ALLADIN",
+            welcomeAlladin: "Bem-vindo, eu sou ALLADIN, um assistente de IA global integrado para os Illuminati. Pergunte qualquer coisa.",
+            wealthFreedom: "Procura liberdade financeira? O seu caminho para a liberdade financeira começa aqui.",
+            wealthRevealed: "A riqueza não é dada. Ela é revelada a quem está preparado. Além do dinheiro existe a iluminação.",
+            buildWealth: "Você precisa alcançar estabilidade financeira. Comece a construir riqueza geracional, uma riqueza que falará por você muito depois da sua partida.",
+            wealthDiscipline: "Todos querem riqueza geracional. Poucos têm disciplina. Você tem o que é preciso?",
+            keptPoor: "Mantiveram você pobre ao mantê-lo longe do conhecimento. A verdadeira abundância não é dada, é aprendida.",
+            secrecyPower: "Segredo é poder. Conhecimento é poder. Quanto mais secreto é o conhecimento, mais poderoso você parece.",
+            manyCalled: "Muitos são chamados, mas poucos são escolhidos. Você tem o que é preciso para dissolver o seu antigo eu?",
+            twoOptions: "Você tem duas opções: partir e continuar igual, ou ficar e tornar-se aquilo que nasceu para ser.",
+            notEasy: "Tornar-se parte dos Illuminati não é tão fácil quanto os golpistas fizeram parecer.",
+            nothingDevil: "Nada temos a ver com o diabo. A grandeza exige humildade para servir e força para obedecer aos princípios da abundância.",
+            timeWealth: "O tempo é a única riqueza que você não pode recuperar. Cada segundo perdido é uma oportunidade perdida.",
+            oneChoice: "Uma vida, uma escolha, um momento. É um caminho sem volta. Comece agora.",
+            typingIndicator: "ALLADIN está analisando...",
+            sendBtn: "ENVIAR",
+            modalTitle: "TELEMETRIA DE IA ALLADIN",
+            modalClose: "✕"
         }
     };
 
@@ -142,7 +210,7 @@
         const indicator = document.createElement('div');
         indicator.className = 'msg-bubble msg-system alladin-typing-indicator';
         indicator.style.cssText = 'align-self: flex-start; background: rgba(10,10,20,0.95); border-left: 3px solid #FFD700; padding: 12px 15px; border-radius: 6px; color: #FFD700; margin-top: 12px; max-width: 85%;';
-        indicator.textContent = 'ALLADIN is analyzing...';
+        indicator.textContent = t('typingIndicator');
         stream.appendChild(indicator);
         stream.scrollTop = stream.scrollHeight;
         return indicator;
@@ -979,9 +1047,9 @@
             modal.innerHTML = `
                 <div class="modal-header">
                     <div class="modal-title">
-                        <span>❖</span> ALLADIN AI TELEMETRY
+                        <span>❖</span> ${t('modalTitle')}
                     </div>
-                    <div class="modal-close" onclick="window.alladinEngine.toggleOverlay()">✕</div>
+                    <div class="modal-close" onclick="window.alladinEngine.toggleOverlay()">${t('modalClose')}</div>
                 </div>
                 <div class="modal-body" id="alladin-modal-stream" style="display: flex; flex-direction: column; gap: 12px;">
                     <div class="msg-bubble msg-system" style="background: rgba(10, 10, 20, 0.95); border-left: 3px solid #FFD700; padding: 15px; border-radius: 6px; color: #e2e8f0; max-width: 85%;">
@@ -991,7 +1059,7 @@
                 </div>
                 <div class="modal-footer">
                     <input type="text" id="alladin-modal-input" class="modal-input" placeholder="${t('placeholder')}" onkeypress="if(event.key === 'Enter') window.alladinEngine.sendModalQuery()">
-                    <button class="modal-send" onclick="window.alladinEngine.sendModalQuery()">SEND</button>
+                    <button class="modal-send" onclick="window.alladinEngine.sendModalQuery()">${t('sendBtn')}</button>
                 </div>
             `;
             document.body.appendChild(modal);
@@ -1923,64 +1991,34 @@
         // Dynamic 20-Second Dual Teaser Tooltip Rotator
         const teaserPairs = [
             [
-                "Welcome, I am ALLADIN, a built-in global AI assistant for the Illuminati. Ask anything.",
+                () => t('welcomeAlladin'),
                 "Six months from now, the old you will be unrecognizable. With us it takes just 6 months."
             ],
             [
-                "Looking for Financial Freedom? Your Path to Financial Freedom Starts Here.",
-                "Wealth is not given. It is revealed to those who are ready. Beyond money lies enlightenment."
+                () => t('wealthFreedom'),
+                () => t('wealthRevealed')
             ],
             [
-                "You must become financially stable. Start building generational wealth—wealth that will speak for you long after you're gone.",
-                "Everyone wants generational wealth. Few have the discipline. Do you have what it takes?"
+                () => t('buildWealth'),
+                () => t('wealthDiscipline')
             ],
             [
-                "They kept you poor by keeping you from knowledge. True abundance is not given, it is learned.",
-                "Secrecy is power. Knowledge is power. The more knowledge that is secret, the more powerful you perceive yourself to be."
+                () => t('keptPoor'),
+                () => t('secrecyPower')
             ],
             [
-                "Many are called, but few are chosen. Do you have what it takes to dissolve your old self?",
-                "You have two options: Leave and remain the same, or stay and commit to become what you were meant to be."
+                () => t('manyCalled'),
+                () => t('twoOptions')
             ],
             [
-                "Becoming part of the Illuminati is not as easy as the scammers have made it seem.",
-                "We have nothing to do with the devil. Greatness demands two things: The humility to serve, and the strength to obey principles of abundance."
+                () => t('notEasy'),
+                () => t('nothingDevil')
             ],
             [
-                "Time is the one wealth you cannot recover. Every second lost is opportunity missed.",
-                "One life, One choice, One moment. It is a one-way path. Start now."
+                () => t('timeWealth'),
+                () => t('oneChoice')
             ]
         ];
-
-        const localizedTeaserPairs = {
-            es: [
-                ["Bienvenido, soy ALLADIN, un asistente de IA global integrado para los Illuminati. Pregunta lo que quieras.", "Dentro de seis meses, tu antiguo yo será irreconocible. Con nosotros solo hacen falta seis meses."],
-                ["¿Buscas libertad financiera? Tu camino hacia la libertad financiera comienza aquí.", "La riqueza no se entrega. Se revela a quienes están preparados. Más allá del dinero está la iluminación."],
-                ["Debes alcanzar la estabilidad financiera. Comienza a construir riqueza generacional, una riqueza que hablará por ti mucho después de que te hayas ido.", "Todos quieren riqueza generacional. Pocos tienen la disciplina. ¿Tienes lo necesario?"],
-                ["Te mantuvieron en la pobreza al mantenerte alejado del conocimiento. La verdadera abundancia no se entrega, se aprende.", "El secreto es poder. El conocimiento es poder. Cuanto más secreto es el conocimiento, más poderoso pareces."],
-                ["Muchos son llamados, pero pocos son elegidos. ¿Tienes lo necesario para disolver tu antiguo yo?", "Tienes dos opciones: irte y seguir igual, o quedarte y comprometerte a convertirte en quien debes ser."],
-                ["Convertirse en parte de los Illuminati no es tan fácil como los estafadores han hecho creer.", "No tenemos nada que ver con el diablo. La grandeza exige humildad para servir y fuerza para obedecer los principios de la abundancia."],
-                ["El tiempo es la única riqueza que no puedes recuperar. Cada segundo perdido es una oportunidad perdida.", "Una vida, una elección, un momento. Es un camino sin retorno. Comienza ahora."]
-            ],
-            fr: [
-                ["Bienvenue, je suis ALLADIN, un assistant IA mondial intégré pour les Illuminati. Demandez n'importe quoi.", "Dans six mois, votre ancien vous sera méconnaissable. Avec nous, six mois suffisent."],
-                ["Vous cherchez la liberté financière ? Votre chemin vers la liberté financière commence ici.", "La richesse n'est pas donnée. Elle se révèle à ceux qui sont prêts. Au-delà de l'argent se trouve l'illumination."],
-                ["Vous devez devenir financièrement stable. Commencez à bâtir une richesse générationnelle qui parlera pour vous longtemps après votre départ.", "Tout le monde veut une richesse générationnelle. Peu ont la discipline. Êtes-vous à la hauteur ?"],
-                ["On vous a maintenu dans la pauvreté en vous privant de connaissances. La véritable abondance ne se donne pas, elle s'apprend.", "Le secret est le pouvoir. La connaissance est le pouvoir. Plus une connaissance est secrète, plus vous paraissez puissant."],
-                ["Beaucoup sont appelés, mais peu sont choisis. Avez-vous ce qu'il faut pour dissoudre votre ancien moi ?", "Vous avez deux choix : partir et rester le même, ou rester et devenir celui que vous êtes destiné à être."],
-                ["Devenir membre des Illuminati n'est pas aussi facile que les escrocs le prétendent.", "Nous n'avons rien à voir avec le diable. La grandeur exige l'humilité de servir et la force de respecter les principes d'abondance."],
-                ["Le temps est la seule richesse que vous ne pouvez pas récupérer. Chaque seconde perdue est une occasion manquée.", "Une vie, un choix, un instant. C'est un chemin sans retour. Commencez maintenant."]
-            ],
-            pt: [
-                ["Bem-vindo, eu sou ALLADIN, um assistente de IA global integrado para os Illuminati. Pergunte qualquer coisa.", "Daqui a seis meses, o seu antigo eu será irreconhecível. Conosco, bastam seis meses."],
-                ["Procura liberdade financeira? O seu caminho para a liberdade financeira começa aqui.", "A riqueza não é dada. Ela é revelada a quem está preparado. Além do dinheiro existe a iluminação."],
-                ["Você precisa alcançar estabilidade financeira. Comece a construir riqueza geracional, uma riqueza que falará por você muito depois da sua partida.", "Todos querem riqueza geracional. Poucos têm disciplina. Você tem o que é preciso?"],
-                ["Mantiveram você pobre ao mantê-lo longe do conhecimento. A verdadeira abundância não é dada, é aprendida.", "Segredo é poder. Conhecimento é poder. Quanto mais secreto é o conhecimento, mais poderoso você parece."],
-                ["Muitos são chamados, mas poucos são escolhidos. Você tem o que é preciso para dissolver o seu antigo eu?", "Você tem duas opções: partir e continuar igual, ou ficar e tornar-se aquilo que nasceu para ser."],
-                ["Tornar-se parte dos Illuminati não é tão fácil quanto os golpistas fizeram parecer.", "Nada temos a ver com o diabo. A grandeza exige humildade para servir e força para obedecer aos princípios da abundância."],
-                ["O tempo é a única riqueza que você não pode recuperar. Cada segundo perdido é uma oportunidade perdida.", "Uma vida, uma escolha, um momento. É um caminho sem volta. Comece agora."]
-            ]
-        };
 
         let currentTeaserIndex = 0;
 
@@ -2005,29 +2043,30 @@
 
         function renderTeasers() {
             const language = getActiveLanguage();
-            const pairs = localizedTeaserPairs[language] || teaserPairs;
-            const pair = pairs[Math.floor(currentTeaserIndex / 2) % pairs.length];
-            let teaserText = pair[currentTeaserIndex % 2];
+            const pair = teaserPairs[Math.floor(currentTeaserIndex / 2) % teaserPairs.length];
+            // Call the translation function if it's a function, otherwise use the string directly
+            const teaserText = typeof pair[currentTeaserIndex % 2] === 'function'
+                ? pair[currentTeaserIndex % 2]()
+                : pair[currentTeaserIndex % 2];
             const teaserClass = currentTeaserIndex % 2 === 0 ? 'primary-teaser' : 'secondary-teaser';
-            
+
             // Add ALLADIN heading to every other tooltip (even indices)
-            if (currentTeaserIndex % 2 === 0) {
-                // Always prepend ALLADIN heading
-                teaserText = '◆ ALLADIN:\n' + teaserText;
-            }
-            
+            const finalText = currentTeaserIndex % 2 === 0
+                ? '◆ ALLADIN:\n' + teaserText
+                : teaserText;
+
             // Fade out existing content
             tooltipContainer.style.opacity = '0';
             tooltipContainer.style.transition = 'opacity 0.5s ease-in-out';
 
             setTimeout(() => {
                 tooltipContainer.innerHTML = `
-                    <div class="alladin-teaser-box ${teaserClass}">${teaserText}</div>
+                    <div class="alladin-teaser-box ${teaserClass}">${finalText}</div>
                 `;
-                
+
                 // Fade back in
                 tooltipContainer.style.opacity = '1';
-                
+
                 // Increment index
                 currentTeaserIndex = (currentTeaserIndex + 1) % (teaserPairs.length * 2);
             }, 500);
