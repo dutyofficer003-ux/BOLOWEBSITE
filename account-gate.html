@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="auth-client.js"></script>
+    <script src="otp-verification.js"></script>
     <style>
         :root {
             --bg-color: #000000;
@@ -694,13 +695,41 @@
                 }
 
                 const persistEmail = (userData.email && userData.email.trim()) || memberDoc.id;
+
+                // Check unrecognized browser / device
+                const isRecognized = window.OTPVerification && window.OTPVerification.isDeviceRecognized(persistEmail);
+
+                if (!isRecognized) {
+                    console.log('🔒 Unrecognized browser detected during login. Prompting Brevo OTP verification...');
+                    showVerificationResult('🔐 Unrecognized browser detected. Enter the 6-digit code dispatched to your email.', 'success');
+
+                    window.OTPVerification.show(
+                        persistEmail,
+                        'browser',
+                        () => {
+                            window.OTPVerification.markDeviceRecognized(persistEmail);
+                            localStorage.setItem('userEmail', persistEmail);
+                            localStorage.setItem('gate_email', persistEmail);
+                            showVerificationResult('✅ Browser verified! Redirecting to Elite Dashboard...', 'success');
+                            setTimeout(() => {
+                                window.location.href = 'elite-dashboard.html';
+                            }, 1000);
+                        },
+                        (err) => {
+                            showVerificationResult('❌ Verification incomplete. Access denied.', 'error');
+                        }
+                    );
+                    return;
+                }
+
+                // Browser already recognized
                 localStorage.setItem('userEmail', persistEmail);
                 localStorage.setItem('gate_email', persistEmail);
 
                 showVerificationResult('✅ Access granted! Redirecting to Elite Dashboard...', 'success');
                 setTimeout(() => {
                     window.location.href = 'elite-dashboard.html';
-                }, 1200);
+                }, 1000);
             } catch (error) {
                 console.error('Login error:', error);
                 showVerificationResult('❌ Verification failed. Please try again.', 'error');
@@ -710,9 +739,10 @@
             }
         }
 
-        // Send access link function
+        // Send access link / device transfer function via Brevo verification
         async function sendAccessLink() {
             const emailNorm = normalizeCredential(document.getElementById('linkEmailInput').value);
+            const emailTrimmed = document.getElementById('linkEmailInput').value.trim();
             const resultDiv = document.getElementById('verificationResult');
             const linkBtn = document.querySelector('.verify-btn.secondary');
 
@@ -722,25 +752,58 @@
             }
 
             linkBtn.disabled = true;
-            linkBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            linkBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking Account...';
             resultDiv.style.display = 'none';
 
-            console.log('📧 Sending access link to:', emailNorm);
+            console.log('📧 Verifying member record for access code dispatch:', emailNorm);
 
             try {
-                const result = await window.eliteAuth.sendAccessLink(emailNorm);
-                
-                if (result.success) {
-                    showVerificationResult('✅ Access link sent! Check your email and click the link to access your account.', 'success');
-                    document.getElementById('linkEmailInput').value = '';
-                } else {
-                    showVerificationResult(`❌ Failed to send access link: ${result.error}`, 'error');
+                // Verify member exists and is approved in Firestore
+                let doc = await db.collection('members').doc(emailNorm).get();
+                if (!doc.exists) {
+                    doc = await db.collection('members').doc(emailTrimmed).get();
                 }
+                if (!doc.exists) {
+                    const snap = await db.collection('members').where('email', '==', emailTrimmed).limit(1).get();
+                    if (!snap.empty) doc = snap.docs[0];
+                }
+
+                if (!doc || !doc.exists) {
+                    showVerificationResult('❌ Email not found. Please verify your membership details.', 'error');
+                    return;
+                }
+
+                const userData = doc.data();
+                if (!memberIsApproved(userData)) {
+                    showVerificationResult('❌ Account pending approval by the Secretary General.', 'error');
+                    return;
+                }
+
+                const persistEmail = (userData.email && userData.email.trim()) || doc.id;
+
+                showVerificationResult('📧 Dispatching 6-digit access code to your email...', 'success');
+
+                // Trigger 6-digit email verification via Brevo API
+                window.OTPVerification.show(
+                    persistEmail,
+                    'device',
+                    () => {
+                        window.OTPVerification.markDeviceRecognized(persistEmail);
+                        localStorage.setItem('userEmail', persistEmail);
+                        localStorage.setItem('gate_email', persistEmail);
+                        showVerificationResult('✅ Access granted! Redirecting to Elite Dashboard...', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'elite-dashboard.html';
+                        }, 1000);
+                    },
+                    (err) => {
+                        showVerificationResult('❌ Device verification incomplete.', 'error');
+                    }
+                );
             } catch (error) {
-                console.error('Send link error:', error);
-                showVerificationResult('❌ Failed to send access link. Please try again.', 'error');
+                console.error('Send access code error:', error);
+                showVerificationResult('❌ Failed to dispatch access code. Please try again.', 'error');
             } finally {
-                // Re-enable button
                 linkBtn.disabled = false;
                 linkBtn.innerHTML = '<i class="fas fa-envelope"></i> Send Access Link';
             }
@@ -831,7 +894,14 @@
                         const userData = doc.data();
 
                         if (memberIsApproved(userData)) {
-                            console.log('🎉 User still approved! Redirecting to elite dashboard...');
+                            // Check if this browser is recognized
+                            if (window.OTPVerification && !window.OTPVerification.isDeviceRecognized(savedEmail)) {
+                                console.log('🔒 Saved session on unrecognized browser. Requiring 6-digit verification.');
+                                showAccessDenied();
+                                return;
+                            }
+
+                            console.log('🎉 User still approved and browser recognized! Redirecting to elite dashboard...');
                             localStorage.setItem('userEmail', savedEmail);
                             localStorage.setItem('gate_email', savedEmail);
                             window.location.href = 'elite-dashboard.html';
@@ -867,14 +937,21 @@
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
+            const savedEmail = localStorage.getItem('userEmail') || localStorage.getItem('gate_email');
+
             if (window.eliteAuth && window.eliteAuth.isAuthenticated()) {
                 const u = typeof window.eliteAuth.getCurrentUser === 'function' ? window.eliteAuth.getCurrentUser() : null;
-                if (u && u.email) {
-                    const e = String(u.email).trim();
+                const e = (u && u.email ? String(u.email).trim() : '') || savedEmail;
+                if (window.OTPVerification && !window.OTPVerification.isDeviceRecognized(e)) {
+                    console.log('🔒 Unrecognized browser on JWT session check. Showing verification gate.');
+                    showAccessDenied();
+                    return;
+                }
+                if (e) {
                     localStorage.setItem('userEmail', e);
                     localStorage.setItem('gate_email', e);
                 }
-                console.log('🎉 JWT authentication found - redirecting to elite dashboard');
+                console.log('🎉 JWT authentication found and browser recognized - redirecting to elite dashboard');
                 window.location.href = 'elite-dashboard.html';
                 return;
             }

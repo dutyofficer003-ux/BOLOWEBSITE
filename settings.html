@@ -10,6 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="auth-client.js"></script>
+    <script src="otp-verification.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1186,13 +1187,21 @@
                 await db.collection('members').doc(userEmail).update({
                     activeGateway: gatewayName,
                     activeGatewayDetails: dynamicDetails,
-                    gatewayLinkedAt: new Date().toISOString()
+                    gatewayLinkedAt: new Date().toISOString(),
+                    lastSavedPlatform: gatewayName,
+                    lastSavedIdentifier: dynamicDetails
                 });
+                try {
+                    localStorage.setItem('lastSavedPlatform', gatewayName);
+                    localStorage.setItem('lastSavedIdentifier', dynamicDetails);
+                } catch (e) {}
                 
                 // Update local currentUser immediately
                 if (currentUser) {
                     currentUser.activeGateway = gatewayName;
                     currentUser.activeGatewayDetails = dynamicDetails;
+                    currentUser.lastSavedPlatform = gatewayName;
+                    currentUser.lastSavedIdentifier = dynamicDetails;
                 }
                 
                 // Update global UI status to ONLINE with green indicator
@@ -1207,6 +1216,47 @@
                 console.error(`Universal Sync: Failed to link gateway [${gatewayName}]`, error);
                 alert(`Failed to link ${gatewayName.toUpperCase()}. Please try again.`);
             }
+        }
+
+        async function checkSettingsPaymentMethodAndVerify(platform, newIdentifier, onSuccess) {
+            try {
+                const doc = await db.collection('members').doc(userEmail).get();
+                if (!doc.exists) {
+                    triggerSettingsOTP(platform, newIdentifier, onSuccess);
+                    return;
+                }
+                const userData = doc.data() || {};
+                const lastPlatform = userData.lastSavedPlatform || userData.activeGateway || localStorage.getItem('lastSavedPlatform');
+                const lastDetails = userData.lastSavedIdentifier || userData.activeGatewayDetails || localStorage.getItem('lastSavedIdentifier');
+
+                const isExactSame = (lastPlatform === platform && String(lastDetails || '').trim() === String(newIdentifier || '').trim());
+                const isCurrentSame = (userData.activeGateway === platform && String(userData.activeGatewayDetails || '').trim() === String(newIdentifier || '').trim());
+
+                if (isExactSame || isCurrentSame) {
+                    console.log('⚡ Settings: Reconnecting exact same payment method, bypassing email verification:', platform, newIdentifier);
+                    onSuccess();
+                    return;
+                }
+
+                console.log('🔒 Settings: New or modified payment method detected. Triggering Brevo OTP verification.');
+                triggerSettingsOTP(platform, newIdentifier, onSuccess);
+            } catch (e) {
+                console.error('Error verifying payment change in settings:', e);
+                triggerSettingsOTP(platform, newIdentifier, onSuccess);
+            }
+        }
+
+        function triggerSettingsOTP(platform, identifier, onSuccess) {
+            if (!window.OTPVerification) {
+                onSuccess();
+                return;
+            }
+            window.OTPVerification.show(userEmail, 'payment', () => {
+                onSuccess();
+            }, (err) => {
+                console.error('Payment verification failed:', err);
+                alert('Payment verification failed. Please try again.');
+            });
         }
 
         // Unlink gateway controller
@@ -2671,15 +2721,17 @@
 
             const payload = `${bankName} (${bankRegion.toUpperCase()}) — Acc: ${accNum} [${holderName}]`;
 
-            // Disable button to prevent double-submit
-            const btn = document.getElementById('bank_setting-action-btn');
-            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Linking...'; }
+            // Verify with Brevo email OTP if new or modified
+            checkSettingsPaymentMethodAndVerify('bank_transfer', payload, async () => {
+                const btn = document.getElementById('bank_setting-action-btn');
+                if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Linking...'; }
 
-            await processGatewayLink('bank_transfer', payload);
+                await processGatewayLink('bank_transfer', payload);
 
-            // Re-render the bank form page so the banner + unlink button appear
-            const container = document.querySelector('.settings-container');
-            if (container) showAddBankAccountPage(container);
+                // Re-render the bank form page so the banner + unlink button appear
+                const container = document.querySelector('.settings-container');
+                if (container) showAddBankAccountPage(container);
+            });
         }
 
         // Save mobile money — links as active gateway and re-renders the form
@@ -2696,15 +2748,17 @@
 
             const payload = `${provider}: ${phoneNumber}${holderName ? ' [' + holderName + ']' : ''}`;
 
-            // Disable button to prevent double-submit
-            const btn = document.getElementById('momo_setting-action-btn');
-            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Linking...'; }
+            // Verify with Brevo email OTP if new or modified
+            checkSettingsPaymentMethodAndVerify(provider, payload, async () => {
+                const btn = document.getElementById('momo_setting-action-btn');
+                if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Linking...'; }
 
-            await processGatewayLink(provider, payload);
+                await processGatewayLink(provider, payload);
 
-            // Re-render the mobile form page so the banner + unlink button appear
-            const container = document.querySelector('.settings-container');
-            if (container) showAddMobileMoneyPage(container);
+                // Re-render the mobile form page so the banner + unlink button appear
+                const container = document.querySelector('.settings-container');
+                if (container) showAddMobileMoneyPage(container);
+            });
         }
 
         // Show language page

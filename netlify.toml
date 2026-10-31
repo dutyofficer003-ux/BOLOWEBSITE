@@ -9,6 +9,24 @@
   force = true
 
 [[redirects]]
+  from = "/api/send-verification-email"
+  to = "/.netlify/functions/send-verification-email"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/send-otp"
+  to = "/.netlify/functions/send-verification-email"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/verify-otp"
+  to = "/.netlify/functions/send-verification-email"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/api/news/*"
   to = "https://newsapi.org/v2/:splat"
   status = 200

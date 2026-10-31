@@ -12,6 +12,7 @@
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="otp-verification.js"></script>
 
 <!-- Gate Check Script - Must run immediately -->
 <script>
@@ -1086,7 +1087,7 @@
                                 <div style="background: linear-gradient(45deg, #d4af37 0%, #facc15 100%); color: #000; padding: 20px 30px; border-radius: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);" data-translate="elite_status_active">
                                     🏛️ ELITE STATUS: ACTIVE
                                 </div>
-                                <button onclick="window.location.href='elite-dashboard.html'" style="background: linear-gradient(45deg, #d4af37 0%, #facc15 100%); color: #000; padding: 20px 40px; border: none; border-radius: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 0 40px rgba(212, 175, 55, 0.7); transition: all 0.3s ease;" data-translate="enter_dashboard_btn">
+                                <button onclick="proceedApprovedUserToVerification()" style="background: linear-gradient(45deg, #d4af37 0%, #facc15 100%); color: #000; padding: 20px 40px; border: none; border-radius: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 0 40px rgba(212, 175, 55, 0.7); transition: all 0.3s ease;" data-translate="enter_dashboard_btn">
                                     🏛️ ENTER ELITE DASHBOARD
                                 </button>
                             </div>
@@ -1122,6 +1123,34 @@
                     document.head.appendChild(style);
                 }
             });
+        }
+
+        // Handle Approved Member transition via Brevo 6-digit verification
+        function proceedApprovedUserToVerification() {
+            const email = localStorage.getItem('userEmail') || localStorage.getItem('gate_email') || localStorage.getItem('submittedEmail');
+            if (!email) {
+                window.location.href = 'account-gate.html';
+                return;
+            }
+
+            if (window.OTPVerification) {
+                console.log('🏛️ Directing newly approved member to Brevo 6-digit verification for:', email);
+                window.OTPVerification.show(
+                    email,
+                    'approval',
+                    () => {
+                        window.OTPVerification.markDeviceRecognized(email);
+                        localStorage.setItem('userEmail', email);
+                        localStorage.setItem('gate_email', email);
+                        window.location.href = 'elite-dashboard.html';
+                    },
+                    (err) => {
+                        console.warn('Approval email verification dismissed or failed:', err);
+                    }
+                );
+            } else {
+                window.location.href = 'account-gate.html';
+            }
         }
 
         // Show Final Illuminati Page with personalized welcome
@@ -1168,7 +1197,7 @@
                         <div style="background: linear-gradient(45deg, #d4af37 0%, #facc15 100%); color: #000; padding: 20px 30px; border-radius: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);" data-translate="elite_status_active">
                             🏛️ ELITE STATUS: ACTIVE
                         </div>
-                        <button onclick="window.location.href='elite-dashboard.html'" style="background: #1d4ed8; color: #fff; padding: 15px 30px; border: none; border-radius: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; font-size: 0.9rem; box-shadow: 0 0 30px rgba(29, 78, 216, 0.7); transition: all 0.3s ease; min-width: 180px; max-width: 250px; margin-top: 25px;" data-translate="enter_dashboard_btn">
+                        <button onclick="proceedApprovedUserToVerification()" style="background: #1d4ed8; color: #fff; padding: 15px 30px; border: none; border-radius: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; font-size: 0.9rem; box-shadow: 0 0 30px rgba(29, 78, 216, 0.7); transition: all 0.3s ease; min-width: 180px; max-width: 250px; margin-top: 25px;" data-translate="enter_dashboard_btn">
                             🏛️ ENTER ELITE DASHBOARD
                         </button>
                     </div>

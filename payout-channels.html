@@ -489,6 +489,7 @@
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="otp-verification.js"></script>
 </head>
 <body>
     <div class="payout-container">
@@ -1354,8 +1355,14 @@
                 await db.collection('members').doc(userEmail).update({
                     activeGateway: gatewayName,
                     activeGatewayDetails: dynamicDetails,
-                    gatewayLinkedAt: new Date().toISOString()
+                    gatewayLinkedAt: new Date().toISOString(),
+                    lastSavedPlatform: gatewayName,
+                    lastSavedIdentifier: dynamicDetails
                 });
+                try {
+                    localStorage.setItem('lastSavedPlatform', gatewayName);
+                    localStorage.setItem('lastSavedIdentifier', dynamicDetails);
+                } catch (e) {}
                 
                 // Update global status to ONLINE
                 updateGlobalPaymentStatusUI(true, gatewayName);
@@ -1629,19 +1636,24 @@
 
         // Link platform input wrapper
         function linkPlatform(platform) {
-            const input = document.getElementById(`${platform}-tag`) || 
+            const input = document.getElementById(`${platform}-tag`) ||
                           document.getElementById(`${platform}-username`) ||
                           document.getElementById(`${platform}-contact`) ||
                           document.getElementById(`${platform}-cpf`) ||
                           document.getElementById(`${platform}-email`) ||
                           document.getElementById(`${platform}-phone`);
-            
+
             if (!input || !input.value.trim()) {
                 alert('Please enter your account details');
                 return;
             }
 
-            processGatewayLink(platform, input.value.trim());
+            const newIdentifier = input.value.trim();
+
+            // Check if this is a new or different payment method
+            checkPaymentMethodAndVerify(platform, newIdentifier, () => {
+                processGatewayLink(platform, newIdentifier);
+            });
         }
 
         // Link crypto input wrapper
@@ -1652,7 +1664,71 @@
                 return;
             }
 
-            processGatewayLink(crypto, input.value.trim());
+            const newIdentifier = input.value.trim();
+
+            // Check if this is a new or different payment method
+            checkPaymentMethodAndVerify(crypto, newIdentifier, () => {
+                processGatewayLink(crypto, newIdentifier);
+            });
+        }
+
+        // Check if payment method is new or different, trigger Brevo OTP verification if needed
+        async function checkPaymentMethodAndVerify(platform, newIdentifier, onSuccess) {
+            try {
+                const doc = await db.collection('members').doc(userEmail).get();
+                if (!doc.exists) {
+                    // New user record, require verification
+                    triggerOTPVerification(platform, newIdentifier, onSuccess);
+                    return;
+                }
+
+                const userData = doc.data() || {};
+                const lastPlatform = userData.lastSavedPlatform || userData.activeGateway || localStorage.getItem('lastSavedPlatform');
+                const lastDetails = userData.lastSavedIdentifier || userData.activeGatewayDetails || localStorage.getItem('lastSavedIdentifier');
+
+                // If reconnecting the exact same payment method identifier used previously, bypass email verification
+                const isExactSameMethod = (lastPlatform === platform && String(lastDetails || '').trim() === String(newIdentifier || '').trim());
+                const isCurrentlyActiveSame = (userData.activeGateway === platform && String(userData.activeGatewayDetails || '').trim() === String(newIdentifier || '').trim());
+
+                if (isExactSameMethod || isCurrentlyActiveSame) {
+                    console.log('⚡ Reconnecting exact same payment method, bypassing email verification:', platform, newIdentifier);
+                    onSuccess();
+                    return;
+                }
+
+                // New or different payment method or account identifier - trigger Brevo API 6-digit email verification
+                console.log('🔒 New or modified payment method detected. Triggering Brevo email verification.');
+                triggerOTPVerification(platform, newIdentifier, onSuccess);
+
+            } catch (error) {
+                console.error('Error checking payment method:', error);
+                // On error, enforce verification for security
+                triggerOTPVerification(platform, newIdentifier, onSuccess);
+            }
+        }
+
+        // Trigger OTP verification for payment method changes
+        function triggerOTPVerification(platform, identifier, onSuccess) {
+            if (!window.OTPVerification) {
+                console.error('OTPVerification not loaded');
+                alert('Verification system not available. Please refresh the page.');
+                return;
+            }
+
+            window.OTPVerification.show(
+                userEmail,
+                'payment',
+                () => {
+                    // Verification successful
+                    console.log('Payment method verified via OTP');
+                    onSuccess();
+                },
+                (error) => {
+                    // Verification failed
+                    console.error('OTP verification failed:', error);
+                    alert('Verification failed. Please try again.');
+                }
+            );
         }
 
         // Show security notification
@@ -1753,16 +1829,28 @@
                 linkedAt: new Date().toISOString()
             };
 
-            processGatewayLink('bank_transfer', `${bankData.bankName} - ${bankData.accountNumber} (${bankData.accountName})`);
-            closeBankTransferModal();
-            document.getElementById('bankTransferForm').reset();
+            const bankIdentifier = `${bankData.bankName} - ${bankData.accountNumber} (${bankData.accountName})`;
+            checkPaymentMethodAndVerify('bank_transfer', bankIdentifier, () => {
+                processGatewayLink('bank_transfer', bankIdentifier);
+                closeBankTransferModal();
+                document.getElementById('bankTransferForm').reset();
+            });
         });
 
-        // Check user authentication
+        // Check user authentication & browser recognition
         function checkAuth() {
             if (!userEmail) {
                 window.location.replace('account-gate.html');
                 return;
+            }
+
+            if (window.OTPVerification && !window.OTPVerification.isDeviceRecognized(userEmail)) {
+                console.log('Unrecognized browser detected on Payout Channels, prompting verification');
+                window.OTPVerification.show(userEmail, 'browser', () => {
+                    window.OTPVerification.markDeviceRecognized(userEmail);
+                }, () => {
+                    window.location.replace('account-gate.html');
+                });
             }
         }
 
