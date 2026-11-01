@@ -2122,3 +2122,7 @@ body:has(.welcome-popup.show) .alladin-single-teaser {
         line-height: 1.45 !important;
     }
 }
+
+#nl-badge-frame {
+    display: none !important;
+}
