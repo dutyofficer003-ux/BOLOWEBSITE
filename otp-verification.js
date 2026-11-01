@@ -108,8 +108,8 @@ class OTPVerification {
                         Email Verification
                     </h2>
                     
-                    <p id="otp-subtitle" style="color: #cbd5e1; font-size: 13.5px; line-height: 1.5; margin: 0 0 6px 0;">
-                        Enter the 6-digit code sent to your email.
+                    <p id="otp-subtitle" class="verification-subtitle" data-translate="verification_desc" style="color: #cbd5e1; font-size: 13.5px; line-height: 1.5; margin: 0 0 6px 0;">
+                        For your security, we sent a 6-digit verification code to your email address below. Please check your inbox and enter the code to confirm it's you.
                     </p>
 
                     <div id="otp-email-badge" style="display: inline-block; background: rgba(212, 175, 55, 0.12); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 20px; padding: 4px 14px; color: #facc15; font-size: 12.5px; font-weight: 600; margin-bottom: 20px; word-break: break-all;">
@@ -254,7 +254,7 @@ class OTPVerification {
             if (subEl) subEl.textContent = 'You are linking or updating a payout gateway method. Enter the 6-digit authorization code dispatched to:';
         } else if (purpose === 'device' || purpose === 'browser') {
             if (titleEl) titleEl.textContent = 'New Browser Detected';
-            if (subEl) subEl.textContent = 'Access attempt from an unrecognized browser. Enter the 6-digit code dispatched to:';
+            if (subEl) subEl.textContent = "For your security, we sent a 6-digit verification code to your email address below. Please check your inbox and enter the code to confirm it's you.";
         } else if (purpose === 'approval') {
             if (titleEl) titleEl.textContent = 'Account Approved & Ready';
             if (subEl) subEl.textContent = 'Your application has been approved! Enter the 6-digit activation code dispatched to:';

@@ -2123,6 +2123,9 @@ body:has(.welcome-popup.show) .alladin-single-teaser {
     }
 }
 
-#nl-badge-frame {
+#nl-badge-frame,
+#netlify-deploy-badge,
+iframe[src*="netlify"],
+a[href*="netlify.com"][href*="badge"] {
     display: none !important;
 }
