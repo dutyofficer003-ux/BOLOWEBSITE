@@ -31,3 +31,9 @@
   to = "https://newsapi.org/v2/:splat"
   status = 200
   force = true
+  
+  [build.processing]
+  skip_processing = false
+
+[build.environment]
+  SECRETS_SCAN_ENABLED = "false"
